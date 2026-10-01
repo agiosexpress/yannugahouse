@@ -2396,12 +2396,14 @@ function shBody(){
 
   b.appendChild(el("span","lab",t("sBookingFor")));
   var sl=document.createElement("select");
-  st.households.forEach(function(x){var op=document.createElement("option");
+  st.households.forEach(function(x){
+    if(PROFILE&&!PROFILE.admin&&x.id!==PROFILE.hh)return; // members book only for themselves
+    var op=document.createElement("option");
     op.value=x.id;op.textContent=x.name;if(x.id===who)op.selected=true;sl.appendChild(op);});
   var og=document.createElement("option");og.value="gx";og.textContent=t("sOutsideGuest");
   if(who==="gx")og.selected=true;sl.appendChild(og);
   sl.addEventListener("change",function(){
-    who=sl.value;if(who!=="gx"){me=who;sv();whoUI();home();}shBody();});
+    who=sl.value;if(who!=="gx"&&!SB){me=who;sv();whoUI();home();}shBody();});
   b.appendChild(sl);
 
   if(who==="gx"){
@@ -2927,6 +2929,7 @@ document.getElementById("openSheet").addEventListener("click",function(){
   if(!sel.a)return;if(!sel.b)sel.b=iso(ad(pd(sel.a),1));sheet(true);});
 document.getElementById("backdrop").addEventListener("click",function(){sheet(false);});
 document.getElementById("whoBtn").addEventListener("click",function(){
+  if(SB)return; // signed in: you are who you logged in as
   var i=st.households.findIndex(function(h){return h.id===me;});
   me=st.households[(i+1)%st.households.length].id;sv();whoUI();home();});
 document.getElementById("eAdd").addEventListener("click",function(){
