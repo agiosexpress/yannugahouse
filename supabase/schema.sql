@@ -1,0 +1,139 @@
+-- Casa Yannuga · database schema
+-- Paste all of this into the Supabase SQL Editor and run it once.
+-- Safe to re-run: it only adds what is missing.
+
+-- ───────────────────────── tables ─────────────────────────
+create table if not exists bookings (
+  id          text primary key,
+  hh          text not null,
+  checkin     date not null,
+  checkout    date not null,
+  kind        text not null default 'share',   -- 'share' (credits) or 'whole' (cash)
+  beds        jsonb not null default '[]'::jsonb,
+  note        text default '',
+  guest_name  text,
+  amount      numeric default 0,               -- cash, for whole-house nights and guests
+  made_at     timestamptz default now(),       -- when the booking was made
+  created_at  timestamptz default now()
+);
+
+-- bookings made before the bed model: add the new columns, keep the old rows
+alter table bookings add column if not exists kind    text  not null default 'share';
+alter table bookings add column if not exists beds    jsonb not null default '[]'::jsonb;
+alter table bookings add column if not exists made_at timestamptz default now();
+
+create table if not exists expenses (
+  id          text primary key,
+  descr       text not null,
+  amount      numeric not null default 0,
+  date        date not null,
+  created_at  timestamptz default now()
+);
+
+-- the open history: every booking, cancellation, credit purchase and whole-house night
+create table if not exists log (
+  id          text primary key,
+  ty          text not null,                   -- book | cancel | buy
+  hh          text,
+  nm          text,
+  checkin     date,
+  checkout    date,
+  kind        text,
+  beds        jsonb not null default '[]'::jsonb,
+  n           int     default 0,               -- credits bought
+  cr          int     default 0,               -- credits the booking cost
+  amt         numeric default 0,               -- cash
+  at          timestamptz default now()
+);
+
+-- extra credits bought at $25 each; the money goes to the aporte
+create table if not exists buys (
+  id          text primary key,
+  hh          text not null,
+  n           int     not null default 0,
+  amount      numeric not null default 0,
+  at          timestamptz default now()
+);
+
+-- payments and holiday sign-offs, each in a single document
+create table if not exists app_state (
+  key         text primary key,
+  value       jsonb not null default '{}'::jsonb,
+  updated_at  timestamptz default now()
+);
+
+insert into app_state (key, value) values ('paid','{}'::jsonb), ('consent','{}'::jsonb)
+  on conflict (key) do nothing;
+
+-- links each Supabase user to a member
+create table if not exists profiles (
+  user_id    uuid primary key references auth.users(id) on delete cascade,
+  hh         text not null,          -- pj, nc, dj, bc, n5, vt
+  admin      boolean not null default false,
+  terms_at   timestamptz,            -- when they agreed to the cotas and the rules
+  created_at timestamptz default now()
+);
+alter table profiles add column if not exists terms_at timestamptz;
+
+-- ───────────────────────── realtime ─────────────────────────
+do $$
+begin
+  begin alter publication supabase_realtime add table bookings;  exception when duplicate_object then null; end;
+  begin alter publication supabase_realtime add table expenses;  exception when duplicate_object then null; end;
+  begin alter publication supabase_realtime add table log;       exception when duplicate_object then null; end;
+  begin alter publication supabase_realtime add table buys;      exception when duplicate_object then null; end;
+  begin alter publication supabase_realtime add table app_state; exception when duplicate_object then null; end;
+end $$;
+
+-- ───────────────────── access: signed in only ─────────────────────
+alter table bookings  enable row level security;
+alter table expenses  enable row level security;
+alter table log       enable row level security;
+alter table buys      enable row level security;
+alter table app_state enable row level security;
+alter table profiles  enable row level security;
+
+drop policy if exists p_bookings  on bookings;
+drop policy if exists p_expenses  on expenses;
+drop policy if exists p_log       on log;
+drop policy if exists p_buys      on buys;
+drop policy if exists p_app_state on app_state;
+drop policy if exists p_profiles  on profiles;
+
+create policy p_bookings  on bookings  for all
+  using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy p_expenses  on expenses  for all
+  using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy p_buys      on buys      for all
+  using (auth.uid() is not null) with check (auth.uid() is not null);
+create policy p_app_state on app_state for all
+  using (auth.uid() is not null) with check (auth.uid() is not null);
+
+-- the history is readable and appendable by everyone, and nobody can rewrite it
+create policy p_log_read   on log for select using (auth.uid() is not null);
+create policy p_log_insert on log for insert with check (auth.uid() is not null);
+
+-- everyone reads their own profile; admins read all of them
+create policy p_profiles on profiles for select
+  using (
+    user_id = auth.uid()
+    or exists (select 1 from profiles p where p.user_id = auth.uid() and p.admin)
+  );
+
+-- each person records their own acceptance of the terms, nothing else
+drop policy if exists p_profiles_terms on profiles;
+create policy p_profiles_terms on profiles for update
+  using (user_id = auth.uid()) with check (user_id = auth.uid());
+
+-- ─────────────── after creating the users ───────────────
+-- Authentication → Users → Add user (tick "Auto Confirm User"), one per member.
+-- Then copy each UUID and run:
+--
+-- insert into profiles (user_id, hh, admin) values
+--   ('pedro-uuid',  'pj', true),
+--   ('niklas-uuid', 'nc', true),
+--   ('du-uuid',     'dj', false),
+--   ('bruna-uuid',  'bc', false),
+--   ('couple5-uuid','n5', false),
+--   ('victor-uuid', 'vt', false)
+-- on conflict (user_id) do update set hh = excluded.hh, admin = excluded.admin;
