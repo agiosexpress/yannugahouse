@@ -96,6 +96,8 @@ alter table profiles  enable row level security;
 drop policy if exists p_bookings  on bookings;
 drop policy if exists p_expenses  on expenses;
 drop policy if exists p_log       on log;
+drop policy if exists p_log_read   on log;
+drop policy if exists p_log_insert on log;
 drop policy if exists p_buys      on buys;
 drop policy if exists p_app_state on app_state;
 drop policy if exists p_profiles  on profiles;
@@ -113,12 +115,16 @@ create policy p_app_state on app_state for all
 create policy p_log_read   on log for select using (auth.uid() is not null);
 create policy p_log_insert on log for insert with check (auth.uid() is not null);
 
--- everyone reads their own profile; admins read all of them
+-- everyone reads their own profile; admins read all of them.
+-- is_admin() runs as its owner, so it reads profiles without going back
+-- through this policy (a subquery here would recurse forever).
+create or replace function is_admin() returns boolean
+  language sql stable security definer set search_path = public as $$
+  select coalesce((select admin from profiles where user_id = auth.uid()), false)
+$$;
+
 create policy p_profiles on profiles for select
-  using (
-    user_id = auth.uid()
-    or exists (select 1 from profiles p where p.user_id = auth.uid() and p.admin)
-  );
+  using (user_id = auth.uid() or is_admin());
 
 -- each person records their own acceptance of the terms, nothing else
 drop policy if exists p_profiles_terms on profiles;
