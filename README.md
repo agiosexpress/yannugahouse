@@ -12,7 +12,7 @@ Database on Supabase, hosting on GitHub Pages.
 | `config.js` | The two Supabase keys. **The only file you edit.** |
 | `supabase/schema.sql` | Tables, realtime and policies. Run it once. |
 | `photos/` | The 7 photos of the house |
-| `manifest.webmanifest` | Lets it install as an app on a phone's home screen |
+| `manifest.webmanifest`, `sw.js`, `icons/` | Let it install as an app on a phone's home screen |
 
 ## Step 1 — Supabase
 
@@ -108,6 +108,15 @@ through after they tick the declaration and tap **I agree and want to join**. Th
 is saved on the device with the date, and once they sign in it is written to
 `profiles.terms_at` so it is on record for everyone.
 
+A member who already agreed on another device taps **I am already a member and agreed
+before — sign in** under the button. After login the app checks `profiles.terms_at`: if it is
+on record (and not older than `TERMS_V`) the page is skipped, otherwise it is shown again
+and has to be accepted.
+
+A device that is still signed in skips all of this and opens straight into the app; the
+session is kept by Supabase in the browser, so people only type the password again after
+signing out or clearing the browser.
+
 The login screen has a link, **Reread the cotas and the rules**, that reopens the page
 before signing in, as many times as they like. After login the **Cotas** button in the
 top bar does the same.
@@ -131,3 +140,12 @@ read nor write. The history table is append-only — anyone signed in can add to
 it, nobody can edit or delete what is already there. Each person only sees themselves when
 booking; anyone with `admin` can book for everyone. To remove someone from the group, delete
 their user under **Authentication → Users**.
+
+## Installing on the phone
+
+The first time someone gets into the app (after the cotas page and the login), a banner
+offers to install it. On Android/Chrome the **Install** button opens the system prompt; on
+iPhone it explains **Share → Add to Home Screen**, since Safari has no install button.
+It shows once per device (`yannuga.inst` in the browser) and never inside the installed app.
+When a file changes, bump `CACHE` in `sw.js` only if offline copies look stale; the app
+always loads from the network first.

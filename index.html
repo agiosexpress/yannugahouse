@@ -5,6 +5,11 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#FF5A36">
 <link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Yannuga">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}
 :root{padding-top:env(safe-area-inset-top,0);padding-bottom:env(safe-area-inset-bottom,0)}</style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
@@ -633,6 +638,20 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 .tpage .taccept small{font-size:12px;color:var(--tinta3);line-height:1.4}
 .tpage .taccept .tdone{font-size:12.5px;color:var(--verde);font-weight:700}
 .terms{position:fixed;inset:0;z-index:300;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.tpage .taccept .tmember{background:none;border:0;padding:2px;color:var(--tinta2);font-family:var(--tf);
+  font-size:13.5px;font-weight:700;text-decoration:underline;cursor:pointer;width:auto;justify-self:center}
+
+.inst{position:fixed;left:12px;right:12px;z-index:90;max-width:460px;margin:0 auto;
+  bottom:calc(var(--tabh) + env(safe-area-inset-bottom,0px) + 10px);
+  background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--sh);
+  padding:14px;display:grid;grid-template-columns:48px 1fr;gap:4px 12px;align-items:start}
+.inst img{width:48px;height:48px;border-radius:12px;grid-row:span 2;object-fit:cover}
+.inst b{font-size:15px;font-weight:800;color:var(--ink)}
+.inst p{margin:0;font-size:13.5px;line-height:1.4;color:var(--ink2)}
+.inst .ib{grid-column:1/-1;display:flex;gap:8px;justify-content:flex-end;margin-top:8px}
+.inst button{border:0;border-radius:10px;padding:10px 16px;font-family:var(--f);font-size:14px;font-weight:800;cursor:pointer}
+.inst .iy{background:var(--brand);color:#fff}
+.inst .in{background:var(--bg2);color:var(--ink2)}
 .terms[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -1183,10 +1202,23 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <span data-l="pt">Li as cotas, as regras e as contas da Casa Yannuga, entendi o que estou comprando e concordo com os termos.</span>
       <span data-l="en">I have read the cotas, the rules and the sums of Casa Yannuga, I understand what I am buying and I agree to the terms.</span></label>
     <button type="button" id="tcGo" disabled>…</button>
+    <button type="button" class="tmember" id="tcMember" hidden><span data-l="pt">Já sou membro e já aceitei — entrar</span><span data-l="en">I am already a member and agreed before — sign in</span></button>
     <small data-l="pt">Fica salvo aqui no app, com a data. Dá para reler tudo a qualquer hora pelo botão “Cotas”.</small>
     <small data-l="en">It is saved here in the app, with the date. You can reread all of it any time from the “Cotas” button.</small>
   </div></div>
 </div>
+<div class="inst" id="inst" hidden role="dialog" aria-labelledby="instT">
+  <img src="icons/icon-192.png" alt="">
+  <b id="instT"><span data-l="pt">Instale o app no celular</span><span data-l="en">Install the app on your phone</span></b>
+  <p id="instAnd"><span data-l="pt">Fica na tela inicial e abre direto, em tela cheia, sem precisar do navegador.</span><span data-l="en">It sits on your home screen and opens straight away, full screen, no browser needed.</span></p>
+  <p id="instIos" hidden><span data-l="pt">No Safari, toque em <strong>Compartilhar</strong> (o quadrado com a seta ↑) e depois em <strong>Adicionar à Tela de Início</strong>.</span><span data-l="en">In Safari, tap <strong>Share</strong> (the square with the ↑ arrow), then <strong>Add to Home Screen</strong>.</span></p>
+  <div class="ib">
+    <button type="button" class="in" id="instNo"><span data-l="pt">Agora não</span><span data-l="en">Not now</span></button>
+    <button type="button" class="iy" id="instYes"><span data-l="pt">Instalar</span><span data-l="en">Install</span></button>
+    <button type="button" class="iy" id="instOk" hidden><span data-l="pt">Entendi</span><span data-l="en">Got it</span></button>
+  </div>
+</div>
+
 <div class="topbar">
   <div class="brandmark"><i></i>Casa Yannuga</div>
   <button class="lang" id="langBtn" type="button" title="Português / English">EN</button>
@@ -2659,6 +2691,7 @@ function termsShow(review){
   document.getElementById("tcOk").checked=false;
   var go=document.getElementById("tcGo");
   go.className=review?"back":"";go.disabled=!review;
+  document.getElementById("tcMember").hidden=!!review||!SB||!!SESSION;
   go.textContent=review?(LANG==="pt"?"Voltar":"Back")
     :(LANG==="pt"?"Concordo e quero entrar":"I agree and want to join");
   var dn=document.getElementById("tcDone");
@@ -2666,7 +2699,7 @@ function termsShow(review){
   if(saved){var dd=new Date(saved.at),ds=isNaN(dd)?"—":dd.toLocaleDateString(LANG==="pt"?"pt-BR":"en-AU",{day:"numeric",month:"long",year:"numeric"});
     dn.textContent=(LANG==="pt"?"Você concordou com estes termos em ":"You agreed to these terms on ")+ds+".";}
   el.hidden=false;el.scrollTop=0;document.body.style.overflow="hidden";}
-function termsHide(){var el=document.getElementById("terms");if(el)el.hidden=true;document.body.style.overflow="";}
+function termsHide(){var el=document.getElementById("terms");if(el)el.hidden=true;document.body.style.overflow="";instMaybe();}
 function termsAccept(){
   var rec={v:TERMS_V,at:new Date().toISOString()};
   try{localStorage.setItem("yannuga.terms",JSON.stringify(rec));}catch(e){}
@@ -2678,7 +2711,46 @@ function termsInit(){
   go.addEventListener("click",function(){if(go.classList.contains("back"))termsHide();else if(ok.checked)termsAccept();});
   var tb=document.getElementById("termsBtn");if(tb)tb.addEventListener("click",function(){termsShow(true);});
   var lg=document.getElementById("lgTerms");if(lg)lg.addEventListener("click",function(){termsShow(true);});
-  if(!termsSaved())termsShow(false);}
+  document.getElementById("tcMember").addEventListener("click",termsHide);}
+// signed in: the acceptance on record counts on any device, as long as it is
+// no older than the current version of the terms (TERMS_V is a YYYY-MM month)
+function termsAfterLogin(){
+  var at=PROFILE&&PROFILE.terms_at,onFile=!!at&&String(at).slice(0,7)>=TERMS_V,loc=termsSaved();
+  if(onFile){
+    if(!loc)try{localStorage.setItem("yannuga.terms",JSON.stringify({v:TERMS_V,at:at}));}catch(e){}
+    termsHide();}
+  else if(loc)termsRecord(loc);
+  else termsShow(false);}
+
+/* ---------- install banner: once, on the first access ---------- */
+var instEvt=null;
+function instDone(){try{return !!localStorage.getItem("yannuga.inst");}catch(e){return false;}}
+function instClose(){document.getElementById("inst").hidden=true;
+  try{localStorage.setItem("yannuga.inst",new Date().toISOString());}catch(e){}}
+function instIos(){var u=navigator.userAgent||"";
+  return /iphone|ipad|ipod/i.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1);}
+function instMaybe(){
+  var standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone;
+  if(standalone||instDone())return;
+  if(!document.getElementById("terms").hidden||!document.getElementById("gate").hidden)return;
+  if(SB&&!SESSION)return;
+  var ios=instIos();
+  if(!ios&&!instEvt)return; // the browser has not offered to install (yet)
+  document.getElementById("instAnd").hidden=ios;
+  document.getElementById("instIos").hidden=!ios;
+  document.getElementById("instYes").hidden=ios;
+  document.getElementById("instOk").hidden=!ios;
+  document.getElementById("inst").hidden=false;}
+window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();instEvt=e;instMaybe();});
+window.addEventListener("appinstalled",instClose);
+document.getElementById("instNo").addEventListener("click",instClose);
+document.getElementById("instOk").addEventListener("click",instClose);
+document.getElementById("instYes").addEventListener("click",function(){
+  if(!instEvt)return instClose();
+  instEvt.prompt();
+  instEvt.userChoice.then(function(){instEvt=null;instClose();});});
+if("serviceWorker" in navigator)window.addEventListener("load",function(){
+  navigator.serviceWorker.register("sw.js").catch(function(){});});
 function termsRecord(rec){
   if(SB&&SESSION&&SESSION.user)SB.from("profiles").update({terms_at:rec.at}).eq("user_id",SESSION.user.id).then(function(){});}
 
@@ -3037,7 +3109,7 @@ function lgErr(msg){
 
 function afterLogin(session){
   SESSION=session;
-  SB.from("profiles").select("hh,admin").eq("user_id",session.user.id).maybeSingle()
+  SB.from("profiles").select("hh,admin,terms_at").eq("user_id",session.user.id).maybeSingle()
    .then(function(r){
      if(!r.data){
        lgErr(t("auNotLinked"));
@@ -3045,9 +3117,9 @@ function afterLogin(session){
        document.getElementById("lgBtn").textContent=t("auSignIn");
        SB.auth.signOut();SESSION=null;return;}
      PROFILE=r.data;
-     var tsv=termsSaved();if(tsv&&!PROFILE.terms_at)termsRecord(tsv);
      if(hh(PROFILE.hh))me=PROFILE.hh;
      sv();gate(false);startLive();render();
+     termsAfterLogin();instMaybe();
    });
 }
 
@@ -3056,6 +3128,7 @@ function afterLogin(session){
   if(!cfg.SUPABASE_URL||cfg.SUPABASE_URL.indexOf("YOUR-PROJECT")>=0||!window.supabase){
     gate(false);
     ban("loc","bSupaCfg");
+    if(!termsSaved())termsShow(false);else instMaybe();
     return;}
   try{ SB=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY); }
   catch(e){ gate(false);ban("loc","bSupaFail"); return; }
@@ -3079,9 +3152,12 @@ function afterLogin(session){
     document.getElementById(id).addEventListener("keydown",function(e){
       if(e.key==="Enter")doLogin();});});
 
-  gate(true);
+  // a device that is still signed in goes straight into the app; otherwise
+  // the login, with the cotas page on top only if this device never agreed
   SB.auth.getSession().then(function(r){
-    if(r.data&&r.data.session)afterLogin(r.data.session);
+    if(r.data&&r.data.session){afterLogin(r.data.session);return;}
+    gate(true);
+    if(!termsSaved())termsShow(false);
   });
 })();
 })();
