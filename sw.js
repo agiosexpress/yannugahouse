@@ -2,7 +2,7 @@
 // Lets the phone install the app. Pages and files come from the network first,
 // so a new version shows up as soon as it is published; the cache only covers
 // opening the app with no signal. Supabase and other sites are never touched.
-var CACHE = "yannuga-v1";
+var CACHE = "yannuga-v2";
 
 self.addEventListener("install", function (e) { self.skipWaiting(); });
 self.addEventListener("activate", function (e) {

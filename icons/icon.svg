@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Casa Yannuga app icon: sun, sea and a surfboard -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FF5A36"/>
+      <stop offset="1" stop-color="#FF9A5C"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0E7AC4"/>
+      <stop offset="1" stop-color="#0A4F82"/>
+    </linearGradient>
+    <clipPath id="tile"><rect width="512" height="512"/></clipPath>
+  </defs>
+  <g clip-path="url(#tile)">
+    <rect width="512" height="512" fill="url(#sky)"/>
+    <!-- sun -->
+    <circle cx="256" cy="262" r="118" fill="#FFE7B8"/>
+    <!-- back wave -->
+    <path d="M0 300 C 60 270 120 270 180 300 S 300 330 360 300 S 470 270 512 290 V512 H0 Z" fill="url(#sea)"/>
+    <path d="M0 300 C 60 270 120 270 180 300 S 300 330 360 300 S 470 270 512 290" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" opacity=".9"/>
+    <!-- surfboard, its tail hidden behind the front wave -->
+    <g transform="rotate(14 366 290)">
+      <path d="M366 128 C 398 186 404 316 392 450 L 340 450 C 328 316 334 186 366 128 Z" fill="#FFFFFF"/>
+      <path d="M366 138 C 372 216 372 346 366 448" fill="none" stroke="#FF5A36" stroke-width="10" stroke-linecap="round"/>
+    </g>
+    <!-- front wave -->
+    <path d="M0 382 C 70 352 130 352 196 382 S 320 412 386 382 S 480 356 512 370 V512 H0 Z" fill="#0A4F82"/>
+    <path d="M0 382 C 70 352 130 352 196 382 S 320 412 386 382 S 480 356 512 370" fill="none" stroke="#FFFFFF" stroke-width="12" stroke-linecap="round" opacity=".75"/>
+  </g>
+</svg>
