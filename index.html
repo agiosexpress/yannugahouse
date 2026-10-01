@@ -18,19 +18,21 @@
 <title>Casa Yannuga</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,700;0,9..144,800;1,9..144,700&family=Figtree:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap">
 
 <style>
 :root{
-  --bg:#FFFFFF; --bg2:#F7F7F5; --card:#FFFFFF;
-  --line:#E6E4DF; --line2:#F0EEE9;
-  --ink:#16202B; --ink2:#5A6976; --ink3:#8E9BA6;
-  --brand:#FF5A36; --brand-s:#FFEDE8;
-  --blue:#0E7AC4; --blue-s:#E4F1FB;
-  --good:#0E9E6E; --good-s:#DFF4EC;
-  --warn:#E07B00; --warn-s:#FFF0D9;
-  --alta:#FFD9CD; --media:#FFEEC9; --baixa:#EAF3F9;
-  --c1:#FF5A36; --c2:#0E7AC4; --c3:#0E9E6E; --c4:#7C4DFF; --c5:#D89400; --c6:#C4316B;
+  --bg:#F6EEDF; --bg2:#FBF5EA; --card:#FFFFFF;
+  --line:#E3D7C3; --line2:#EEE4D2;
+  --ink:#13303A; --ink2:#4A6470; --ink3:#8A9AA3;
+  --brand:#F26B4E; --brand-s:#FDE3DB;
+  --blue:#0E6F8E; --blue-s:#E6F3F7;
+  --good:#167A58; --good-s:#DDF3E8;
+  --warn:#B9780A; --warn-s:#FFF4D6;
+  --alta:#FBD9CE; --media:#FBE9CC; --baixa:#E4EEF3;
+  --c1:#F26B4E; --c2:#2E96B6; --c3:#167A58; --c4:#7C4DFF; --c5:#D89400; --c6:#C4316B;
+  --sun:#FFC857; --w1:#5FB8CF; --w2:#2E96B6; --w3:#0E6F8E;
+  --fd:"Fraunces",Georgia,serif;
   --ocup:#16202B;
   --sh:0 1px 3px rgba(20,30,40,.09),0 6px 18px rgba(20,30,40,.05);
   --mono:"DM Mono",ui-monospace,monospace;
@@ -38,11 +40,12 @@
   --tabh:62px;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0E1620; --bg2:#141F2C; --card:#18242F;
+  --bg:#0F1E26; --bg2:#15272F; --card:#18303A;
+  --sun:#E8B14A; --w1:#1F5F72; --w2:#174A5B; --w3:#0F3645;
   --line:#28364444; --line:#2A3946; --line2:#22303C;
   --ink:#EEF3F7; --ink2:#A4B5C2; --ink3:#72848F;
-  --brand:#FF7350; --brand-s:#3A1B12;
-  --blue:#4BA3E8; --blue-s:#132A3C;
+  --brand:#FF7A5C; --brand-s:#3A1B12;
+  --blue:#4FB4D6; --blue-s:#0E2E3A;
   --good:#2DBE8B; --good-s:#103328;
   --warn:#F0983A; --warn-s:#3A2810;
   --alta:#4E2418; --media:#453611; --baixa:#17293A;
@@ -51,11 +54,12 @@
   --sh:0 1px 3px rgba(0,0,0,.4),0 6px 18px rgba(0,0,0,.25);
 }}
 :root[data-theme="dark"]{
-  --bg:#0E1620; --bg2:#141F2C; --card:#18242F;
+  --bg:#0F1E26; --bg2:#15272F; --card:#18303A;
+  --sun:#E8B14A; --w1:#1F5F72; --w2:#174A5B; --w3:#0F3645;
   --line:#2A3946; --line2:#22303C;
   --ink:#EEF3F7; --ink2:#A4B5C2; --ink3:#72848F;
-  --brand:#FF7350; --brand-s:#3A1B12;
-  --blue:#4BA3E8; --blue-s:#132A3C;
+  --brand:#FF7A5C; --brand-s:#3A1B12;
+  --blue:#4FB4D6; --blue-s:#0E2E3A;
   --good:#2DBE8B; --good-s:#103328;
   --warn:#F0983A; --warn-s:#3A2810;
   --alta:#4E2418; --media:#453611; --baixa:#17293A;
@@ -73,14 +77,15 @@ button{font-family:inherit}
 
 /* ---------- chrome ---------- */
 .topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:var(--bg);
-  border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:10px;
-  padding:11px 16px}
-.brandmark{font-weight:800;font-size:17px;letter-spacing:-.02em;flex:1;display:flex;
+  border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:7px;
+  padding:11px 14px}
+.brandmark{font-family:var(--fd);font-weight:800;font-size:16px;letter-spacing:-.02em;flex:1;display:flex;white-space:nowrap;min-width:0;overflow:hidden;
   align-items:center;gap:8px}
 .brandmark i{width:9px;height:9px;border-radius:50%;background:var(--brand);display:block;flex:none}
 .who{display:flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--line);
   border-radius:99px;padding:4px 5px 4px 11px;cursor:pointer}
-.who span{font-size:12.5px;font-weight:700;color:var(--ink2);max-width:118px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lang.ico{padding:5px 7px;display:grid;place-items:center}
+.who span{font-size:12px;font-weight:700;color:var(--ink2);max-width:112px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .who i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
   color:#fff;font-size:10.5px;font-weight:800;font-style:normal;flex:none}
 
@@ -90,7 +95,7 @@ button{font-family:inherit}
 .view[hidden]{display:none}
 .pad{padding:0 16px}
 
-.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--bg);
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:2px solid var(--ink)!important;
   border-top:1px solid var(--line2);display:grid;grid-template-columns:repeat(4,1fr);
   padding-bottom:env(safe-area-inset-bottom,0px)}
 .tb{border:0;background:none;padding:9px 4px 8px;display:grid;justify-items:center;gap:3px;
@@ -118,26 +123,29 @@ button{font-family:inherit}
 /* greeting + search */
 .hello{padding:18px 16px 0}
 .hello small{display:block;font-size:13px;color:var(--ink2);font-weight:600}
-.hello h1{font-size:25px;font-weight:800;letter-spacing:-.03em;margin:2px 0 0}
+.hello{text-align:center}
+.hello small{color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.hello h1{font-family:var(--fd);font-style:italic;font-size:34px;font-weight:700;letter-spacing:-.02em;line-height:1.05;margin:6px 0 0;text-wrap:balance}
+.hello .intro{text-align:left;margin-left:auto;margin-right:auto}
 .intro{margin:10px 0 0;font-size:13.5px;line-height:1.5;color:var(--ink2);
   border-left:3px solid var(--brand);padding-left:11px;max-width:52ch}
-.search{margin:14px 16px 0;border:1.5px solid var(--line);border-radius:18px;
+.search{margin:14px 16px 0;border:2px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--blue);
   background:var(--card);box-shadow:var(--sh);overflow:hidden}
 .srow{display:grid;grid-template-columns:1fr 1fr}
 .sf{padding:12px 14px;cursor:pointer}
-.sf+.sf{border-left:1.5px solid var(--line)}
+.sf+.sf{border-left:2px solid var(--ink)}
 .sf small{display:block;font-size:10px;font-weight:800;letter-spacing:.08em;
   text-transform:uppercase;color:var(--ink3);margin-bottom:3px}
 .sf input{width:100%;border:0;background:none;color:var(--ink);font-family:var(--f);
   font-size:15px;font-weight:700;padding:0;letter-spacing:-.01em}
 .sf input::-webkit-calendar-picker-indicator{opacity:.45}
-.sbtn{width:100%;border:0;border-top:1.5px solid var(--line);background:var(--brand);color:#fff;
+.sbtn{width:100%;border:0;border-top:2px solid var(--ink);background:var(--brand);color:#fff;
   padding:14px;font-size:15px;font-weight:800;cursor:pointer;display:flex;
   align-items:center;justify-content:center;gap:8px}
 .sbtn:active{filter:brightness(.94)}
 .sbtn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round}
 
-.avail{margin:12px 16px 0;border-radius:16px;overflow:hidden;border:1.5px solid var(--line);
+.avail{margin:18px 16px 0;border-radius:22px;overflow:hidden;border:1.5px solid var(--line);
   background:var(--card);box-shadow:var(--sh)}
 .avail .ah{display:flex;gap:11px;align-items:flex-start;padding:14px}
 .avail .ah .ic{width:26px;height:26px;border-radius:50%;flex:none;display:grid;place-items:center;
@@ -165,7 +173,12 @@ button{font-family:inherit}
   box-shadow:var(--sh)}
 .stat small{display:block;font-size:11px;font-weight:700;color:var(--ink3);
   text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
-.stat b{display:block;font-size:26px;font-weight:800;letter-spacing:-.025em;line-height:1}
+.stat b{display:block;font-family:var(--fd);font-size:40px;font-weight:800;letter-spacing:-.03em;line-height:1}
+.row2 .stat:first-child{background:var(--blue);color:#fff;border-color:transparent;position:relative;overflow:hidden}
+.row2 .stat:first-child small,.row2 .stat:first-child em{color:#fff;opacity:.88;position:relative}
+.row2 .stat:first-child b{position:relative}
+.row2 .stat:first-child .bar{background:rgba(255,255,255,.22);position:relative}
+.row2 .stat:first-child .wv{position:absolute;left:0;bottom:-4px;width:100%;height:60px;opacity:.35;pointer-events:none}
 .stat em{font-style:normal;display:block;font-size:12px;color:var(--ink2);margin-top:5px}
 .bar{height:6px;border-radius:99px;background:var(--bg2);overflow:hidden;margin-top:9px}
 .bar i{display:block;height:100%;border-radius:99px}
@@ -187,7 +200,11 @@ button{font-family:inherit}
 .proj .sh2 .shh{display:block;font-size:10px;font-weight:800;letter-spacing:.07em;
   text-transform:uppercase;opacity:.55;margin-bottom:4px}
 .proj .sh2 b{font-family:var(--mono);flex:none}
-.agenda{margin:0 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;
+.agenda{margin:0 16px;background:none;border:0;border-radius:18px;display:flex;gap:12px;align-items:center}
+.agenda .brd{flex:none;width:34px;height:34px}
+.agenda .ab{display:none}
+.agenda .ag{flex:1;min-width:0}
+.agenda-old{margin:0 16px;background:var(--card);border:1px solid var(--line);border-radius:14px;
   padding:12px 14px;box-shadow:var(--sh)}
 .agenda .at{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .agenda .at b{font-size:13.5px;font-weight:800}
@@ -196,14 +213,14 @@ button{font-family:inherit}
 .agenda .ab i{display:block;height:100%;border-radius:99px}
 .agenda .an{font-size:11.5px;color:var(--ink3);margin-top:6px;line-height:1.4}
 .sec{padding:6px 16px 0;display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.sec h2{font-size:17px;font-weight:800;letter-spacing:-.02em;margin:14px 0 2px}
+.sec h2{font-family:var(--fd);font-size:22px;font-weight:700;letter-spacing:-.02em;margin:14px 0 2px}
 .sec button{border:0;background:none;color:var(--brand);font-size:13px;font-weight:700;cursor:pointer;padding:0}
 .subt{padding:0 16px;color:var(--ink2);font-size:13px;margin:0 0 10px}
 
 .hrow{display:flex;gap:11px;overflow-x:auto;padding:12px 16px 4px;scrollbar-width:none}
 .hrow::-webkit-scrollbar{display:none}
 .tile{flex:0 0 190px;cursor:pointer;text-align:left;border:0;background:none;padding:0}
-.tile img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:14px;display:block}
+.tile img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:20px;display:block}
 .tile b{display:block;font-size:14px;font-weight:700;margin-top:8px;letter-spacing:-.01em}
 .tile small{display:block;font-size:12.5px;color:var(--ink2)}
 .tile .px{font-family:var(--mono);font-size:12px;color:var(--ink);margin-top:2px;display:block}
@@ -324,7 +341,7 @@ button{font-family:inherit}
 .sheet .grab{width:38px;height:4px;border-radius:99px;background:var(--line);margin:9px auto 4px}
 .sheet .sh-body{overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;padding:6px 16px 16px}
 html.lock,html.lock body{overflow:hidden}
-.sheet h3{font-size:19px;font-weight:800;letter-spacing:-.02em;margin:6px 0 14px}
+.sheet h3{font-family:var(--fd);font-size:24px;font-weight:700;letter-spacing:-.02em;margin:6px 0 14px}
 .dates{display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--line);border-radius:14px;
   overflow:hidden;margin-bottom:12px}
 .dates div{padding:11px 13px}
@@ -463,7 +480,7 @@ table.cmp tr:last-child td{border-bottom:0}
 .gfoot{color:var(--ink3);font-size:12.5px;margin:18px 0 0;line-height:1.45;text-align:center}
 html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:none!important}
 .lang{background:var(--bg2);border:1px solid var(--line);color:var(--ink2);border-radius:99px;
-  padding:5px 11px;font-size:11.5px;font-weight:800;cursor:pointer;letter-spacing:.04em;
+  padding:5px 8px;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.04em;
   font-family:var(--f);flex:none}
 .lang:active{background:var(--line2)}
 .bedpick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
@@ -655,6 +672,15 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 .inst .iy{background:var(--brand);color:#fff}
 .inst .in{background:var(--bg2);color:var(--ink2)}
 .terms[hidden]{display:none}
+.sky{position:relative;height:190px;overflow:hidden;margin-top:-1px}
+.sky svg{position:absolute;left:0;top:0;width:100%;height:100%}
+.now{margin:14px 16px 0;display:flex;align-items:center;gap:14px;padding:4px 0}
+.now .av{display:flex;flex:none}
+.now .av i{width:34px;height:34px;border-radius:50%;border:2px solid var(--bg);display:grid;place-items:center;
+  color:#fff;font-size:11px;font-weight:800;font-style:normal;margin-left:-10px}
+.now .av i:first-child{margin-left:0}
+.now .tx b{display:block;font-size:14.5px;font-weight:800;color:var(--ink)}
+.now .tx small{display:block;font-size:12px;color:var(--ink2);margin-top:2px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
@@ -1224,7 +1250,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 <div class="topbar">
   <div class="brandmark"><i></i>Casa Yannuga</div>
   <button class="lang" id="langBtn" type="button" title="Português / English">EN</button>
-  <button class="lang" id="termsBtn" type="button">Cotas</button>
+  <button class="lang ico" id="termsBtn" type="button" aria-label="Cotas" title="Cotas"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h6a3 3 0 0 1 3 3v12a2 2 0 0 0-2-2H4z"/><path d="M20 5h-6a3 3 0 0 0-3 3v12a2 2 0 0 1 2-2h7z"/></svg></button>
   <button class="who" id="whoBtn"><span id="whoName">—</span><i id="whoAv"></i></button>
 </div>
 
@@ -1232,24 +1258,43 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 
   <!-- ============ HOME ============ -->
   <section class="view" id="v-home">
+    <div class="sky" aria-hidden="true">
+      <svg viewBox="0 0 390 190" preserveAspectRatio="none">
+        <circle cx="318" cy="64" r="34" fill="var(--sun)"/>
+        <g stroke="var(--sun)" stroke-width="3" stroke-linecap="round">
+          <line x1="318" y1="14" x2="318" y2="4"/><line x1="318" y1="114" x2="318" y2="124"/>
+          <line x1="268" y1="64" x2="258" y2="64"/><line x1="368" y1="64" x2="378" y2="64"/>
+          <line x1="283" y1="29" x2="276" y2="22"/><line x1="353" y1="99" x2="360" y2="106"/>
+          <line x1="353" y1="29" x2="360" y2="22"/><line x1="283" y1="99" x2="276" y2="106"/>
+        </g>
+        <g fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M156 78 c6 -8 14 -8 20 0 c6 -8 14 -8 20 0"/>
+          <path d="M206 60 c5 -7 12 -7 17 0 c5 -7 12 -7 17 0"/>
+        </g>
+        <path d="M0 118 C60 96 110 96 170 118 C230 140 280 140 340 118 C360 111 376 111 390 116 L390 190 L0 190 Z" fill="var(--w1)"/>
+        <path d="M0 142 C50 124 100 124 160 142 C220 160 270 160 330 142 C352 135 372 135 390 140 L390 190 L0 190 Z" fill="var(--w2)"/>
+        <path d="M0 166 C56 150 104 150 164 166 C224 182 272 182 332 166 C354 160 372 160 390 164 L390 190 L0 190 Z" fill="var(--w3)"/>
+        <g fill="none" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" opacity=".85">
+          <path d="M46 132 c10 -6 20 -6 30 0"/><path d="M212 156 c10 -6 20 -6 30 0"/><path d="M118 178 c10 -6 20 -6 30 0"/>
+        </g>
+        <g transform="translate(54 74) rotate(-28)" fill="var(--brand)" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round">
+          <path d="M0 -30 C14 -30 22 -6 22 14 C22 34 12 60 0 60 C-12 60 -22 34 -22 14 C-22 -6 -14 -30 0 -30 Z"/>
+          <line x1="0" y1="-20" x2="0" y2="50" stroke="#FFF3E6" stroke-width="2.4"/>
+        </g>
+      </svg>
+    </div>
     <div class="hello">
       <small id="helloSub">Casa Yannuga · Rye</small>
       <h1 id="helloName">Hello</h1>
-      <p class="intro" data-l="en">This app looks after the beach house we rent together — for fun,
-        for the lifestyle, and to keep things simple. Instead of leaning on Airbnb and paying a
-        fortune for three summer nights, a small group shares one house all year and each pays
-        little. Here you book your dates, track your credits and see who is at the house.</p>
-      <p class="intro" data-l="pt">Este app cuida da casa de praia que alugamos juntos — por lazer,
-        qualidade de vida e simplicidade. Em vez de depender do Airbnb e pagar uma fortuna
-        por três noites de verão, um grupo pequeno divide uma casa o ano inteiro e cada um paga
-        pouco. Aqui você reserva suas datas, acompanha seus créditos e vê quem está na casa.</p>
+      <p class="intro" data-l="en">Your house in Rye, all year round. Book a bed, keep an eye on your credits and see who is there.</p>
+      <p class="intro" data-l="pt">Sua casa em Rye, o ano inteiro. Reserve uma cama, acompanhe seus créditos e veja quem está lá.</p>
     </div>
 
     <div class="search">
       <div class="srow">
-        <label class="sf" for="ciDate"><small>Check-in</small>
+        <label class="sf" for="ciDate"><small data-l="en">Check-in</small><small data-l="pt">Chegada</small>
           <input type="date" id="ciDate" min="2026-10-02" max="2027-10-01"></label>
-        <label class="sf" for="coDate"><small>Check-out</small>
+        <label class="sf" for="coDate"><small data-l="en">Check-out</small><small data-l="pt">Saída</small>
           <input type="date" id="coDate" min="2026-10-03" max="2027-10-02"></label>
       </div>
       <button class="sbtn" id="checkBtn">
@@ -1262,6 +1307,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 
     <div class="row2">
       <div class="stat">
+        <svg class="wv" viewBox="0 0 160 60" preserveAspectRatio="none" aria-hidden="true"><path d="M0 40 C20 28 40 28 60 40 C80 52 100 52 120 40 C140 28 150 28 160 34 L160 60 L0 60 Z" fill="#BFE4EE"/></svg>
         <small data-l="en">Your credits</small><small data-l="pt">Seus créditos</small>
         <b id="stCred">—</b>
         <div class="bar"><i id="stBar"></i></div>
@@ -1274,7 +1320,13 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       </div>
     </div>
 
-    <div class="agenda" id="agenda"></div>
+    <div class="agenda">
+      <svg class="brd" viewBox="0 0 34 34" fill="none" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M8 26 C8 14 12 7 17 4 C22 7 26 14 26 26 Z" fill="var(--sun)"/><line x1="17" y1="8" x2="17" y2="26"/><path d="M4 30 C9 27 13 27 17 30 C21 33 25 33 30 30"/>
+      </svg>
+      <div class="ag" id="agenda"></div>
+    </div>
+    <div class="now" id="nowBox"></div>
 
     <div class="sec"><h2 data-l="en">Your bookings</h2><h2 data-l="pt">Suas reservas</h2><button id="goRes">See all</button></div>
     <div id="myTrips"></div>
@@ -1395,7 +1447,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>
     <span data-l="en">Calendar</span><span data-l="pt">Calendário</span></button>
   <button class="tb" role="tab" id="t-res" aria-selected="false" aria-controls="v-res">
-    <svg viewBox="0 0 24 24"><path d="M6 4h12a1 1 0 0 1 1 1v15l-7-4-7 4V5a1 1 0 0 1 1-1Z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M12 3 C16 6 18 11 18 17 C18 20 15 21 12 21 C9 21 6 20 6 17 C6 11 8 6 12 3 Z"/><path d="M12 7v12"/></svg>
     <span data-l="en">Bookings</span><span data-l="pt">Reservas</span></button>
   <button class="tb" role="tab" id="t-conta" aria-selected="false" aria-controls="v-conta">
     <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5S20 17 20 21"/></svg>
@@ -1576,9 +1628,14 @@ pt:{
  aSealCost:function(c){return "Fechar a casa: "+c+" créditos · ";},
  aOneRoom:function(c,l){return "Um quarto: "+c+" créditos · você tem "+l;},
  aBookIt:"Fazer a reserva",
- hHello:function(n){return "Olá, "+n;},
+ hHello:function(n){return "Bora pra praia, "+n+"?";},
  hSub:function(n){return nu(n)+(n===1?" cota":" cotas")+" · "+m0(n*COTA)+" por mês · "+(n*PER)+" créditos";},
- hCredSub:function(cap,n){return "de "+cap+" · "+n+" noites de casa fechada na alta";},
+ hCredSub:function(cap,n){return "de "+cap+" · sobram "+n+" por mês";},
+ hNowNone:function(f){return "Ninguém na casa hoje · "+f+(f===1?" cama livre":" camas livres");},
+ hNowWho:function(a){return a.length===1?a[0]+" está lá":a.slice(0,-1).join(", ")+" e "+a[a.length-1]+" estão lá";},
+ hNowSub:function(u,f,c){return "Até "+u+" · "+(f?f+(f===1?" cama livre":" camas livres")+", entrar custa a partir de "+c+" cr":"todas as camas ocupadas");},
+ hNowSealed:function(n){return n+" está com a casa inteira";},
+ hNowEmpty:"Dá para chegar hoje mesmo.",
  hAllPaid:"em dia",
  hDue:function(m,y){return "vence 26 "+m+" "+y;},
  hPaidAll:"12 de 12 pagos",
@@ -1664,7 +1721,7 @@ pt:{
  auNotLinked:"Sua conta entrou, mas ainda não está ligada a um casal. Avisa o Pedro.",
  auSignIn:"Entrar", auFill:"Preencha e-mail e senha.", auSigningIn:"Entrando…",
  auBadCreds:"E-mail ou senha não conferem.", auFail:"Não consegui entrar.",
- uCheckAvail:"Checar disponibilidade", uSeeAll:"Ver todas", uCalendar:"Calendário",
+ uCheckAvail:"Ver se tem cama", uSeeAll:"Ver todas", uCalendar:"Calendário",
  uBookDate:"Reservar uma data", uWeek:"Semana", uMonth:"Mês", uAdd:"Lançar",
  uPrev:"Anterior", uNext:"Próximo", uView:"Visão", uPickDate:"Escolha uma data",
  phDesc:"Descrição", phAmt:"Valor $", auEmailPh:"voce@email.com"
@@ -1759,9 +1816,14 @@ en:{
  aSealCost:function(c){return "Seal the house: "+c+" credits · ";},
  aOneRoom:function(c,l){return "One room: "+c+" credits · you have "+l;},
  aBookIt:"Book it",
- hHello:function(n){return "Hello, "+n;},
+ hHello:function(n){return "Beach time, "+n+"?";},
  hSub:function(n){return nu(n)+(n===1?" cota":" cotas")+" · "+m0(n*COTA)+" a month · "+(n*PER)+" credits";},
- hCredSub:function(cap,n){return "of "+cap+" · "+n+" sealed-house nights in peak";},
+ hCredSub:function(cap,n){return "of "+cap+" · "+n+" a month to go";},
+ hNowNone:function(f){return "Nobody at the house today · "+f+(f===1?" bed free":" beds free");},
+ hNowWho:function(a){return a.length===1?a[0]+" is there":a.slice(0,-1).join(", ")+" and "+a[a.length-1]+" are there";},
+ hNowSub:function(u,f,c){return "Until "+u+" · "+(f?f+(f===1?" bed free":" beds free")+", joining costs from "+c+" cr":"every bed taken");},
+ hNowSealed:function(n){return n+" has the whole house";},
+ hNowEmpty:"You could turn up today.",
  hAllPaid:"all paid",
  hDue:function(m,y){return "due 26 "+m+" "+y;},
  hPaidAll:"12 of 12 paid",
@@ -1846,7 +1908,7 @@ en:{
  auNotLinked:"You are signed in, but your account is not linked to a couple yet. Let Pedro know.",
  auSignIn:"Sign in", auFill:"Enter your email and password.", auSigningIn:"Signing in…",
  auBadCreds:"Email or password does not match.", auFail:"Could not sign in.",
- uCheckAvail:"Check availability", uSeeAll:"See all", uCalendar:"Calendar",
+ uCheckAvail:"See if there's a bed", uSeeAll:"See all", uCalendar:"Calendar",
  uBookDate:"Book a date", uWeek:"Week", uMonth:"Month", uAdd:"Add",
  uPrev:"Previous", uNext:"Next", uView:"View", uPickDate:"Pick a date",
  phDesc:"Description", phAmt:"Amount $", auEmailPh:"you@email.com"
@@ -2132,8 +2194,9 @@ function home(){
   document.getElementById("stCred").textContent=left;
   document.getElementById("stBar").style.width=Math.max(0,Math.min(100,pct))+"%";
   document.getElementById("stBar").style.background=left<0?"var(--brand)":h.color;
+  var mLeft=Math.max(1,Math.ceil((pd(OUT)-pd(today()))/86400000/30.4));
   document.getElementById("stCredSub").textContent=
-    t("hCredSub",cap,Math.floor(Math.max(0,left)/12));
+    t("hCredSub",cap,Math.floor(Math.max(0,left)/mLeft));
   var nextM=null;
   for(var i=0;i<PAYM.length;i++){if(!(st.paid[h.id]&&st.paid[h.id][PAYM[i]])){nextM=PAYM[i];break;}}
   document.getElementById("stPay").textContent=nextM?m0(h.fixed):t("hAllPaid");
@@ -2150,6 +2213,25 @@ function home(){
   ai.style.width="100%";ai.style.background=h.color;
   ab.appendChild(ai);ag.appendChild(ab);
   ag.appendChild(el("div","an",t("hWinNote",AHEAD)));
+
+  var nw=document.getElementById("nowBox");
+  if(nw){nw.textContent="";
+    var td=today(),here=on(td),tkn=taken(td),freeN=BEDS.length-Object.keys(tkn).length;
+    var sealed=null,ids=[],until=td;
+    here.forEach(function(b){if(b.kind==="whole")sealed=b;
+      if(ids.indexOf(b.hh)<0)ids.push(b.hh);if(b.out>until)until=b.out;});
+    var av=el("div","av"),tx=el("div","tx");
+    if(!here.length){
+      var i0=el("i");i0.style.background="var(--line)";av.appendChild(i0);
+      tx.appendChild(el("b",null,t("hNowNone",freeN)));
+      tx.appendChild(el("small",null,t("hNowEmpty")));
+    }else{
+      ids.slice(0,3).forEach(function(id){var x=hh(id),i1=el("i",null,x?ini(x.name):"?");
+        i1.style.background=x?x.color:"var(--ink3)";av.appendChild(i1);});
+      var minC=0;BEDS.forEach(function(x){if(!tkn[x.id]){var c0=cost(td,iso(ad(pd(td),1)),[x.id]);if(!minC||c0<minC)minC=c0;}});
+      tx.appendChild(el("b",null,sealed?t("hNowSealed",bName(sealed)):t("hNowWho",ids.map(function(id){var x=hh(id);return x?x.name:"?";}))));
+      tx.appendChild(el("small",null,t("hNowSub",ld(until),sealed?0:freeN,minC)));}
+    nw.appendChild(av);nw.appendChild(tx);}
 
   var tw=document.getElementById("myTrips");tw.textContent="";
   var mine=st.bookings.map(nb).filter(function(b){return b.hh===me;})
