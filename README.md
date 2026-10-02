@@ -60,8 +60,8 @@ Send that link to everyone. On a phone, **Share → Add to Home Screen** install
 **One cota = $190/month = 100 credits/year** (`COTA`, `PER`). Same price for everyone.
 A couple is two cotas: $380 and 200 credits. Eleven cotas bring in $2,090/month.
 
-**The aporte** is the gap between the cotas and the $2,800 the house costs: **$760/month**,
-paid by Pedro & Júlia and Niklas & Carol, $380 each. It lives in the `ap` field of each
+**The aporte** is the gap between the cotas and the $2,500 the house costs (rent and bills,
+flat — `RENT`): **$410/month**, paid by Pedro & Júlia and Niklas & Carol, $205 each. It lives in the `ap` field of each
 household in `DEF`, has its own row in the payments grid, and every dollar the house earns
 goes back to the payers before anything reaches the house fund.
 
@@ -91,11 +91,18 @@ That money goes to the aporte.
 - **21-day booking window** (`AHEAD`). Major holidays are exempt — those are agreed as a group.
 - **Two consecutive weekends in the same double room, maximum** (`MAXWK`, `DOUBLES`).
 - One bed, one booking, one night: `taken()` and `clash()` enforce it.
-- Cancelling refunds the credits immediately and writes the cancellation to the open history.
+- Cancelling refunds the credits immediately and writes the cancellation to the open history —
+  unless it is less than 24 hours before arrival (2pm on the first day, `CI_HOUR`, Melbourne time).
+  Then the bed is freed but the credits are lost: the log entry is marked `late` and `used()`
+  keeps counting it. Whole-house nights and guests are not affected.
+- Extra house costs (gardener, repairs, damage) go in **House expenses** and are split equally
+  by cota; the app shows each household's share. They no longer come out of the fund or the aporte.
 - Everything is logged to `log` and shown to everyone: who booked, which bed, which nights,
   when the booking was made, what it cost, plus cancellations, credit purchases and
   whole-house nights.
 - Lease 2 Oct 2026 – 1 Oct 2027 (`IN`/`OUT`), in Pedro & Júlia's and Niklas & Carol's names.
+  Joining is a 12-month commitment to the end of the lease; the group reviews the terms at
+  6 months, in April 2027.
 
 To change any number, edit the constants at the start of the `<script>` in `index.html`.
 Names and cota counts live in the `DEF` array just below them.
@@ -123,7 +130,7 @@ top bar does the same.
 
 The page is one block of bilingual HTML inside `index.html` (`<div class="terms tpage">`);
 the standalone copy published as an artifact is the same block with its own frame. When a
-number changes, change it in both. `TERMS_V` at the top of the terms code is the version —
+number changes, change it in both. `TERMS_V` at the top of the terms code is the version (a date, `YYYY-MM-DD`) —
 bump it and everyone is asked to agree again.
 
 ## Language
