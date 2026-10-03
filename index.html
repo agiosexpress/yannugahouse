@@ -691,12 +691,23 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <h1 data-l="en">Sign in</h1><h1 data-l="pt">Entrar</h1>
     <p class="gsub" data-l="en">The beach house in Rye, shared between friends.</p>
     <p class="gsub" data-l="pt">A casa de praia em Rye, dividida entre amigos.</p>
+    <div id="lgBox">
     <label class="glab" for="lgEmail" data-l="en">Email</label><label class="glab" for="lgEmail" data-l="pt">E-mail</label>
     <input id="lgEmail" type="email" autocomplete="username" inputmode="email" placeholder="you@email.com">
     <label class="glab" for="lgPass" data-l="en">Password</label><label class="glab" for="lgPass" data-l="pt">Senha</label>
     <input id="lgPass" type="password" autocomplete="current-password" placeholder="••••••••">
     <div class="gerr" id="lgErr" hidden></div>
     <button class="gbtn" id="lgBtn">Sign in</button>
+    <button type="button" class="glink" id="lgForgot"><span data-l="pt">Esqueci a senha</span><span data-l="en">Forgot password</span></button>
+    </div>
+    <div id="rcBox" hidden>
+    <label class="glab" for="rcPass" data-l="en">New password</label><label class="glab" for="rcPass" data-l="pt">Nova senha</label>
+    <input id="rcPass" type="password" autocomplete="new-password" placeholder="••••••••">
+    <label class="glab" for="rcPass2" data-l="en">Repeat it</label><label class="glab" for="rcPass2" data-l="pt">Repita</label>
+    <input id="rcPass2" type="password" autocomplete="new-password" placeholder="••••••••">
+    <div class="gerr" id="rcErr" hidden></div>
+    <button class="gbtn" id="rcBtn">Save</button>
+    </div>
     <button type="button" class="glink" id="lgTerms"><span data-l="pt">Rever as cotas e as regras</span><span data-l="en">Reread the cotas and the rules</span></button>
     <p class="gfoot" data-l="en">No account yet? Ask Pedro — he sets them up.</p>
     <p class="gfoot" data-l="pt">Sem conta? Fala com o Pedro — as contas são criadas por ele.</p>
@@ -1732,6 +1743,10 @@ pt:{
  auNotLinked:"Sua conta entrou, mas ainda não está ligada a um casal. Avisa o Pedro.",
  auSignIn:"Entrar", auFill:"Preencha e-mail e senha.", auSigningIn:"Entrando…",
  auBadCreds:"E-mail ou senha não conferem.", auFail:"Não consegui entrar.",
+ auFgFill:"Escreva seu e-mail acima e toque de novo.", auFgSending:"Enviando…",
+ auFgSent:"Se esse e-mail tem conta, chegou um link para criar uma senha nova. Abra o link mais recente.",
+ auRcBad:"Esse link expirou ou já foi usado. Peça um novo em “Esqueci a senha” e abra só o mais recente.",
+ auRcSave:"Salvar senha", auRcShort:"A senha precisa de pelo menos 6 caracteres.", auRcDiff:"As duas senhas não conferem.",
  uCheckAvail:"Ver se tem cama", uSeeAll:"Ver todas", uCalendar:"Calendário",
  uBookDate:"Reservar uma data", uWeek:"Semana", uMonth:"Mês", uAdd:"Lançar",
  uPrev:"Anterior", uNext:"Próximo", uView:"Visão", uPickDate:"Escolha uma data",
@@ -1923,6 +1938,10 @@ en:{
  auNotLinked:"You are signed in, but your account is not linked to a couple yet. Let Pedro know.",
  auSignIn:"Sign in", auFill:"Enter your email and password.", auSigningIn:"Signing in…",
  auBadCreds:"Email or password does not match.", auFail:"Could not sign in.",
+ auFgFill:"Type your email above, then tap again.", auFgSending:"Sending…",
+ auFgSent:"If that email has an account, a link to set a new password is on its way. Open the latest one.",
+ auRcBad:"That link has expired or was already used. Ask for a new one under “Forgot password” and open only the latest.",
+ auRcSave:"Save password", auRcShort:"The password needs at least 6 characters.", auRcDiff:"The two passwords do not match.",
  uCheckAvail:"See if there's a bed", uSeeAll:"See all", uCalendar:"Calendar",
  uBookDate:"Book a date", uWeek:"Week", uMonth:"Month", uAdd:"Add",
  uPrev:"Previous", uNext:"Next", uView:"View", uPickDate:"Pick a date",
@@ -3236,8 +3255,16 @@ function afterLogin(session){
     ban("loc","bSupaCfg");
     if(!termsSaved())termsShow(false);else instMaybe();
     return;}
+  // a password-reset link lands here: either #access_token=…&type=recovery
+  // (the default email), ?token_hash=…&type=recovery (the scanner-proof
+  // template), or #error_code=otp_expired when the link was already spent
+  var qs=new URLSearchParams(location.search),hs=new URLSearchParams(location.hash.slice(1));
+  var rcHash=hs.get("type")==="recovery"&&hs.get("access_token");
+  var rcTok=qs.get("type")==="recovery"&&qs.get("token_hash");
+  var rcBad=hs.get("error_code")||hs.get("error")||qs.get("error_code");
   try{ SB=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY); }
   catch(e){ gate(false);ban("loc","bSupaFail"); return; }
+  function cleanUrl(){try{history.replaceState(null,"",location.pathname);}catch(e){}}
 
   var btn=document.getElementById("lgBtn");
   function doLogin(){
@@ -3258,9 +3285,52 @@ function afterLogin(session){
     document.getElementById(id).addEventListener("keydown",function(e){
       if(e.key==="Enter")doLogin();});});
 
+  document.getElementById("lgForgot").addEventListener("click",function(){
+    var em=document.getElementById("lgEmail").value.trim(),f=this;
+    if(!em){lgErr(t("auFgFill"));document.getElementById("lgEmail").focus();return;}
+    f.disabled=true;lgErr(t("auFgSending"));
+    SB.auth.resetPasswordForEmail(em,{redirectTo:location.origin+location.pathname}).then(function(r){
+      f.disabled=false;
+      lgErr(r.error?(r.error.message||t("auFail")):t("auFgSent"));
+    });
+  });
+
+  var rcBtn=document.getElementById("rcBtn");
+  function rcErr(m){var e=document.getElementById("rcErr");e.hidden=!m;e.textContent=m||"";}
+  function recover(){
+    document.getElementById("lgBox").hidden=true;
+    document.getElementById("rcBox").hidden=false;
+    rcBtn.textContent=t("auRcSave");gate(true);
+    document.getElementById("rcPass").focus();
+  }
+  rcBtn.addEventListener("click",function(){
+    var a=document.getElementById("rcPass").value,b=document.getElementById("rcPass2").value;
+    if(a.length<6){rcErr(t("auRcShort"));return;}
+    if(a!==b){rcErr(t("auRcDiff"));return;}
+    rcErr("");rcBtn.disabled=true;
+    SB.auth.updateUser({password:a}).then(function(r){
+      rcBtn.disabled=false;
+      if(r.error){rcErr(r.error.message||t("auFail"));return;}
+      document.getElementById("rcBox").hidden=true;
+      document.getElementById("lgBox").hidden=false;
+      SB.auth.getSession().then(function(x){if(x.data&&x.data.session)afterLogin(x.data.session);});
+    });
+  });
+
+  if(rcTok){
+    cleanUrl();
+    SB.auth.verifyOtp({token_hash:rcTok,type:"recovery"}).then(function(r){
+      if(r.error){gate(true);lgErr(t("auRcBad"));return;}
+      recover();
+    });
+    return;}
+  if(rcBad){cleanUrl();gate(true);lgErr(t("auRcBad"));return;}
+
   // a device that is still signed in goes straight into the app; otherwise
   // the login, with the cotas page on top only if this device never agreed
   SB.auth.getSession().then(function(r){
+    if(rcHash&&r.data&&r.data.session){cleanUrl();recover();return;}
+    if(rcHash){cleanUrl();gate(true);lgErr(t("auRcBad"));return;}
     if(r.data&&r.data.session){afterLogin(r.data.session);return;}
     gate(true);
     if(!termsSaved())termsShow(false);
