@@ -3180,13 +3180,7 @@ function score(){
     bar.appendChild(fi);row.appendChild(bar);
     row.appendChild(el("div","v",String(left)));
     box.appendChild(row);});
-  var tot=el("div","sc");tot.appendChild(el("i"));
-  var tn=el("div","n");
-  tn.appendChild(el("b",null,t("scHouse")));
-  tn.appendChild(el("small",null,t("scHouseSub",apBack()?mm(apBack()):mm(0))));
-  tot.appendChild(tn);
-  tot.appendChild(el("div","v",mm(Math.max(0,apIn()-apBack()))));
-  box.appendChild(tot);}
+}
 
 function logView(){
   var box=document.getElementById("logBox");if(!box)return;box.textContent="";
