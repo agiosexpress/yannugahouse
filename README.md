@@ -97,6 +97,15 @@ That money goes to the aporte.
 
 **Extra credits** are $20 each (`EXTRA`), no limit, any time. Also to the aporte.
 
+## The album
+
+Home has the house photos (tap to see them full size, swipe or use the arrows) and an
+**Album** people fill with their own photos. Photos are shrunk on the phone to 1600 px JPEG
+before upload, stored in the private Supabase Storage bucket `album`, listed in the `album`
+table, and shown through signed links that last 12 hours, so only signed-in members see them.
+Whoever added a photo, or an admin, can delete it. The bucket, table and policies are at the
+end of `supabase/schema.sql`.
+
 ## The tabs
 
 **Home** · **Calendar** (every booking, and the booking sheet) · **Bookings** (every booking,

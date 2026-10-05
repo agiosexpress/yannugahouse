@@ -169,3 +169,27 @@ update bookings set hh = case hh when 'pj' then 'pe' when 'nc' then 'ni'
   when 'dj' then 'du' when 'bc' then 'br' else hh end where hh in ('pj','nc','dj','bc');
 update buys set hh = case hh when 'pj' then 'pe' when 'nc' then 'ni'
   when 'dj' then 'du' when 'bc' then 'br' else hh end where hh in ('pj','nc','dj','bc');
+
+-- ─────────────── the album: photos people add, private to signed-in members ───────────────
+insert into storage.buckets (id, name, public) values ('album', 'album', false)
+  on conflict (id) do nothing;
+create table if not exists album (
+  id       text primary key,
+  path     text not null,                 -- file path inside the 'album' bucket
+  hh       text,                          -- who added it
+  caption  text default '',
+  at       timestamptz default now()
+);
+alter table album enable row level security;
+drop policy if exists p_album on album;
+create policy p_album on album for all
+  using (auth.uid() is not null) with check (auth.uid() is not null);
+do $$ begin
+  begin alter publication supabase_realtime add table album; exception when duplicate_object then null; end;
+end $$;
+drop policy if exists "album read"   on storage.objects;
+drop policy if exists "album add"    on storage.objects;
+drop policy if exists "album remove" on storage.objects;
+create policy "album read"   on storage.objects for select to authenticated using (bucket_id = 'album');
+create policy "album add"    on storage.objects for insert to authenticated with check (bucket_id = 'album');
+create policy "album remove" on storage.objects for delete to authenticated using (bucket_id = 'album');

@@ -211,6 +211,24 @@ button{font-family:inherit}
 .segs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .segs button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
 .fpane[hidden]{display:none}
+.tile img{cursor:zoom-in}
+.alb{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.alb button{border:0;padding:0;background:var(--bg2);border-radius:12px;overflow:hidden;aspect-ratio:1/1;cursor:zoom-in}
+.alb img{width:100%;height:100%;object-fit:cover;display:block}
+.alb .add{display:grid;place-items:center;border:1.5px dashed var(--line);background:var(--card);color:var(--ink2);
+  font-weight:800;font-size:13px;cursor:pointer;text-align:center;padding:6px}
+.alb .add b{display:block;font-size:26px;line-height:1;color:var(--brand)}
+.lb{position:fixed;inset:0;z-index:400;background:rgba(6,12,16,.95);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:calc(56px + env(safe-area-inset-top,0px)) 12px calc(18px + env(safe-area-inset-bottom,0px));touch-action:pan-y}
+.lb[hidden]{display:none}
+.lb img{max-width:100%;max-height:calc(100% - 64px);object-fit:contain;border-radius:8px;user-select:none;-webkit-user-drag:none}
+.lb .lbx,.lb .lbp,.lb .lbn{position:absolute;border:0;background:rgba(255,255,255,.14);color:#fff;border-radius:50%;
+  width:44px;height:44px;font-size:22px;font-weight:700;cursor:pointer;display:grid;place-items:center}
+.lb .lbx{top:calc(10px + env(safe-area-inset-top,0px));right:12px;font-size:18px}
+.lb .lbp{left:10px;top:50%;transform:translateY(-50%)} .lb .lbn{right:10px;top:50%;transform:translateY(-50%)}
+.lb .lbc{color:#E8EEF1;font-size:13.5px;margin-top:12px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center;text-align:center}
+.lb .lbc .ghost{color:#fff;border-color:rgba(255,255,255,.35)}
+.lb button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .mnav{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 16px 10px}
 .mnav b{font-family:var(--fd);font-size:19px;font-weight:700;text-transform:capitalize}
 .mnav button{width:38px;height:38px;border-radius:50%;border:1.5px solid var(--line);background:var(--card);
@@ -968,7 +986,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     </div>
     <div class="note">
       <b>Crédito não compra a casa fechada.</b> O avulso serve para esticar a sua estadia numa cama.
-      Querer a casa inteira é outra coisa, e tem preço próprio — seção 5.
+      Querer a casa inteira só para si é a ficha — seção 5.
     </div>
     <div class="note">
       <b>Para onde vai esse dinheiro:</b> tudo que for pago em crédito avulso vai para quem está
@@ -993,7 +1011,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     </div>
     <div class="note">
       <b>Credits do not buy the sealed house.</b> Extras are for stretching your stay in a bed.
-      Wanting the whole house is a different thing, with its own price — section 5.
+      Wanting the whole house to yourself is the ficha — section 5.
     </div>
     <div class="note">
       <b>Where that money goes:</b> everything paid for extra credits goes to whoever is carrying
@@ -1004,27 +1022,11 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
   <!-- ============ 5 ============ -->
   <section data-l="pt">
     <h2>5. A casa inteira</h2>
-    <p class="lead">As cotas são para <b>dividir</b> a casa. Quem quiser a casa fechada, só para si, tem dois caminhos: <b>a ficha</b>, grátis, uma vez no ano (abaixo), ou <b>a diária</b> — a mesma para quem é do grupo e para quem é de fora, sem gastar crédito.</p>
-    <div class="card tw">
-      <table>
-        <thead><tr><th>Casa fechada, as seis camas</th><th>Por noite</th><th>Fim de semana</th><th>No Airbnb</th></tr></thead>
-        <tbody>
-          <tr><td><span class="chip b">Baixa</span> seg a qui</td><td>$200</td><td>$400</td><td>~$990</td></tr>
-          <tr><td><span class="chip m">Média</span> sex e sáb</td><td>$350</td><td>$700</td><td>~$990</td></tr>
-          <tr><td><span class="chip a">Alta</span> verão</td><td>$400</td><td>$800</td><td>~$1.024</td></tr>
-        </tbody>
-      </table>
-      <caption>Limpeza inclusa, mínimo de duas noites. Vale para membros do grupo e para amigos de fora, no mesmo preço.</caption>
-    </div>
-    <div class="note">
-      <b>Esse dinheiro não vai para o caixa comum.</b> Ele vai inteiro para Pedro, Júlia, Niklas e
-      Carol, abatendo o aporte que os quatro pagam todo mês para fechar a conta da casa. Um fim de
-      semana alugado por mês já devolve <b>$8.400 no ano</b>.
-    </div>
+    <p class="lead">As cotas são para <b>dividir</b> a casa. Quem quiser a casa fechada, só para si, usa <b>a ficha</b>: grátis, uma vez no ano, sem gastar crédito.</p>
     <div class="card" style="margin-top:12px">
       <div class="ex"><h3>A ficha · casa fechada grátis, uma vez no ano</h3>
         <ul>
-          <li><b>Cada pessoa tem 1 ficha por ano</b>: fecha a casa só para si, sem pagar diária e sem gastar crédito.</li>
+          <li><b>Cada pessoa tem 1 ficha por ano</b>: fecha a casa só para si, sem pagar nada e sem gastar crédito.</li>
           <li><b>Até 5 noites seguidas.</b> Dá para marcar com até <b>60 dias</b> de antecedência, desde que ninguém tenha reservado aquelas noites.</li>
           <li><b>Uma semana livre entre fichas.</b> Entre duas fichas — de quem for — precisa ter pelo menos <b>7 noites livres</b>. Assim ninguém fecha a casa em dois fins de semana seguidos, nem juntando a sua ficha com a de outra pessoa.</li>
           <li><b>Verão e feriados grandes, só com todo mundo de acordo.</b> O pedido segura as datas e aparece para o grupo; vale quando todos aprovarem. Se alguém recusar, o pedido cai e a ficha volta.</li>
@@ -1032,35 +1034,18 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         </ul></div>
     </div>
     <div class="warn">
-      <b>Por que separar as duas coisas.</b> Fechar a casa tira a cama de todo mundo. Se isso
-      entrasse no sistema de créditos, quem tem crédito sobrando poderia trancar a casa num fim de
-      semana de verão sem pagar nada a mais. Com diária, quem quer a casa só para si paga por ela —
-      e o dinheiro volta para o grupo.
+      <b>Por que a ficha tem regras.</b> Fechar a casa tira a cama de todo mundo. Por isso é uma vez
+      no ano, curta, com uma semana livre entre fichas e, no verão e nos feriados, só com todo mundo
+      de acordo.
     </div>
   </section>
   <section data-l="en">
     <h2>5. The whole house</h2>
-    <p class="lead">Cotas are for <b>sharing</b> the house. Whoever wants it sealed, just for themselves, has two ways: <b>the ficha</b>, free, once a year (below), or <b>the daily rate</b> — the same for someone in the group and someone outside it, no credits spent.</p>
-    <div class="card tw">
-      <table>
-        <thead><tr><th>Sealed house, all six beds</th><th>Per night</th><th>Weekend</th><th>On Airbnb</th></tr></thead>
-        <tbody>
-          <tr><td><span class="chip b">Low</span> Mon – Thu</td><td>$200</td><td>$400</td><td>~$990</td></tr>
-          <tr><td><span class="chip m">Mid</span> Fri &amp; Sat</td><td>$350</td><td>$700</td><td>~$990</td></tr>
-          <tr><td><span class="chip a">Peak</span> summer</td><td>$400</td><td>$800</td><td>~$1,024</td></tr>
-        </tbody>
-      </table>
-      <caption>Cleaning included, two-night minimum. Same price for members of the group and for friends from outside.</caption>
-    </div>
-    <div class="note">
-      <b>This money does not go to the shared fund.</b> All of it goes to Pedro, Júlia, Niklas and
-      Carol, paying down the aporte the four of them put in every month to close the house's books.
-      One weekend let per month already returns <b>$8,400 a year</b>.
-    </div>
+    <p class="lead">Cotas are for <b>sharing</b> the house. Whoever wants it sealed, just for themselves, uses <b>the ficha</b>: free, once a year, no credits spent.</p>
     <div class="card" style="margin-top:12px">
       <div class="ex"><h3>The ficha · a free sealed house, once a year</h3>
         <ul>
-          <li><b>Everyone has 1 ficha a year</b>: the house sealed just for them, no daily rate and no credits.</li>
+          <li><b>Everyone has 1 ficha a year</b>: the house sealed just for them, nothing to pay and no credits.</li>
           <li><b>Up to 5 nights in a row.</b> It can be booked up to <b>60 days</b> ahead, as long as nobody has booked those nights.</li>
           <li><b>A free week between fichas.</b> Between two fichas — whoever's they are — there have to be at least <b>7 free nights</b>. So nobody seals the house two weekends in a row, not even by pairing their ficha with someone else's.</li>
           <li><b>Summer and major holidays only with everyone's agreement.</b> The request holds the dates and shows up for the group; it stands once everyone approves. If anyone declines, it falls through and the ficha comes back.</li>
@@ -1068,10 +1053,9 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         </ul></div>
     </div>
     <div class="warn">
-      <b>Why keep the two things apart.</b> Sealing the house takes everyone's bed away. If that
-      sat inside the credit system, anyone with credits to spare could lock the house on a summer
-      weekend without paying a cent more. With a daily rate, whoever wants the house to themselves
-      pays for it — and the money comes back to the group.
+      <b>Why the ficha has rules.</b> Sealing the house takes everyone's bed away. So it is once a year,
+      short, with a free week between fichas and, in summer and on holidays, only with everyone's
+      agreement.
     </div>
   </section>
 
@@ -1088,7 +1072,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li><b>Cancelar até 24 horas antes da chegada devolve os créditos na hora</b> e libera a data para os outros.</li>
           <li><b>Cancelou com menos de 24 horas, perde os créditos.</b> A chegada conta a partir das 14h do primeiro dia: cancelar depois das 14h da véspera libera a cama, mas os créditos não voltam.</li>
           <li><b>Quem reserva marca quem dorme.</b> Cada pessoa marcada paga a sua parte com os próprios créditos, e tudo aparece no histórico.</li>
-          <li>Reserva de uma cama não vira casa fechada depois. Quem quer a casa só para si usa a ficha ou a diária, na hora de reservar.</li>
+          <li>Reserva de uma cama não vira casa fechada depois. Quem quer a casa só para si usa a ficha, na hora de reservar.</li>
         </ul></div>
       <div class="ex"><h3>Os quartos 1 e 2</h3>
         <ul>
@@ -1099,7 +1083,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <div class="ex"><h3>Tudo à vista</h3>
         <ul>
           <li>O app guarda o <b>histórico completo</b> e aberto para todos: quem reservou, qual cama, quais noites, quando foi feita a reserva e quanto custou em créditos.</li>
-          <li>Entram também os <b>cancelamentos</b>, as <b>compras de crédito avulso</b> e as <b>diárias de casa fechada</b> — quem pagou, quanto e para qual data.</li>
+          <li>Entram também os <b>cancelamentos</b>, as <b>compras de crédito avulso</b> e as <b>fichas</b> — quem, quanto e para qual data.</li>
           <li><b>Ninguém tem informação que os outros não têm.</b> Não existe reserva privada, saldo escondido nem acerto por fora.</li>
           <li>O saldo do aporte de Pedro, Júlia, Niklas e Carol também fica à vista: quanto já foi adiantado e quanto já voltou.</li>
         </ul></div>
@@ -1131,7 +1115,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li>De <b>2 de outubro de 2026 a 1º de outubro de 2027</b>. Quem entra agora se compromete pelos 12 meses.</li>
           <li><b>Com 6 meses, em abril de 2027, o grupo senta e revê os termos</b> — valores, regras e quem continua.</li>
           <li>Está no nome de <b>Pedro, Júlia, Niklas e Carol</b>, que respondem perante a Stockdale &amp; Leggo por 100% do aluguel e pelo bond.</li>
-          <li>Sublocação não é permitida pelo contrato. Amigos de fora que usam a casa pagam a diária como convidados, sempre com alguém do grupo respondendo por eles.</li>
+          <li>Sublocação não é permitida pelo contrato. Amigos de fora que usam a casa ficam como convidados, sempre com alguém do grupo respondendo por eles.</li>
         </ul></div>
     </div>
   </section>
@@ -1146,7 +1130,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li><b>Cancelling up to 24 hours before arrival returns the credits at once</b> and frees the date for the others.</li>
           <li><b>Cancel with less than 24 hours to go and the credits are lost.</b> Arrival counts from 2pm on the first day: cancelling after 2pm the day before frees the bed, but the credits do not come back.</li>
           <li><b>Whoever books marks who sleeps.</b> Each person marked pays their own share with their own credits, and all of it shows in the history.</li>
-          <li>A bed booking never turns into a sealed house later. Whoever wants the house to themselves uses the ficha or the daily rate, at booking time.</li>
+          <li>A bed booking never turns into a sealed house later. Whoever wants the house to themselves uses the ficha, at booking time.</li>
         </ul></div>
       <div class="ex"><h3>Bedrooms 1 and 2</h3>
         <ul>
@@ -1157,7 +1141,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <div class="ex"><h3>Everything in the open</h3>
         <ul>
           <li>The app keeps the <b>full history</b>, open to all: who booked, which bed, which nights, when the booking was made and what it cost in credits.</li>
-          <li><b>Cancellations</b>, <b>extra-credit purchases</b> and <b>sealed-house nights</b> are in there too — who paid, how much and for which date.</li>
+          <li><b>Cancellations</b>, <b>extra-credit purchases</b> and <b>fichas</b> are in there too — who, how much and for which date.</li>
           <li><b>Nobody has information the others don't.</b> There is no private booking, no hidden balance and no deal on the side.</li>
           <li>The balance of Pedro's, Júlia's, Niklas's and Carol's aporte is in the open too: how much went in and how much has come back.</li>
         </ul></div>
@@ -1189,7 +1173,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li>From <b>2 October 2026 to 1 October 2027</b>. Whoever joins now commits for the 12 months.</li>
           <li><b>At 6 months, in April 2027, the group sits down and reviews the terms</b> — amounts, rules and who carries on.</li>
           <li>In <b>Pedro's, Júlia's, Niklas's and Carol's</b> names, who answer to Stockdale &amp; Leggo for 100% of the rent and the bond.</li>
-          <li>Sub-letting is not allowed under the lease. Outside friends who use the house pay the daily rate as guests, always with someone in the group answering for them.</li>
+          <li>Sub-letting is not allowed under the lease. Outside friends who use the house stay as guests, always with someone in the group answering for them.</li>
         </ul></div>
     </div>
   </section>
@@ -1328,9 +1312,18 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div id="openRow"></div>
 
     <div class="sec"><h2 data-l="en">The house</h2><h2 data-l="pt">A casa</h2></div>
-    <p class="subt" data-l="en">The six beds and what each costs a night: low / mid / peak.</p>
-    <p class="subt" data-l="pt">As seis camas e o que cada uma custa por noite: baixa / média / alta.</p>
+    <p class="subt" data-l="en">Tap a photo to see it full size.</p>
+    <p class="subt" data-l="pt">Toque numa foto para ampliar.</p>
+    <div class="hrow" id="houseRow"></div>
+    <p class="subt" style="margin-top:6px" data-l="en">The six beds · 1 / 2 / 4 credits per person a night, in any bed.</p>
+    <p class="subt" style="margin-top:6px" data-l="pt">As seis camas · 1 / 2 / 4 créditos por pessoa a noite, em qualquer cama.</p>
     <div class="hrow" id="roomsRow"></div>
+
+    <div class="sec"><h2 data-l="en">Album</h2><h2 data-l="pt">Álbum</h2></div>
+    <p class="subt" data-l="en">Photos from our time at the house, to remember it by. Only people with a sign-in can see them.</p>
+    <p class="subt" data-l="pt">Fotos dos dias na casa, para lembrar. Só quem tem login vê.</p>
+    <input type="file" id="albFile" accept="image/*" multiple hidden>
+    <div class="pad"><div class="alb" id="albGrid"></div><div class="fmsg" id="albMsg"></div></div>
 
     <button class="cta" id="goCal">Book a date</button>
   </section>
@@ -1371,8 +1364,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div class="list" id="allRes"></div>
 
     <div class="sec"><h2 data-l="en">History</h2><h2 data-l="pt">Histórico</h2></div>
-    <p class="subt" data-l="en">Every booking, cancellation, credit purchase and whole-house night — who, which bed, when it was made and what it cost.</p>
-    <p class="subt" data-l="pt">Toda reserva, cancelamento, compra de crédito e diária de casa fechada — quem, qual cama, quando foi feita e quanto custou.</p>
+    <p class="subt" data-l="en">Every booking, cancellation, credit purchase and ficha — who, which bed, when it was made and what it cost.</p>
+    <p class="subt" data-l="pt">Toda reserva, cancelamento, compra de crédito e ficha — quem, qual cama, quando foi feita e quanto custou.</p>
     <div class="pad"><div class="rels" id="logFilter" style="margin-bottom:6px"></div></div>
     <div class="pad" id="logBox"></div>
   </section>
@@ -1545,6 +1538,14 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <span data-l="en">Account</span><span data-l="pt">Conta</span></button>
 </nav>
 
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Foto">
+  <button class="lbx" id="lbX" type="button" aria-label="Fechar">✕</button>
+  <button class="lbp" id="lbP" type="button" aria-label="Anterior">‹</button>
+  <img id="lbImg" alt="">
+  <button class="lbn" id="lbN" type="button" aria-label="Próxima">›</button>
+  <div class="lbc"><span id="lbCap"></span><button class="ghost" id="lbDel" type="button" hidden></button></div>
+</div>
+
 <div class="backdrop" id="backdrop"></div>
 <div class="sheet" id="sheet">
   <div class="grab"></div>
@@ -1556,13 +1557,13 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 "use strict";
 
 var PHOTOS=[
-  {u:"photos/front.jpg",c:"Front and entrance"},
-  {u:"photos/living.jpg",c:"Living room"},
-  {u:"photos/living2.jpg",c:"Living and kitchen"},
-  {u:"photos/kitchen.jpg",c:"Kitchen"},
-  {u:"photos/bedroom.jpg",c:"Bedroom"},
-  {u:"photos/bathroom.jpg",c:"Bathroom"},
-  {u:"photos/deck.jpg",c:"Covered deck"}
+  {u:"photos/front.jpg",c:"Front and entrance",k:"phFront"},
+  {u:"photos/living.jpg",c:"Living room",k:"phLiving"},
+  {u:"photos/living2.jpg",c:"Living and kitchen",k:"phLiving2"},
+  {u:"photos/kitchen.jpg",c:"Kitchen",k:"phKitchen"},
+  {u:"photos/bedroom.jpg",c:"Bedroom",k:"phBedroom"},
+  {u:"photos/bathroom.jpg",c:"Bathroom",k:"phBathroom"},
+  {u:"photos/deck.jpg",c:"Covered deck",k:"phDeck"}
 ];
 var ROOMS=[
   {u:PHOTOS[4].u,k:"rBed1",s:"2.8 × 3.5 m"},
@@ -1675,7 +1676,7 @@ pt:{
  fyBillsLogged:"Contas fixas lançadas até agora", fyCost:"Custo da casa no ano",
  fyCotas:function(n,c){return "Cotas · "+n+" pessoas × "+c+" × 12";}, fyAporte:"Aporte no ano",
  fyAporteEach:function(n){return "Aporte por pessoa · ÷ "+n;}, fyApPaid:"Aporte já pago",
- fyEarn:"Diárias, avulsos e convidados (voltam para o aporte)", fyApNet:"Aporte líquido, depois do que voltou",
+ fyEarn:"Créditos avulsos e convidados (voltam para o aporte)", fyApNet:"Aporte líquido, depois do que voltou",
  fyExtra:"Gastos extras rateados à parte",
  fDone:"Já paguei", fPays:function(a,b){return a+" paga a "+b;},
  fYouPay:function(b){return b==="Conta da casa"?"Deposite na conta da casa":"Pague a "+b;},
@@ -1691,6 +1692,14 @@ pt:{
  fFrom:function(m){return "entra em "+m;}, fApProvOf:function(m){return "Aporte provisório de "+m+", com as contas lançadas até agora.";},
  fAllCotas:"Todos os cotistas",
  fPerAll:function(n,v){return "Todos os cotistas, inclusive quem entrar depois · hoje "+n+" · "+v+" cada";},
+ phFront:"Frente e entrada", phLiving:"Sala", phLiving2:"Sala e cozinha", phKitchen:"Cozinha",
+ phBedroom:"Quarto", phBathroom:"Banheiro", phDeck:"Deck coberto",
+ albAdd:"Adicionar fotos", albSending:"Enviando…", albLogin:"Entre com seu login para ver e adicionar fotos ao álbum.",
+ albEmpty:"Ainda não tem foto. Toque em + para colocar a primeira.",
+ albProgress:function(i,n){return "Enviando "+i+" de "+n+"…";},
+ albDone:function(n){return n===1?"1 foto adicionada.":n+" fotos adicionadas.";},
+ albSomeFail:function(d,f){return d+" enviada"+(d===1?"":"s")+", "+f+" não deu. Tente de novo.";},
+ albDel:"Apagar foto", albDelSure:"Apagar mesmo?",
  fBank:"Conta da casa", fSquare:"em dia", fAllSquare:"Você está em dia com a casa.",
  fOwedYou:"Você tem a receber", fYouOwe:"Você deve",
  fToReceive:function(m){return m+" a receber";}, fToPay:function(m){return m+" a pagar";},
@@ -1953,7 +1962,7 @@ en:{
  fyBillsLogged:"Fixed bills logged so far", fyCost:"What the house costs this year",
  fyCotas:function(n,c){return "Cotas · "+n+" people × "+c+" × 12";}, fyAporte:"Aporte this year",
  fyAporteEach:function(n){return "Aporte per person · ÷ "+n;}, fyApPaid:"Aporte paid so far",
- fyEarn:"Daily rates, extra credits and guests (back to the aporte)", fyApNet:"Net aporte, after what came back",
+ fyEarn:"Extra credits and guests (back to the aporte)", fyApNet:"Net aporte, after what came back",
  fyExtra:"Extra expenses, split separately",
  fDone:"I paid", fPays:function(a,b){return a+" pays "+b;},
  fYouPay:function(b){return b==="House account"?"Pay into the house account":"Pay "+b;},
@@ -1969,6 +1978,14 @@ en:{
  fFrom:function(m){return "joins "+m;}, fApProvOf:function(m){return "Provisional aporte for "+m+", with the bills logged so far.";},
  fAllCotas:"All cota holders",
  fPerAll:function(n,v){return "All cota holders, including whoever joins later · now "+n+" · "+v+" each";},
+ phFront:"Front and entrance", phLiving:"Living room", phLiving2:"Living and kitchen", phKitchen:"Kitchen",
+ phBedroom:"Bedroom", phBathroom:"Bathroom", phDeck:"Covered deck",
+ albAdd:"Add photos", albSending:"Sending…", albLogin:"Sign in to see the album and add photos to it.",
+ albEmpty:"No photos yet. Tap + to add the first one.",
+ albProgress:function(i,n){return "Sending "+i+" of "+n+"…";},
+ albDone:function(n){return n===1?"1 photo added.":n+" photos added.";},
+ albSomeFail:function(d,f){return d+" sent, "+f+" failed. Try again.";},
+ albDel:"Delete photo", albDelSure:"Delete it?",
  fBank:"House account", fSquare:"settled", fAllSquare:"You are square with the house.",
  fOwedYou:"You are owed", fYouOwe:"You owe",
  fToReceive:function(m){return m+" to collect";}, fToPay:function(m){return m+" to pay";},
@@ -2527,8 +2544,7 @@ function avail(){
   }else{
     var best=fb.indexOf("q1")>=0?"q1":(fb.indexOf("q2")>=0?"q2":fb[0]);
     ft.appendChild(el("div","pr",
-      t("aBedCost",pp(a,o),left)+
-      (fb.length===BEDS.length?t("aWholeDay",mm(money(a,o))):"")));
+      t("aBedCost",pp(a,o),left)));
     var mk=bt(null,t("aBookIt"));
     mk.addEventListener("click",function(){
       sel.a=a;sel.b=o;bkind="share";picked=[best];sheet(true);});
@@ -2650,15 +2666,76 @@ function home(){
       r2.appendChild(t);});
     ow.appendChild(r2);}
 
+  var hr=document.getElementById("houseRow");hr.textContent="";
+  var house=PHOTOS.map(function(x){return {u:x.u,c:t2(x.k)};});
+  PHOTOS.forEach(function(x,i){var tl=bt("tile"),im=document.createElement("img");
+    im.src=x.u;im.alt=t2(x.k);im.loading="lazy";tl.appendChild(im);tl.appendChild(el("b",null,t2(x.k)));
+    tl.addEventListener("click",function(){lbOpen(house,i);});hr.appendChild(tl);});
   var rr=document.getElementById("roomsRow");rr.textContent="";
   BEDS.forEach(function(x){
     var tl=bt("tile");var im=document.createElement("img");
+    tl.addEventListener("click",function(){lbOpen([{u:PHOTOS[x.ph].u,c:t2(x.k)+" · "+t2("bSleeps",x.sl)}],0);});
     im.src=PHOTOS[x.ph].u;im.alt=t2(x.k);im.loading="lazy";
     tl.appendChild(im);tl.appendChild(el("b",null,t2(x.k)));
     tl.appendChild(el("small",null,t2("bSleeps",x.sl)));
     tl.appendChild(el("span","px",t2("bPrice",W.baixa,W.media,W.alta)));
     rr.appendChild(tl);});
 }
+
+/* ---------- photo viewer ---------- */
+var LB={items:[],i:0,del:null};
+function lbShow(){var it=LB.items[LB.i];if(!it)return;
+  var img=document.getElementById("lbImg");img.src=it.u;img.alt=it.c||"";
+  document.getElementById("lbCap").textContent=(it.c||"")+(LB.items.length>1?"  ·  "+(LB.i+1)+" / "+LB.items.length:"");
+  document.getElementById("lbP").hidden=document.getElementById("lbN").hidden=LB.items.length<2;
+  var d=document.getElementById("lbDel");d.hidden=!it.del;d.textContent=t("albDel");d.className="ghost";d.dataset.arm="";}
+function lbOpen(items,i){LB.items=items;LB.i=i||0;lbShow();document.getElementById("lb").hidden=false;
+  document.documentElement.classList.add("lock");document.getElementById("lbX").focus();}
+function lbClose(){document.getElementById("lb").hidden=true;document.documentElement.classList.remove("lock");}
+function lbStep(d){if(LB.items.length<2)return;LB.i=(LB.i+d+LB.items.length)%LB.items.length;lbShow();}
+
+/* ---------- album: photos people add, kept private in Supabase Storage ---------- */
+var ALB_URL={},albBusy=false,albAsk={};
+function albUrls(){var miss=(st.album||[]).map(function(a){return a.path;}).filter(function(x){return !ALB_URL[x]&&!albAsk[x];});
+  if(!miss.length||!SB)return;miss.forEach(function(x){albAsk[x]=1;});
+  SB.storage.from("album").createSignedUrls(miss,60*60*12).then(function(r){
+    (r.data||[]).forEach(function(d){if(d.signedUrl)ALB_URL[d.path]=d.signedUrl;});albUI();});}
+function albItems(){return (st.album||[]).filter(function(a){return ALB_URL[a.path];}).map(function(a){
+  var h=hh(LEG[a.hh]||a.hh);return {u:ALB_URL[a.path],c:(h?h.name:"?")+" · "+sd(String(a.at||"").slice(0,10)),
+    del:a.hh===me||!!(PROFILE&&PROFILE.admin),a:a};});}
+function albUI(){var g=document.getElementById("albGrid");if(!g)return;g.textContent="";
+  var msg=document.getElementById("albMsg");
+  if(!SB||!SESSION){g.style.display="block";g.appendChild(el("p","empty",t("albLogin")));return;}
+  g.style.display="";
+  var add=bt("add");add.appendChild(el("b",null,"+"));add.appendChild(document.createTextNode(albBusy?t("albSending"):t("albAdd")));
+  add.disabled=albBusy;add.addEventListener("click",function(){document.getElementById("albFile").click();});g.appendChild(add);
+  var items=albItems();
+  items.forEach(function(it,i){var b=bt(),im=document.createElement("img");im.src=it.u;im.alt=it.c;im.loading="lazy";
+    b.appendChild(im);b.addEventListener("click",function(){lbOpen(albItems(),i);});g.appendChild(b);});
+  if(!(st.album||[]).length&&!albBusy)msg.textContent=msg.textContent||t("albEmpty");
+  albUrls();}
+/* reduz a foto no aparelho antes de enviar: no máximo 1600 px, JPEG */
+function shrink(file){return new Promise(function(ok,no){var u=URL.createObjectURL(file),im=new Image();
+  im.onload=function(){var m=1600,k=Math.min(1,m/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement("canvas");
+    c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);
+    c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
+    c.toBlob(function(b){b?ok(b):no(new Error("toBlob"));},"image/jpeg",0.82);};
+  im.onerror=function(){URL.revokeObjectURL(u);no(new Error("decode"));};im.src=u;});}
+function albSend(files){if(!SB||!SESSION||!files.length)return;albBusy=true;var msg=document.getElementById("albMsg");
+  var list=[].slice.call(files),done=0,fail=0;
+  function next(){if(!list.length){albBusy=false;msg.className="fmsg"+(fail?" neg":"");
+      msg.textContent=fail?t("albSomeFail",done,fail):t("albDone",done);albUI();return;}
+    var f=list.shift();msg.className="fmsg";msg.textContent=t("albProgress",done+fail+1,files.length);albUI();
+    shrink(f).then(function(blob){var id=uid(),path=me+"/"+id+".jpg";
+      return SB.storage.from("album").upload(path,blob,{contentType:"image/jpeg"}).then(function(r){
+        if(r.error)throw r.error;var rec={id:id,path:path,hh:me,cap:"",at:new Date().toISOString()};
+        st.album=[rec].concat(st.album||[]);return db.doc("album/"+id).set(rec);});})
+    .then(function(){done++;next();}).catch(function(e){console.error(e);fail++;next();});}
+  next();}
+function albDelete(a){if(!SB)return;
+  SB.storage.from("album").remove([a.path]).then(function(){return db.doc("album/"+a.id).delete();})
+    .then(function(){st.album=(st.album||[]).filter(function(x){return x.id!==a.id;});delete ALB_URL[a.path];lbClose();albUI();})
+    .catch(werr);}
 
 /* ---------- calendar ---------- */
 function keyRow(){
@@ -2828,8 +2905,7 @@ function drop(){
     var bb=fbs.indexOf("q1")>=0?"q1":(fbs.indexOf("q2")>=0?"q2":fbs[0]);
     var e2=sel.b||iso(ad(pd(sel.a),1));
     ft.appendChild(el("div","txt",
-      t("dBedCr",pp(sel.a,e2),left)+
-      (fbs.length===BEDS.length?t("dWholeDay",mm(money(sel.a,e2))):"")));
+      t("dBedCr",pp(sel.a,e2),left)));
     var go2=bt(null,t("dBook"));
     go2.addEventListener("click",function(){
       if(!sel.b)sel.b=iso(ad(pd(sel.a),1));
@@ -2848,6 +2924,7 @@ function sheet(on2){
 function peopleTxt(b){var p=pplOf(b);
   return p.length>1||(p.length===1&&p[0]!==b.hh)?" · "+p.map(function(x){return (hh(x)||{}).name||"?";}).join(", "):"";}
 function shBody(){
+  if(bkind==="whole")bkind="share";   /* a diária saiu: só cama ou ficha */
   var b=document.getElementById("shBody");b.textContent="";
   var a=sel.a,o=sel.b||iso(ad(pd(sel.a),1)),h=hh(me);
   b.appendChild(el("h3",null,t("sBook")));
@@ -2867,7 +2944,7 @@ function shBody(){
 
   var fb=freeBeds(a,o);
   var md=el("div","modes");
-  [["share",t("sShare"),t("sShareSub")],["free",t("sFree"),t("sFreeSub",Math.max(0,FREE_N-freeUsed(who)))],["whole",t("sSeal"),t("sSealSub")]]
+  [["share",t("sShare"),t("sShareSub")],["free",t("sFree"),t("sFreeSub",Math.max(0,FREE_N-freeUsed(who)))]]
     .forEach(function(p){
       var x=bt("mb");x.setAttribute("aria-pressed",bkind===p[0]?"true":"false");
       x.appendChild(el("b",null,p[1]));x.appendChild(el("small",null,p[2]));
@@ -3183,8 +3260,8 @@ function t7(){
     var w=document.getElementById("t7warn"+sfx);w.textContent="";
     var b1=el("b",null,pt?"O aporte. ":"The aporte. ");w.appendChild(b1);
     w.appendChild(document.createTextNode(pt
-      ?"A casa custa mais do que as cotas preenchidas arrecadam. "+names(true)+" cobrem a diferença — "+fmt(each,true)+" cada, todo mês — e recebem de volta o que entrar de crédito avulso e de diária. "
-      :"The house costs more than the filled cotas bring in. "+names(false)+" cover the difference — "+fmt(each,false)+" each, every month — and get back whatever comes in from extra credits and daily rates. "));
+      ?"A casa custa mais do que as cotas preenchidas arrecadam. "+names(true)+" cobrem a diferença — "+fmt(each,true)+" cada, todo mês — e recebem de volta o que entrar de crédito avulso. "
+      :"The house costs more than the filled cotas bring in. "+names(false)+" cover the difference — "+fmt(each,false)+" each, every month — and get back whatever comes in from extra credits. "));
     w.appendChild(el("b",null,pt
       ?"Cada cota nova preenchida baixa o aporte em "+fmt(drop,true)+" por pessoa."
       :"Every new cota filled lowers the aporte by "+fmt(drop,false)+" per person."));});}
@@ -3693,7 +3770,7 @@ function whoUI(){
   var av=document.getElementById("whoAv");
   av.style.background=h.color;av.textContent=abOf(h);}
 
-function render(){whoUI();home();cal();resView();conta();acct();}
+function render(){whoUI();home();cal();resView();conta();acct();albUI();}
 
 /* ---------- events ---------- */
 [["t-home","home"],["t-cal","cal"],["t-res","res"],["t-fin","fin"],["t-conta","conta"]].forEach(function(p){
@@ -3723,6 +3800,20 @@ document.getElementById("whoBtn").addEventListener("click",function(){
   if(SB)return; // signed in: you are who you logged in as
   var i=st.households.findIndex(function(h){return h.id===me;});
   me=st.households[(i+1)%st.households.length].id;sv();whoUI();home();});
+document.getElementById("lbX").addEventListener("click",lbClose);
+document.getElementById("lbP").addEventListener("click",function(e){e.stopPropagation();lbStep(-1);});
+document.getElementById("lbN").addEventListener("click",function(e){e.stopPropagation();lbStep(1);});
+document.getElementById("lb").addEventListener("click",function(e){if(e.target.id==="lb")lbClose();});
+document.addEventListener("keydown",function(e){if(document.getElementById("lb").hidden)return;
+  if(e.key==="Escape")lbClose();else if(e.key==="ArrowLeft")lbStep(-1);else if(e.key==="ArrowRight")lbStep(1);});
+(function(){var x0=null;var lb=document.getElementById("lb");
+  lb.addEventListener("touchstart",function(e){x0=e.touches[0].clientX;},{passive:true});
+  lb.addEventListener("touchend",function(e){if(x0===null)return;var dx=e.changedTouches[0].clientX-x0;x0=null;
+    if(Math.abs(dx)>50)lbStep(dx<0?1:-1);});})();
+document.getElementById("lbDel").addEventListener("click",function(){var it=LB.items[LB.i];if(!it||!it.a)return;
+  if(this.dataset.arm!=="1"){this.dataset.arm="1";this.className="ghost arm";this.textContent=t("albDelSure");return;}
+  albDelete(it.a);});
+document.getElementById("albFile").addEventListener("change",function(){albSend(this.files);this.value="";});
 document.getElementById("eDate").value=today();
 document.getElementById("finSegs").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;finTab=b.getAttribute("data-p");finSegs();window.scrollTo(0,0);});
@@ -3787,7 +3878,9 @@ function supaAdapter(sb){
   function rowToBuy(r){return {id:r.id,hh:r.hh,n:+r.n||0,amount:+r.amount||0,at:r.at||""};}
   function buyToRow(b){return {id:b.id,hh:b.hh,n:+b.n||0,amount:+b.amount||0,
     at:b.at||new Date().toISOString()};}
-  var MAPS={bookings:{to:bookingToRow,from:rowToBooking},
+  function rowToAlbum(r){return {id:r.id,path:r.path,hh:r.hh,cap:r.caption||"",at:r.at||""};}
+  function albumToRow(a){return {id:a.id,path:a.path,hh:a.hh,caption:a.cap||"",at:a.at||new Date().toISOString()};}
+  var MAPS={album:{to:albumToRow,from:rowToAlbum},bookings:{to:bookingToRow,from:rowToBooking},
             expenses:{to:expenseToRow,from:rowToExpense},
             log:{to:logToRow,from:rowToLog},
             buys:{to:buyToRow,from:rowToBuy}};
@@ -3847,6 +3940,8 @@ function startLive(){
     st.log=q.docs.map(function(x){return x.data();})
       .sort(function(a,b){return String(b.at||"").localeCompare(String(a.at||""));});
     sv();if(typeof logView==="function")logView();});
+  db.collection("album").onSnapshot(function(q){
+    st.album=q.docs.map(function(x){return x.data();}).sort(function(a,b){return String(b.at).localeCompare(String(a.at));});albUI();});
   db.collection("buys").onSnapshot(function(q){
     st.buys=q.docs.map(function(x){return x.data();});sv();render();});
 }
