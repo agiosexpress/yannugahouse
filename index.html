@@ -1377,43 +1377,35 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 
     <!-- 1 · lançamentos -->
     <div class="fpane" data-p="lanc">
-      <div class="sec"><h2 data-l="en">Fixed bills</h2><h2 data-l="pt">Contas fixas</h2></div>
-      <p class="subt" data-l="en">Power, water, gas, internet. Budgeted at $154 a month; anything above that goes into that month's aporte.</p>
-      <p class="subt" data-l="pt">Luz, água, gás, internet. Previsão de $154 por mês; o que passar disso entra no aporte do mês.</p>
-      <div class="fcard" id="billBox"></div>
-      <div class="pad fgrid" style="margin-top:10px">
-        <input id="bDesc" list="billKinds" placeholder="Luz, água, gás, internet…">
-        <datalist id="billKinds"><option value="Luz"><option value="Água"><option value="Gás"><option value="Internet"></datalist>
-        <div class="frow">
-          <input id="bAmt" type="text" inputmode="decimal" placeholder="$ 0,00">
-          <input id="bDate" type="date">
-        </div>
-        <label class="lab" for="bBy"><span data-l="pt">Quem pagou</span><span data-l="en">Who paid</span></label>
-        <select id="bBy"></select>
-        <div class="fmsg neg" id="bMsg"></div>
-        <button class="cta" id="bAdd" type="button" style="width:100%;margin:0"></button>
-      </div>
-
-      <div class="sec"><h2 data-l="en">Rent</h2><h2 data-l="pt">Aluguel</h2></div>
-      <div class="fcard" id="rentBox"></div>
-
-      <div class="sec"><h2 data-l="en">Add an extra expense</h2><h2 data-l="pt">Lançar gasto extra</h2></div>
-      <p class="subt" data-l="en">Gardener, repairs, damage, linen — anything beyond rent and bills, split between the people you pick.</p>
-      <p class="subt" data-l="pt">Jardineiro, conserto, dano, enxoval — tudo além do aluguel e das contas, dividido entre quem você escolher.</p>
+      <div class="sec"><h2 data-l="en">Add an expense</h2><h2 data-l="pt">Lançar um gasto</h2></div>
+      <p class="subt" data-l="en">Mark it as a fixed bill for power, water, gas or internet: it goes into the month's house cost and is not split. Anything else is an extra expense, split between the people you pick.</p>
+      <p class="subt" data-l="pt">Marque como conta fixa se for luz, água, gás ou internet: entra no custo da casa do mês e não é dividida. O resto é gasto extra, dividido entre quem você escolher.</p>
       <div class="pad fgrid">
-        <input id="eDesc" placeholder="Jardineiro, conserto…">
+        <button type="button" class="rel" id="eFixed" aria-pressed="false" style="justify-self:start"><i></i><span data-l="pt">Conta fixa</span><span data-l="en">Fixed bill</span></button>
+        <input id="eDesc" list="billKinds" placeholder="Jardineiro, luz, conserto…">
+        <datalist id="billKinds"><option value="Luz"><option value="Água"><option value="Gás"><option value="Internet"></datalist>
         <div class="frow">
           <input id="eAmt" type="text" inputmode="decimal" placeholder="$ 0,00">
           <input id="eDate" type="date">
         </div>
         <label class="lab" for="eBy"><span data-l="pt">Quem pagou</span><span data-l="en">Who paid</span></label>
         <select id="eBy"></select>
-        <span class="lab"><span data-l="pt">Dividir entre</span><span data-l="en">Split between</span></span>
+        <span class="lab" id="eSplitLab"><span data-l="pt">Dividir entre</span><span data-l="en">Split between</span></span>
         <div class="rels" id="eSplit"></div>
         <div class="fnote" id="ePer"></div>
         <div class="fmsg neg" id="eMsg"></div>
         <button class="cta" id="eAdd" type="button" style="width:100%;margin:0"></button>
       </div>
+
+      <div class="sec"><h2 data-l="en">Fixed bills this month</h2><h2 data-l="pt">Contas fixas do mês</h2></div>
+      <p class="subt" data-l="en">Budgeted at $154 a month. Anything above goes into that month's aporte.</p>
+      <p class="subt" data-l="pt">Previsão de $154 por mês. O que passar disso entra no aporte do mês.</p>
+      <div class="fcard" id="billBox"></div>
+
+      <div class="sec"><h2 data-l="en">Rent and the month's cost</h2><h2 data-l="pt">Aluguel e custo do mês</h2></div>
+      <p class="subt" data-l="en">What the house costs this month without the extra expenses. The cotas are fixed; the aporte is the only part that moves.</p>
+      <p class="subt" data-l="pt">Quanto a casa custa no mês, sem os gastos extras. As cotas são fixas; o aporte é a única parte que muda.</p>
+      <div class="fcard calc2" id="rentBox"></div>
 
       <div class="sec"><h2 data-l="en">Balance</h2><h2 data-l="pt">Saldo</h2></div>
       <p class="subt" data-l="en">Extra expenses and bills paid out of someone's pocket. Settle it in Payments.</p>
@@ -1671,6 +1663,8 @@ pt:{
  fDone:"Já paguei", fPays:function(a,b){return a+" paga a "+b;},
  fYouPay:function(b){return b==="Conta da casa"?"Deposite na conta da casa":"Pague a "+b;},
  fPaysYou:function(a){return a+" te paga";}, fTheyMark:"quando pagar, marca no app dela ou dele",
+ fRentLine:"Aluguel (fixo)", fCostMonth:"Custo fixo do mês", fApFlex:"Aporte do mês (a parte que varia)",
+ fFixedNote:"Conta fixa: entra no custo do mês e não é dividida.",
  fBank:"Conta da casa", fSquare:"em dia", fAllSquare:"Você está em dia com a casa.",
  fOwedYou:"Você tem a receber", fYouOwe:"Você deve",
  fToReceive:function(m){return m+" a receber";}, fToPay:function(m){return m+" a pagar";},
@@ -1938,6 +1932,8 @@ en:{
  fDone:"I paid", fPays:function(a,b){return a+" pays "+b;},
  fYouPay:function(b){return b==="House account"?"Pay into the house account":"Pay "+b;},
  fPaysYou:function(a){return a+" pays you";}, fTheyMark:"they mark it in the app when they pay",
+ fRentLine:"Rent (fixed)", fCostMonth:"Fixed cost this month", fApFlex:"Aporte this month (the part that moves)",
+ fFixedNote:"Fixed bill: it goes into the month's cost and is not split.",
  fBank:"House account", fSquare:"settled", fAllSquare:"You are square with the house.",
  fOwedYou:"You are owed", fYouOwe:"You owe",
  fToReceive:function(m){return m+" to collect";}, fToPay:function(m){return m+" to pay";},
@@ -3329,8 +3325,14 @@ function conta(){
 
   /* aluguel */
   var rb=document.getElementById("rentBox");rb.textContent="";
-  [[t("fRentMonth"),mm(RENT_BASE)],[t("fRentFrom"),t("fBank")],[t("fRentYear"),mm(RENT_BASE*12)]].forEach(function(p,i){
-    var r=el("div","kv"+(i===0?" big":""));r.appendChild(el("span",null,p[0]));r.appendChild(el("b",null,p[1]));rb.appendChild(r);});
+  function rrow(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));rb.appendChild(r);}
+  rb.appendChild(el("div","kv",mLabel(cm2)));
+  rrow(t("fRentLine"),mm(RENT_BASE));
+  rrow(logged>0?t("fBillsLogged"):t("fBillsEst"),mm(billsUsed(cm2)));
+  rrow(t("fCostMonth"),mm(RENT_BASE+billsUsed(cm2)),"tot");
+  rrow(t("fCotasN",n,m0(COTA)),"− "+mm(n*COTA));
+  rrow(t("fApFlex"),mm(ap),"tot");
+  rrow(t("fApEach",APO_N),mm(ap/APO_N),"big");
 
   /* cotas do mês: a grade */
   var ph=document.getElementById("payH");ph.textContent="";
@@ -3467,7 +3469,6 @@ function splitUI(){
   if(fBy===null)fBy=hh(me)?me:BANK_ID;
   if(fSplit===null)fSplit=st.households.map(function(h){return h.id;});
   fillSel(document.getElementById("eBy"),fBy);
-  var bBy=document.getElementById("bBy");fillSel(bBy,bBy.value||BANK_ID);
   var es=document.getElementById("eSplit");es.textContent="";
   st.households.forEach(function(h){var onx=fSplit.indexOf(h.id)>=0,c=bt("rel"+(onx?" on":""));
     if(onx)c.style.background=h.color;c.appendChild(el("i"));c.appendChild(document.createTextNode(h.name));
@@ -3475,10 +3476,11 @@ function splitUI(){
     c.addEventListener("click",function(){var k=fSplit.indexOf(h.id);
       if(k>=0){if(fSplit.length>1)fSplit.splice(k,1);}else fSplit.push(h.id);splitUI();});
     es.appendChild(c);});
-  var amt=parseAmt(document.getElementById("eAmt").value);
-  document.getElementById("ePer").textContent=t("fPer",fSplit.length,amt>0?mm(amt/fSplit.length):"—");
-  document.getElementById("eAdd").textContent=t("fAddExp");
-  document.getElementById("bAdd").textContent=t("fAddBill");
+  var fx=document.getElementById("eFixed");fx.setAttribute("aria-pressed",fFixed?"true":"false");
+  fx.className="rel"+(fFixed?" on":"");fx.style.background=fFixed?"var(--blue)":"";
+  es.hidden=fFixed;document.getElementById("eSplitLab").hidden=fFixed;
+  perUI();
+  document.getElementById("eAdd").textContent=fFixed?t("fAddBill"):t("fAddExp");
   var pf=document.getElementById("pFrom"),pt2=document.getElementById("pTo");
   fillSel(pf,pf.value||(hh(me)?me:BANK_ID));fillSel(pt2,pt2.value||BANK_ID);
   document.getElementById("pAdd").textContent=t("fAddPay");
@@ -3644,29 +3646,24 @@ document.getElementById("whoBtn").addEventListener("click",function(){
   var i=st.households.findIndex(function(h){return h.id===me;});
   me=st.households[(i+1)%st.households.length].id;sv();whoUI();home();});
 document.getElementById("eDate").value=today();
-document.getElementById("bDate").value=today();
 document.getElementById("finSegs").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;finTab=b.getAttribute("data-p");finSegs();window.scrollTo(0,0);});
 document.getElementById("eBy").addEventListener("change",function(e){fBy=e.target.value;});
-document.getElementById("eAmt").addEventListener("input",function(){
-  var a=parseAmt(this.value);document.getElementById("ePer").textContent=t("fPer",fSplit?fSplit.length:st.households.length,a>0?mm(a/(fSplit?fSplit.length:st.households.length)):"—");});
+var fFixed=false;
+function perUI(){var a=parseAmt(document.getElementById("eAmt").value),n2=fSplit?fSplit.length:st.households.length;
+  document.getElementById("ePer").textContent=fFixed?t("fFixedNote"):t("fPer",n2,a>0?mm(a/n2):"—");}
+document.getElementById("eAmt").addEventListener("input",perUI);
+document.getElementById("eFixed").addEventListener("click",function(){
+  fFixed=!fFixed;fBy=fFixed?BANK_ID:(hh(me)?me:BANK_ID);splitUI();});
 function badAmt(id){document.getElementById(id).textContent=t("fBadAmt");return false;}
 document.getElementById("eAdd").addEventListener("click",function(){
   var d=document.getElementById("eDesc"),a=parseAmt(document.getElementById("eAmt").value),dt=document.getElementById("eDate");
   document.getElementById("eMsg").textContent="";
   if(!d.value.trim()){document.getElementById("eMsg").textContent=t("fNeedDesc");return;}
   if(!(a>0))return badAmt("eMsg");
-  saveE({id:uid(),kind:"expense",desc:d.value.trim(),amount:a,date:dt.value||today(),
-    by:fBy||BANK_ID,split:fSplit.length===st.households.length?[]:fSplit.slice(),to:null,mk:me});
+  saveE({id:uid(),kind:fFixed?"bill":"expense",desc:d.value.trim(),amount:a,date:dt.value||today(),
+    by:fBy||BANK_ID,split:fFixed||fSplit.length===st.households.length?[]:fSplit.slice(),to:null,mk:me});
   d.value="";document.getElementById("eAmt").value="";fSplit=null;splitUI();});
-document.getElementById("bAdd").addEventListener("click",function(){
-  var d=document.getElementById("bDesc"),a=parseAmt(document.getElementById("bAmt").value),dt=document.getElementById("bDate");
-  document.getElementById("bMsg").textContent="";
-  if(!d.value.trim()){document.getElementById("bMsg").textContent=t("fNeedDesc");return;}
-  if(!(a>0))return badAmt("bMsg");
-  saveE({id:uid(),kind:"bill",desc:d.value.trim(),amount:a,date:dt.value||today(),
-    by:document.getElementById("bBy").value||BANK_ID,split:[],to:null,mk:me});
-  d.value="";document.getElementById("bAmt").value="";});
 document.getElementById("pAdd").addEventListener("click",function(){
   var f=document.getElementById("pFrom").value,to=document.getElementById("pTo").value,a=parseAmt(document.getElementById("pAmt").value);
   document.getElementById("pMsg").textContent="";
