@@ -31,6 +31,13 @@ create table if not exists expenses (
   date        date not null,
   created_at  timestamptz default now()
 );
+-- the house's Splitwise: who paid (a person's code, or 'bank' for the house account),
+-- who it is split between (empty = everyone), and payments between people ('pay')
+alter table expenses add column if not exists kind       text  not null default 'expense';
+alter table expenses add column if not exists paid_by    text  not null default 'bank';
+alter table expenses add column if not exists to_id      text;
+alter table expenses add column if not exists split      jsonb not null default '[]'::jsonb;
+alter table expenses add column if not exists created_by text;
 
 -- the open history: every booking, cancellation, credit purchase and whole-house night
 create table if not exists log (

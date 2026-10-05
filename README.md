@@ -95,6 +95,24 @@ That money goes to the aporte.
 
 **Extra credits** are $20 each (`EXTRA`), no limit, any time. Also to the aporte.
 
+## The tabs
+
+**Home** · **Calendar** (every booking, and the booking sheet) · **Bookings** (every booking,
+everyone's credits and the open history, filterable by person) · **Finance** · **Account**.
+
+**Finance** is the house's Splitwise. Every expense records who paid it — a person, or the
+house account (`bank`) — and who it is split between (everyone by default). Payments between
+people are recorded the same way (`kind: 'pay'`). `balances()` works out what each person and
+the house account is owed or owes, and `settle()` lists the shortest set of payments to square
+everything; **Settle** records one with two taps. Anyone can add or delete. The house bank
+details live in `app_state` under `bank`, visible only to signed-in members and editable by
+admins; they never go in the code, which is public. Finance also holds the cotas table, the
+monthly payments grid, the aporte and the end-of-lease projection.
+
+**Account** is just the person signed in: credits left, their ficha, their bookings, their
+balance in the house expenses, extra credits, their sign-in details, a password change and
+sign-out.
+
 ## Rules baked into the code
 
 - **21-day booking window** (`AHEAD`). Major holidays are exempt — those are agreed as a group.
