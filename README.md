@@ -100,14 +100,24 @@ That money goes to the aporte.
 **Home** · **Calendar** (every booking, and the booking sheet) · **Bookings** (every booking,
 everyone's credits and the open history, filterable by person) · **Finance** · **Account**.
 
-**Finance** is the house's Splitwise. Every expense records who paid it — a person, or the
-house account (`bank`) — and who it is split between (everyone by default). Payments between
-people are recorded the same way (`kind: 'pay'`). `balances()` works out what each person and
-the house account is owed or owes, and `settle()` lists the shortest set of payments to square
-everything; **Settle** records one with two taps. Anyone can add or delete. The house bank
-details live in `app_state` under `bank`, visible only to signed-in members and editable by
-admins; they never go in the code, which is public. Finance also holds the cotas table, the
-monthly payments grid, the aporte and the end-of-lease projection.
+**Finance** has five panes:
+
+1. **Expenses** — fixed bills (power, water, gas, internet; budgeted at `BILLS_EST` = $154 a month,
+   anything above goes into that month's aporte), the fixed rent (`RENT_BASE` = $2,346), extra
+   expenses split between the people picked, and everyone's balance.
+2. **Payments** — the house bank details (in `app_state` under `bank`, signed-in members only,
+   admins edit), the monthly cota grid (a tick stores the date it was marked) and settling
+   extra expenses between people or with the house account.
+3. **Activity** — every transaction in one list: cotas paid, the aporte, bills, extras, settlements.
+4. **Cotas** — the cota table, and the aporte worked out live:
+   `apMonth(m) = RENT_BASE + bills logged that month (or the budget) − COTA × filled cotas`,
+   split between the four tenants. It closes at the end of each month.
+5. **Year balance** — rent, bills (budget and logged), what the house costs, the cotas, the
+   aporte in total and per person, what came back from daily rates and extra credits.
+
+Expenses, bills and settlements share the `expenses` table (`kind`: `expense`, `bill`, `pay`).
+A bill paid out of someone's pocket puts the house account in their debt; one paid by the
+house account changes no balance. Amounts accept a comma or a dot.
 
 **Account** is just the person signed in: credits left, their ficha, their bookings, their
 balance in the house expenses, extra credits, their sign-in details, a password change and

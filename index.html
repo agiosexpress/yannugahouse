@@ -204,6 +204,20 @@ button{font-family:inherit}
 .bal .n small{display:block;font-size:12px;font-weight:500;color:var(--ink3)}
 .bal .v{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right}
 .fgrid{display:grid;gap:9px;margin-bottom:8px}
+.segs{display:flex;gap:6px;overflow-x:auto;padding:14px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.segs::-webkit-scrollbar{display:none}
+.segs button{flex:none;border:1.5px solid var(--line);background:var(--card);color:var(--ink2);border-radius:99px;
+  padding:8px 14px;font-family:var(--f);font-weight:800;font-size:13px;cursor:pointer}
+.segs button[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.segs button:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.fpane[hidden]{display:none}
+.calc2{font-family:var(--mono);font-size:13.5px;font-variant-numeric:tabular-nums}
+.calc2 .kv b{font-family:var(--mono)}
+.calc2 .kv.tot{border-top:2px solid var(--ink);font-weight:700}
+.calc2 .kv.tot b{font-weight:700}
+.meter{height:7px;border-radius:99px;background:var(--bg2);overflow:hidden;margin:2px 0 10px}
+.meter i{display:block;height:100%;background:var(--blue);border-radius:99px}
+.meter i.over{background:var(--brand)}
 .frow{display:flex;gap:9px}.frow>*{flex:1;min-width:0}
 .fnote{font-size:12.5px;color:var(--ink2)}
 .fmsg{font-size:12.5px;color:var(--good);min-height:1em}
@@ -1353,84 +1367,127 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 
   <!-- ============ FINANCE ============ -->
   <section class="view" id="v-fin" hidden>
-    <div class="sec"><h2 data-l="en">House bank account</h2><h2 data-l="pt">Conta da casa</h2></div>
-    <p class="subt" data-l="en">Only house money goes through it: the monthly cotas, rent and bills, and the house's own spending.</p>
-    <p class="subt" data-l="pt">Só passa dinheiro da casa: as cotas do mês, aluguel e contas, e os gastos da própria casa.</p>
-    <div class="fcard" id="bankBox"></div>
-    <div class="pad" id="bankEdit" hidden style="margin-top:10px"></div>
-
-    <div class="sec"><h2 data-l="en">Who owes whom</h2><h2 data-l="pt">Quem deve a quem</h2></div>
-    <p class="subt" data-l="en">Every house expense, who paid it and who it is split between. The shortest way to settle up is worked out for you.</p>
-    <p class="subt" data-l="pt">Todo gasto da casa, quem pagou e entre quem é dividido. O jeito mais curto de acertar sai calculado.</p>
-    <div class="fcard" id="mySplit"></div>
-    <div class="pad" id="debts" style="margin-top:6px"></div>
-
-    <div class="sec"><h2 data-l="en">Add an expense</h2><h2 data-l="pt">Lançar um gasto</h2></div>
-    <div class="pad fgrid">
-      <input id="eDesc" placeholder="Gardener, repair, linen…">
-      <div class="frow">
-        <input id="eAmt" type="number" step="0.01" min="0" placeholder="$">
-        <input id="eDate" type="date">
-      </div>
-      <label class="lab" for="eBy"><span data-l="pt">Quem pagou</span><span data-l="en">Who paid</span></label>
-      <select id="eBy"></select>
-      <span class="lab"><span data-l="pt">Dividir entre</span><span data-l="en">Split between</span></span>
-      <div class="rels" id="eSplit"></div>
-      <div class="fnote" id="ePer"></div>
-      <button class="cta" id="eAdd" type="button" style="width:100%;margin:4px 0 0"></button>
+    <div class="segs" id="finSegs" role="group" aria-label="Finance">
+      <button type="button" data-p="lanc"><span data-l="pt">Lançamentos</span><span data-l="en">Expenses</span></button>
+      <button type="button" data-p="pag"><span data-l="pt">Pagamentos</span><span data-l="en">Payments</span></button>
+      <button type="button" data-p="mov"><span data-l="pt">Movimentações</span><span data-l="en">Activity</span></button>
+      <button type="button" data-p="cotas"><span data-l="pt">Cotas</span><span data-l="en">Cotas</span></button>
+      <button type="button" data-p="ano"><span data-l="pt">Balanço do ano</span><span data-l="en">Year balance</span></button>
     </div>
 
-    <div class="sec"><h2 data-l="en">Record a payment</h2><h2 data-l="pt">Registrar um pagamento</h2></div>
-    <p class="subt" data-l="en">When someone pays someone back, or pays into the house account.</p>
-    <p class="subt" data-l="pt">Quando alguém paga outra pessoa de volta, ou deposita na conta da casa.</p>
-    <div class="pad fgrid">
-      <div class="frow">
-        <select id="pFrom" aria-label="From"></select>
-        <select id="pTo" aria-label="To"></select>
+    <!-- 1 · lançamentos -->
+    <div class="fpane" data-p="lanc">
+      <div class="sec"><h2 data-l="en">Fixed bills</h2><h2 data-l="pt">Contas fixas</h2></div>
+      <p class="subt" data-l="en">Power, water, gas, internet. Budgeted at $154 a month; anything above that goes into that month's aporte.</p>
+      <p class="subt" data-l="pt">Luz, água, gás, internet. Previsão de $154 por mês; o que passar disso entra no aporte do mês.</p>
+      <div class="fcard" id="billBox"></div>
+      <div class="pad fgrid" style="margin-top:10px">
+        <input id="bDesc" list="billKinds" placeholder="Luz, água, gás, internet…">
+        <datalist id="billKinds"><option value="Luz"><option value="Água"><option value="Gás"><option value="Internet"></datalist>
+        <div class="frow">
+          <input id="bAmt" type="text" inputmode="decimal" placeholder="$ 0,00">
+          <input id="bDate" type="date">
+        </div>
+        <label class="lab" for="bBy"><span data-l="pt">Quem pagou</span><span data-l="en">Who paid</span></label>
+        <select id="bBy"></select>
+        <div class="fmsg neg" id="bMsg"></div>
+        <button class="cta" id="bAdd" type="button" style="width:100%;margin:0"></button>
       </div>
-      <div class="frow">
-        <input id="pAmt" type="number" step="0.01" min="0" placeholder="$">
-        <button class="ghost" id="pAdd" type="button"></button>
+
+      <div class="sec"><h2 data-l="en">Rent</h2><h2 data-l="pt">Aluguel</h2></div>
+      <div class="fcard" id="rentBox"></div>
+
+      <div class="sec"><h2 data-l="en">Add an extra expense</h2><h2 data-l="pt">Lançar gasto extra</h2></div>
+      <p class="subt" data-l="en">Gardener, repairs, damage, linen — anything beyond rent and bills, split between the people you pick.</p>
+      <p class="subt" data-l="pt">Jardineiro, conserto, dano, enxoval — tudo além do aluguel e das contas, dividido entre quem você escolher.</p>
+      <div class="pad fgrid">
+        <input id="eDesc" placeholder="Jardineiro, conserto…">
+        <div class="frow">
+          <input id="eAmt" type="text" inputmode="decimal" placeholder="$ 0,00">
+          <input id="eDate" type="date">
+        </div>
+        <label class="lab" for="eBy"><span data-l="pt">Quem pagou</span><span data-l="en">Who paid</span></label>
+        <select id="eBy"></select>
+        <span class="lab"><span data-l="pt">Dividir entre</span><span data-l="en">Split between</span></span>
+        <div class="rels" id="eSplit"></div>
+        <div class="fnote" id="ePer"></div>
+        <div class="fmsg neg" id="eMsg"></div>
+        <button class="cta" id="eAdd" type="button" style="width:100%;margin:0"></button>
+      </div>
+
+      <div class="sec"><h2 data-l="en">Balance</h2><h2 data-l="pt">Saldo</h2></div>
+      <p class="subt" data-l="en">Extra expenses and bills paid out of someone's pocket. Settle it in Payments.</p>
+      <p class="subt" data-l="pt">Gastos extras e contas pagas do bolso de alguém. O acerto é em Pagamentos.</p>
+      <div class="pad" id="bals"></div>
+    </div>
+
+    <!-- 2 · pagamentos -->
+    <div class="fpane" data-p="pag" hidden>
+      <div class="sec"><h2 data-l="en">House bank account</h2><h2 data-l="pt">Conta da casa</h2></div>
+      <p class="subt" data-l="en">Only house money goes through it. Pay your cota here on the 26th.</p>
+      <p class="subt" data-l="pt">Só passa dinheiro da casa. A cota cai aqui todo dia 26.</p>
+      <div class="fcard" id="bankBox"></div>
+      <div class="pad" id="bankEdit" hidden style="margin-top:10px"></div>
+
+      <div class="sec"><h2 data-l="en">Monthly cotas</h2><h2 data-l="pt">Cotas do mês</h2></div>
+      <p class="subt" data-l="en">Tap when the transfer lands. The date goes into Activity.</p>
+      <p class="subt" data-l="pt">Toque quando a transferência cair. A data vai para Movimentações.</p>
+      <div class="tw"><table class="pg">
+        <thead><tr id="payH"></tr></thead><tbody id="payB"></tbody><tfoot id="payF"></tfoot>
+      </table></div>
+
+      <div class="sec"><h2 data-l="en">Settle extra expenses</h2><h2 data-l="pt">Acertar gastos extras</h2></div>
+      <p class="subt" data-l="en">When someone pays someone back, or pays their share into the house account.</p>
+      <p class="subt" data-l="pt">Quando alguém paga outra pessoa de volta, ou deposita a sua parte na conta da casa.</p>
+      <div class="pad fgrid">
+        <div class="frow">
+          <select id="pFrom" aria-label="From"></select>
+          <select id="pTo" aria-label="To"></select>
+        </div>
+        <div class="frow">
+          <input id="pAmt" type="text" inputmode="decimal" placeholder="$ 0,00">
+          <button class="ghost" id="pAdd" type="button"></button>
+        </div>
+        <div class="fmsg neg" id="pMsg"></div>
       </div>
     </div>
 
-    <div class="sec"><h2 data-l="en">Balances</h2><h2 data-l="pt">Saldos</h2></div>
-    <div class="pad" id="bals"></div>
+    <!-- 3 · movimentações -->
+    <div class="fpane" data-p="mov" hidden>
+      <div class="sec"><h2 data-l="en">Account activity</h2><h2 data-l="pt">Movimentações</h2></div>
+      <p class="subt" data-l="en">Every transaction: cotas paid, the aporte, bills, extra expenses and settlements.</p>
+      <p class="subt" data-l="pt">Todas as transações: cotas pagas, aporte, contas fixas, gastos extras e acertos.</p>
+      <div class="list" id="ledger"></div>
+    </div>
 
-    <div class="sec"><h2 data-l="en">Activity</h2><h2 data-l="pt">Movimentações</h2></div>
-    <div class="list" id="ledger"></div>
+    <!-- 4 · cotas -->
+    <div class="fpane" data-p="cotas" hidden>
+      <div class="sec"><h2 data-l="en">Cotas</h2><h2 data-l="pt">Cotas</h2></div>
+      <p class="subt" data-l="en">One cota per person: $190 a month and 100 credits a year. Open cotas stay out of the sums.</p>
+      <p class="subt" data-l="pt">Uma cota por pessoa: $190 por mês e 100 créditos por ano. Cota vaga fica fora das contas.</p>
+      <div class="tw"><table>
+        <thead><tr data-l="en"><th>Member</th><th>Cota</th><th>Aporte</th><th>Credits</th></tr>
+        <tr data-l="pt"><th>Membro</th><th>Cota</th><th>Aporte</th><th>Créditos</th></tr></thead>
+        <tbody id="capB"></tbody><tfoot id="capF"></tfoot>
+      </table></div>
+      <div class="sec"><h2 data-l="en">What the aporte is</h2><h2 data-l="pt">O que é o aporte</h2></div>
+      <p class="subt" data-l="en">The cotas do not cover the whole house yet. The aporte is the gap: rent plus fixed bills, minus all the cotas, split between the four tenants on the lease. It closes at the end of each month, once that month's bills are in.</p>
+      <p class="subt" data-l="pt">As cotas ainda não cobrem a casa inteira. O aporte é a diferença: aluguel mais contas fixas, menos todas as cotas, dividido entre os quatro do contrato. Fecha no fim de cada mês, quando as contas do mês estiverem lançadas.</p>
+      <div class="fcard calc2" id="apCalc"></div>
+    </div>
 
-    <div class="sec"><h2 data-l="en">Cotas</h2><h2 data-l="pt">Cotas</h2></div>
-    <p class="subt" data-l="en">One cota per person: $190 a month and 100 credits a year — the same for everyone. Open cotas stay out of the sums until someone takes them.</p>
-    <p class="subt" data-l="pt">Uma cota por pessoa: $190 por mês e 100 créditos por ano — igual para todo mundo. Cota vaga fica fora das contas até alguém entrar.</p>
-    <div class="tw"><table>
-      <thead><tr data-l="en"><th>Member</th><th>Cotas</th><th>Per month</th><th>Aporte</th><th>Credits</th></tr>
-      <tr data-l="pt"><th>Membro</th><th>Cotas</th><th>Por mês</th><th>Aporte</th><th>Créditos</th></tr></thead>
-      <tbody id="capB"></tbody><tfoot id="capF"></tfoot>
-    </table></div>
-
-    <div class="sec"><h2 data-l="en">Payments</h2><h2 data-l="pt">Pagamentos</h2></div>
-    <p class="subt" data-l="en">On the 26th of every month, into the house account. Tap to mark as paid.</p>
-    <p class="subt" data-l="pt">Todo dia 26, na conta da casa. Toque para marcar pago.</p>
-    <div class="tw"><table class="pg">
-      <thead><tr id="payH"></tr></thead><tbody id="payB"></tbody><tfoot id="payF"></tfoot>
-    </table></div>
-
-    <div class="sec"><h2 data-l="en">Cotas against the rent</h2><h2 data-l="pt">Cotas contra o aluguel</h2></div>
-    <p class="subt" data-l="en">The cotas and the aporte cover rent and bills exactly. Extra spending is split above, as it happens.</p>
-    <p class="subt" data-l="pt">As cotas e o aporte fecham o aluguel e as contas exato. Gasto extra é dividido acima, na hora.</p>
-    <div class="tw"><table><tbody id="cashB"></tbody></table></div>
-    <div class="proj" id="proj"></div>
-
-    <div class="sec"><h2 data-l="en">The aporte</h2><h2 data-l="pt">O aporte</h2></div>
-    <p class="subt" data-l="en">Pedro, Júlia, Niklas and Carol put in <b class="apEach"></b> each a month on top of their cotas — the gap the filled cotas leave. Every dollar the house earns — whole-house nights, extra credits — comes back to them first.</p>
-    <p class="subt" data-l="pt">Pedro, Júlia, Niklas e Carol colocam <b class="apEach"></b> cada por mês além das cotas — o que as cotas preenchidas não cobrem. Todo dinheiro que a casa ganha — diárias de casa fechada, créditos avulsos — volta primeiro para eles.</p>
-    <div class="proj" id="apBox"></div>
+    <!-- 5 · balanço do ano -->
+    <div class="fpane" data-p="ano" hidden>
+      <div class="sec"><h2 data-l="en">Year balance</h2><h2 data-l="pt">Balanço do ano</h2></div>
+      <p class="subt" data-l="en">What the house costs over the lease, in the open: 2 Oct 2026 to 1 Oct 2027.</p>
+      <p class="subt" data-l="pt">Quanto a casa custa no contrato inteiro, à vista de todos: 2 out 2026 a 1 out 2027.</p>
+      <div class="fcard calc2" id="yearBox"></div>
 
     <div class="sec"><h2 data-l="en">Guests</h2><h2 data-l="pt">Convidados</h2></div>
     <p class="subt" data-l="en">Outside friends who stayed on a free date. Register it when you book, choosing “Outside guest”. A whole-house night is charged at the rate and goes to the aporte.</p>
     <p class="subt" data-l="pt">Amigos de fora que ficaram numa data vaga. Registre na hora de reservar, escolhendo “Convidado de fora”. Casa fechada cobra a tabela e vai para o aporte.</p>
     <div class="list" id="guestList"></div>
+    </div>
   </section>
 
   <!-- ============ ACCOUNT: just you ============ -->
@@ -1535,7 +1592,8 @@ var DEF=[
 var GUEST={id:"gx",name:"",units:0,fixed:0,color:"var(--ink3)"};
 /* códigos antigos, de quando a cota era por casal: caem na primeira pessoa do casal */
 var LEG={pj:"pe",nc:"ni",dj:"du",bc:"br",cn:"ni",a:"br",b:"du",rm:"du"};
-var COTA=190,PER=100,RENT=2500,RUN=0,FEE=0;   /* aluguel + contas, fechado */
+var RENT_BASE=2346,BILLS_EST=154;   /* aluguel fixo + previsão das contas fixas por mês */
+var COTA=190,PER=100,RENT=RENT_BASE+BILLS_EST,RUN=0,FEE=0;
 var CI_HOUR=14;                     /* check-in às 14h: cancelar com menos de 24h perde os créditos */
 var EXTRA=20;                       /* crédito avulso, cada */
 var DAYR={baixa:200,media:350,alta:400};  /* diária da casa inteira, nunca em créditos */
@@ -1588,6 +1646,25 @@ pt:{
  bQ1:"Quarto 1", bQ2:"Quarto 2", bBunkLow:"Beliche de baixo", bBunkTop:"Beliche de cima",
  bSofa:"Sofá-cama", bFold:"Cama dobrável",
  bSleeps:function(n){return "dorme "+n;},
+ fApTbd:"fim do mês", fApEom:"fecha no fim do mês",
+ fApMonth:function(m){return "Aporte de "+m+", com o que já foi lançado";},
+ fRent:"Aluguel", fBillsLogged:"Contas fixas lançadas", fBillsEst:"Contas fixas (previsão, nada lançado ainda)",
+ fCotasN:function(n,c){return n+" cotas × "+c;}, fApTotal:"Aporte do mês",
+ fApEach:function(n){return "Para cada um dos "+n;}, fApWho:function(w){return "Pagam o aporte: "+w+".";},
+ fBillsOver:function(m){return "Passou "+m+" da previsão — a diferença entra no aporte deste mês.";},
+ fBillsOf:function(e,l){return "Previsão de "+e+" · ainda cabem "+l+".";},
+ fRentMonth:"Por mês, fixo", fRentFrom:"Sai da", fRentYear:"No contrato (12 meses)",
+ fAddBill:"Lançar conta fixa", fBill:"conta fixa",
+ fCotaPaid:function(n,m){return n+" pagou a cota de "+m;}, fToBank:"na conta da casa",
+ fApPaid:function(m){return "Aporte de "+m;},
+ fBadAmt:"Valor inválido. Digite só o número, por exemplo 33,50.", fNeedDesc:"Escreva o que foi pago.",
+ fSamePerson:"Quem paga e quem recebe precisam ser diferentes.",
+ fyRent:function(n,m){return "Aluguel · "+n+" meses × "+m;}, fyBills:function(m){return "Contas fixas · previsão de "+m+"/mês, ou o lançado";},
+ fyBillsLogged:"Contas fixas lançadas até agora", fyCost:"Custo da casa no ano",
+ fyCotas:function(n,c){return "Cotas · "+n+" pessoas × "+c+" × 12";}, fyAporte:"Aporte no ano",
+ fyAporteEach:function(n){return "Aporte por pessoa · ÷ "+n;}, fyApPaid:"Aporte já pago",
+ fyEarn:"Diárias, avulsos e convidados (voltam para o aporte)", fyApNet:"Aporte líquido, depois do que voltou",
+ fyExtra:"Gastos extras rateados à parte",
  fBank:"Conta da casa", fSquare:"em dia", fAllSquare:"Você está em dia com a casa.",
  fOwedYou:"Você tem a receber", fYouOwe:"Você deve",
  fToReceive:function(m){return m+" a receber";}, fToPay:function(m){return m+" a pagar";},
@@ -1832,6 +1909,25 @@ en:{
  bQ1:"Bedroom 1", bQ2:"Bedroom 2", bBunkLow:"Bunk, bottom", bBunkTop:"Bunk, top",
  bSofa:"Sofa bed", bFold:"Folding single",
  bSleeps:function(n){return "sleeps "+n;},
+ fApTbd:"month end", fApEom:"set at month end",
+ fApMonth:function(m){return "Aporte for "+m+", with what has been logged";},
+ fRent:"Rent", fBillsLogged:"Fixed bills logged", fBillsEst:"Fixed bills (budget, nothing logged yet)",
+ fCotasN:function(n,c){return n+" cotas × "+c;}, fApTotal:"Aporte this month",
+ fApEach:function(n){return "For each of the "+n;}, fApWho:function(w){return "Paying the aporte: "+w+".";},
+ fBillsOver:function(m){return m+" over budget — the difference goes into this month's aporte.";},
+ fBillsOf:function(e,l){return "Budget of "+e+" · "+l+" still fits.";},
+ fRentMonth:"Per month, fixed", fRentFrom:"Paid from the", fRentYear:"Over the lease (12 months)",
+ fAddBill:"Add fixed bill", fBill:"fixed bill",
+ fCotaPaid:function(n,m){return n+" paid the cota for "+m;}, fToBank:"into the house account",
+ fApPaid:function(m){return "Aporte for "+m;},
+ fBadAmt:"That amount does not look right. Type just the number, for example 33.50.", fNeedDesc:"Write what was paid for.",
+ fSamePerson:"The payer and the receiver have to be different.",
+ fyRent:function(n,m){return "Rent · "+n+" months × "+m;}, fyBills:function(m){return "Fixed bills · "+m+"/month budget, or what was logged";},
+ fyBillsLogged:"Fixed bills logged so far", fyCost:"What the house costs this year",
+ fyCotas:function(n,c){return "Cotas · "+n+" people × "+c+" × 12";}, fyAporte:"Aporte this year",
+ fyAporteEach:function(n){return "Aporte per person · ÷ "+n;}, fyApPaid:"Aporte paid so far",
+ fyEarn:"Daily rates, extra credits and guests (back to the aporte)", fyApNet:"Net aporte, after what came back",
+ fyExtra:"Extra expenses, split separately",
  fBank:"House account", fSquare:"settled", fAllSquare:"You are square with the house.",
  fOwedYou:"You are owed", fYouOwe:"You owe",
  fToReceive:function(m){return m+" to collect";}, fToPay:function(m){return m+" to pay";},
@@ -2086,7 +2182,7 @@ function paintUI(){
   st("checkBtnT","uCheckAvail"); st("goRes","uSeeAll"); st("goCal2","uCalendar");
   st("goCal","uBookDate"); st("vWeek","uWeek"); st("vMonth","uMonth"); st("eAdd","uAdd");
   ar("prev","uPrev"); ar("next","uNext"); ar("viewGrp","uView");
-  ph("eDesc","phDesc"); ph("eAmt","phAmt"); ph("lgEmail","auEmailPh");
+  ph("eDesc","phDesc"); ph("lgEmail","auEmailPh");
   var os=E("openSheet"); if(os&&os.disabled)os.textContent=t("uPickDate");
   var lb=E("lgBtn"); if(lb&&!lb.disabled)lb.textContent=t("auSignIn");
   var bt2=E("bannerT"); if(bt2&&BANT)bt2.textContent=t(BANT);
@@ -2231,7 +2327,7 @@ function allow(h){return PER*(+h.units||0)+bought(h.id);}
 /* o aporte: quem paga, quanto já entrou e quanto já voltou */
 function apTotal(){return st.households.reduce(function(a,h){return a+(+h.ap||0);},0);}
 function apPayers(){return st.households.filter(function(h){return (+h.ap||0)>0;});}
-function apIn(){var n=0;PAYM.forEach(function(m){if((st.paid[m]||{}).__ap)n++;});return n*apTotal();}
+function apIn(){var n=0;PAYM.forEach(function(m){if((st.paid[m]||{}).__ap)n+=apMonth(m);});return n;}
 function apBack(){var t=0;
   st.bookings.map(nb).forEach(function(b){if(b.kind==="whole")t+=(+b.amount||money(b.in,b.out));});
   (st.buys||[]).forEach(function(b){t+=(+b.amount||((+b.n||0)*EXTRA));});
@@ -3035,8 +3131,8 @@ function t7(){
       ?"Com "+n+" de "+DEF.length+" cotas preenchidas, hoje."
       :"With "+n+" of "+DEF.length+" cotas filled, today.";
     document.getElementById("t7cap"+sfx).textContent=pt
-      ?"Aluguel e contas da casa custam "+fmt(RENT,true)+". Fecha exato. Gasto extra é rateado entre todos quando acontece."
-      :"Rent and bills cost "+fmt(RENT,false)+". It closes exactly. Extra expenses are split between everyone as they happen.";
+      ?"A casa custa "+fmt(RENT,true)+" por mês: aluguel de "+fmt(RENT_BASE,true)+" mais "+fmt(BILLS_EST,true)+" de contas fixas previstas. Se as contas passarem disso, a diferença entra no aporte do mês. Gasto extra é rateado à parte."
+      :"The house costs "+fmt(RENT,false)+" a month: "+fmt(RENT_BASE,false)+" rent plus "+fmt(BILLS_EST,false)+" of budgeted bills. If the bills come in higher, the difference goes into that month's aporte. Extra expenses are split separately.";
     var w=document.getElementById("t7warn"+sfx);w.textContent="";
     var b1=el("b",null,pt?"O aporte. ":"The aporte. ");w.appendChild(b1);
     w.appendChild(document.createTextNode(pt
@@ -3155,175 +3251,132 @@ function buyCredits(id,n){
   sv();render();}
 
 /* ---------- account ---------- */
+/* ---------- finance ---------- */
+var finTab="lanc";
+function parseAmt(v){v=String(v||"").trim().replace(/[$\s]/g,"");if(!v)return NaN;
+  if(v.indexOf(",")>=0&&v.indexOf(".")>=0)v=v.replace(/\./g,"").replace(",",".");
+  else v=v.replace(",",".");
+  var n=Number(v);return isFinite(n)?Math.round(n*100)/100:NaN;}
+function curMonth(){var m=today().slice(0,7);return PAYM.indexOf(m)>=0?m:(m<PAYM[0]?PAYM[0]:PAYM[PAYM.length-1]);}
+function mLabel(m){return MN[+m.split("-")[1]-1]+" "+m.split("-")[0];}
+function billsOf(m){return st.expenses.filter(function(e){return e.kind==="bill"&&String(e.date).slice(0,7)===m;})
+  .reduce(function(a,e){return a+(+e.amount||0);},0);}
+function billsUsed(m){var b=billsOf(m);return b>0?b:BILLS_EST;}
+/* o aporte do mês: aluguel + contas fixas − todas as cotas, entre quem paga o aporte */
+function apMonth(m){return Math.max(0,RENT_BASE+billsUsed(m)-COTA*ACTIVE.length);}
+function paidOn(v){return typeof v==="string"&&/^\d{4}-\d{2}-\d{2}/.test(v)?v.slice(0,10):"";}
+function finSegs(){
+  [].forEach.call(document.querySelectorAll("#finSegs button"),function(b){
+    b.setAttribute("aria-pressed",b.getAttribute("data-p")===finTab?"true":"false");});
+  [].forEach.call(document.querySelectorAll("#v-fin .fpane"),function(x){x.hidden=x.getAttribute("data-p")!==finTab;});}
+
 function conta(){
-  var tu=st.households.reduce(function(s,h){return s+h.units;},0);
-  var tf=st.households.reduce(function(s,h){return s+h.fixed;},0);
+  finSegs();
+  var n=ACTIVE.length,cm2=curMonth();
+
+  /* cotas */
   var cb=document.getElementById("capB");cb.textContent="";
   st.households.forEach(function(h){
-    var tr=el("tr"),td=el("td"),n=el("div","nm"),i=el("i");
-    i.style.background=h.color;n.appendChild(i);n.appendChild(el("span",null,h.name));
-    td.appendChild(n);tr.appendChild(td);
-    tr.appendChild(el("td",null,nu(h.units)));
+    var tr=el("tr"),td=el("td"),nm=el("div","nm"),i=el("i");
+    i.style.background=h.color;nm.appendChild(i);nm.appendChild(el("span",null,h.name));
+    td.appendChild(nm);tr.appendChild(td);
     tr.appendChild(el("td",null,m0(h.fixed)));
-    tr.appendChild(el("td",null,(+h.ap||0)?mx(h.ap):"—"));
+    tr.appendChild(el("td",null,h.apo?t("fApTbd"):"—"));
     tr.appendChild(el("td",null,String(PER*h.units+bought(h.id))));
     cb.appendChild(tr);});
   VAGAS.forEach(function(v){
-    var tr=el("tr"),td=el("td"),n=el("div","nm"),i=el("i");
-    i.style.background="var(--line)";n.appendChild(i);n.appendChild(el("span",null,v.name+" · "+t("nVacant")));
-    td.appendChild(n);tr.appendChild(td);tr.style.opacity=".55";
-    ["—","—","—","—"].forEach(function(x){tr.appendChild(el("td",null,x));});cb.appendChild(tr);});
+    var tr=el("tr"),td=el("td"),nm=el("div","nm"),i=el("i");
+    i.style.background="var(--line)";nm.appendChild(i);nm.appendChild(el("span",null,v.name+" · "+t("nVacant")));
+    td.appendChild(nm);tr.appendChild(td);tr.style.opacity=".55";
+    ["—","—","—"].forEach(function(x){tr.appendChild(el("td",null,x));});cb.appendChild(tr);});
   var cf=document.getElementById("capF");cf.textContent="";
-  var tap=apTotal(),tcr=st.households.reduce(function(a,h){return a+PER*h.units+bought(h.id);},0);
-  var ftr=el("tr");[t("nTotal"),nu(tu),m0(tf),tap?mx(tap):"—",String(tcr)]
-    .forEach(function(v){ftr.appendChild(el("td",null,v));});
+  var tcr=st.households.reduce(function(a,h){return a+PER*h.units+bought(h.id);},0);
+  var ftr=el("tr");[t("nTotal"),m0(n*COTA),t("fApEom"),String(tcr)].forEach(function(v){ftr.appendChild(el("td",null,v));});
   cf.appendChild(ftr);
-  var ftr0=el("tr");ftr0.appendChild(el("td",null,t("nIntoHouse")));
-  ftr0.appendChild(el("td",null,""));
-  ftr0.appendChild(el("td",null,m0(tf+tap)));
-  ftr0.appendChild(el("td",null,""));ftr0.appendChild(el("td",null,""));
-  cf.appendChild(ftr0);
 
+  /* a conta do aporte, ao vivo */
+  var ac=document.getElementById("apCalc");ac.textContent="";
+  var logged=billsOf(cm2),ap=apMonth(cm2);
+  ac.appendChild(el("div","kv",t("fApMonth",mLabel(cm2))));
+  [[t("fRent"),"+ "+mm(RENT_BASE)],
+   [logged>0?t("fBillsLogged"):t("fBillsEst"),"+ "+mm(billsUsed(cm2))],
+   [t("fCotasN",n,m0(COTA)),"− "+mm(n*COTA)]].forEach(function(p){
+    var r=el("div","kv");r.appendChild(el("span",null,p[0]));r.appendChild(el("b",null,p[1]));ac.appendChild(r);});
+  var rt=el("div","kv tot");rt.appendChild(el("span",null,t("fApTotal")));rt.appendChild(el("b",null,mm(ap)));ac.appendChild(rt);
+  var re=el("div","kv big");re.appendChild(el("span",null,t("fApEach",APO_N)));re.appendChild(el("b",null,mm(ap/APO_N)));ac.appendChild(re);
+  ac.appendChild(el("div","kv",t("fApWho",apPayers().map(function(h){return h.name;}).join(", "))));
+
+  /* contas fixas do mês */
+  var bb=document.getElementById("billBox");bb.textContent="";
+  var r1=el("div","kv big");r1.appendChild(el("span",null,mLabel(cm2)));
+  r1.appendChild(el("b",logged>BILLS_EST?"neg":null,mm(logged)));bb.appendChild(r1);
+  var mt=el("div","meter"),mi=el("i");mi.style.width=Math.min(100,logged/BILLS_EST*100)+"%";
+  if(logged>BILLS_EST)mi.className="over";mt.appendChild(mi);bb.appendChild(mt);
+  bb.appendChild(el("div","kv",logged>BILLS_EST?t("fBillsOver",mm(logged-BILLS_EST)):t("fBillsOf",mm(BILLS_EST),mm(Math.max(0,BILLS_EST-logged)))));
+  st.expenses.filter(function(e){return e.kind==="bill"&&String(e.date).slice(0,7)===cm2;}).forEach(function(e){
+    var r=el("div","kv");r.appendChild(el("span",null,(e.desc||"—")+" · "+sd(e.date)));r.appendChild(el("b",null,mm(+e.amount||0)));bb.appendChild(r);});
+
+  /* aluguel */
+  var rb=document.getElementById("rentBox");rb.textContent="";
+  [[t("fRentMonth"),mm(RENT_BASE)],[t("fRentFrom"),t("fBank")],[t("fRentYear"),mm(RENT_BASE*12)]].forEach(function(p,i){
+    var r=el("div","kv"+(i===0?" big":""));r.appendChild(el("span",null,p[0]));r.appendChild(el("b",null,p[1]));rb.appendChild(r);});
+
+  /* cotas do mês: a grade */
   var ph=document.getElementById("payH");ph.textContent="";
   ph.appendChild(el("th",null,t("nCouple")));
   PAYM.forEach(function(m){ph.appendChild(el("th",null,MS[+m.split("-")[1]-1]));});
   var pb=document.getElementById("payB");pb.textContent="";
+  function tick(row,ok,color,label,toggle){var c=el("td"),x=bt("tick"+(ok?" on":""),ok?"✓":"");
+    if(ok)x.style.background=color;x.setAttribute("aria-label",label+(ok?t("nPaid"):t("nOutstanding")));
+    x.addEventListener("click",function(){toggle();sv();if(db&&cw)db.doc("state/paid").set({paid:st.paid}).catch(werr);conta();home();acct();});
+    c.appendChild(x);row.appendChild(c);}
   st.households.forEach(function(h){
-    var tr=el("tr"),td=el("td"),n=el("div","nm"),i=el("i");
-    i.style.background=h.color;n.appendChild(i);n.appendChild(el("span",null,h.name));
-    td.appendChild(n);tr.appendChild(td);
-    PAYM.forEach(function(m){
-      var c=el("td"),ok=!!(st.paid[h.id]&&st.paid[h.id][m]),x=bt("tick"+(ok?" on":""),ok?"✓":"");
-      if(ok)x.style.background=h.color;
-      x.setAttribute("aria-label",h.name+" "+m+(ok?t("nPaid"):t("nOutstanding")));
-      x.addEventListener("click",function(){
-        st.paid[h.id]=st.paid[h.id]||{};
-        if(st.paid[h.id][m])delete st.paid[h.id][m];else st.paid[h.id][m]=true;
-        sv();if(db&&cw)db.doc("state/paid").set({paid:st.paid}).catch(werr);conta();home();});
-      c.appendChild(x);tr.appendChild(c);});
+    var tr=el("tr"),td=el("td"),nm=el("div","nm"),i=el("i");
+    i.style.background=h.color;nm.appendChild(i);nm.appendChild(el("span",null,h.name));td.appendChild(nm);tr.appendChild(td);
+    PAYM.forEach(function(m){var ok=!!(st.paid[h.id]&&st.paid[h.id][m]);
+      tick(tr,ok,h.color,h.name+" "+m,function(){st.paid[h.id]=st.paid[h.id]||{};
+        if(st.paid[h.id][m])delete st.paid[h.id][m];else st.paid[h.id][m]=today();});});
     pb.appendChild(tr);});
   var apr=el("tr"),apd=el("td"),apn=el("div","nm"),api=el("i");
-  api.style.background="var(--ink3)";apn.appendChild(api);
-  apn.appendChild(el("span",null,t("nAporteRow")));
-  apd.appendChild(apn);apr.appendChild(apd);
-  PAYM.forEach(function(m){
-    var c=el("td"),ok=!!(st.paid[m]||{}).__ap,x=bt("tick"+(ok?" on":""),ok?"✓":"");
-    if(ok)x.style.background="var(--ink2)";
-    x.setAttribute("aria-label",t("nAporteRow")+" "+m+(ok?t("nPaid"):t("nOutstanding")));
-    x.addEventListener("click",function(){
-      st.paid[m]=st.paid[m]||{};
-      if(st.paid[m].__ap)delete st.paid[m].__ap;else st.paid[m].__ap=true;
-      sv();if(db&&cw)db.doc("state/paid").set({paid:st.paid}).catch(werr);conta();home();});
-    c.appendChild(x);apr.appendChild(c);});
+  api.style.background="var(--ink3)";apn.appendChild(api);apn.appendChild(el("span",null,t("nAporteRow")));apd.appendChild(apn);apr.appendChild(apd);
+  PAYM.forEach(function(m){var ok=!!(st.paid[m]||{}).__ap;
+    tick(apr,ok,"var(--ink2)",t("nAporteRow")+" "+m,function(){st.paid[m]=st.paid[m]||{};
+      if(st.paid[m].__ap)delete st.paid[m].__ap;else st.paid[m].__ap=today();});});
   pb.appendChild(apr);
-
   var pf=document.getElementById("payF");pf.textContent="";
   var ftr2=el("tr");ftr2.appendChild(el("td",null,t("nReceived")));
-  PAYM.forEach(function(m){var s=0;
-    st.households.forEach(function(h){if(st.paid[h.id]&&st.paid[h.id][m])s+=h.fixed;});
-    if((st.paid[m]||{}).__ap)s+=apTotal();
-    ftr2.appendChild(el("td",null,s?m0(s):"—"));});
+  PAYM.forEach(function(m){var s2=0;
+    st.households.forEach(function(h){if(st.paid[h.id]&&st.paid[h.id][m])s2+=h.fixed;});
+    if((st.paid[m]||{}).__ap)s2+=apMonth(m);
+    ftr2.appendChild(el("td",null,s2?m0(s2):"—"));});
   pf.appendChild(ftr2);
 
-  var inn=0,closed=0,apn2=0;
-  st.households.forEach(function(h){PAYM.forEach(function(m){
-    if(st.paid[h.id]&&st.paid[h.id][m])inn+=h.fixed;});});
-  PAYM.forEach(function(m){if((st.paid[m]||{}).__ap)apn2+=apTotal();});
-  PAYM.forEach(function(m){if(st.households.every(function(h){return st.paid[h.id]&&st.paid[h.id][m];}))closed++;});
-  var wIn=0;st.bookings.map(nb).forEach(function(b){
-    if(b.kind==="whole")wIn+=(+b.amount||money(b.in,b.out));});
-  var bIn=(st.buys||[]).reduce(function(s,x){return s+(+x.amount||0);},0);
-  var gin=st.bookings.map(nb).filter(function(b){return isG(b)&&b.kind!=="whole";})
-    .reduce(function(s,g){return s+(+g.amount||0);},0);
-  var out=closed*(RENT+RUN),fees=closed*FEE;
-  var kb=document.getElementById("cashB");kb.textContent="";
-  [].forEach.call(document.querySelectorAll(".apEach"),function(x){x.textContent=mx(APO_TOTAL/APO_N);});
-  [[t("nRecvShares"),m0(inn)],
-   [t("nRecvAporte"),apn2?"+ "+m0(apn2):"—"],
-   [t("nRentBills"),out?"− "+m0(out):"—"],
-   [t("nFundBal"),mm(inn+apn2-out-fees)]].forEach(function(p,i){
-    var tr=el("tr");tr.appendChild(el("td",null,p[0]));tr.appendChild(el("td",null,p[1]));
-    if(i===3){tr.style.fontWeight="700";tr.style.background="var(--bg2)";}kb.appendChild(tr);});
+  /* balanço do ano */
+  var wIn=0;st.bookings.map(nb).forEach(function(b){if(b.kind==="whole")wIn+=(+b.amount||money(b.in,b.out));});
+  var bIn=(st.buys||[]).reduce(function(a,x){return a+(+x.amount||0);},0);
+  var gin=st.bookings.map(nb).filter(function(b){return isG(b)&&b.kind!=="whole";}).reduce(function(a,g){return a+(+g.amount||0);},0);
+  var rentY=RENT_BASE*PAYM.length,billsY=PAYM.reduce(function(a,m){return a+billsUsed(m);},0);
+  var billsLog=PAYM.reduce(function(a,m){return a+billsOf(m);},0),costY=rentY+billsY,cotasY=n*COTA*PAYM.length;
+  var apY=PAYM.reduce(function(a,m){return a+apMonth(m);},0);
+  var apPaid=PAYM.reduce(function(a,m){return a+((st.paid[m]||{}).__ap?apMonth(m):0);},0);
+  var earn=wIn+bIn+gin,extra=st.expenses.filter(function(e){return !e.kind||e.kind==="expense";}).reduce(function(a,e){return a+(+e.amount||0);},0);
+  var yb=document.getElementById("yearBox");yb.textContent="";
+  function row(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));yb.appendChild(r);}
+  row(t("fyRent",PAYM.length,mm(RENT_BASE)),mm(rentY));
+  row(t("fyBills",mm(BILLS_EST)),mm(billsY));
+  row(t("fyBillsLogged"),mm(billsLog));
+  row(t("fyCost"),mm(costY),"tot");
+  row(t("fyCotas",n,m0(COTA)),"− "+mm(cotasY));
+  row(t("fyAporte"),mm(apY),"tot");
+  row(t("fyAporteEach",APO_N),mm(apY/APO_N),"big");
+  row(t("fyApPaid"),mm(apPaid));
+  row(t("fyEarn"),earn?"+ "+mm(earn):"—");
+  row(t("fyApNet"),mm(Math.max(0,apY-earn)),"tot");
+  row(t("fyExtra"),extra?mm(extra):"—");
 
-  /* o aporte: quanto entrou, quanto já voltou, quanto falta */
-  var ab2=document.getElementById("apBox");
-  if(ab2){ab2.textContent="";
-    var back=wIn+bIn;
-    var owed=Math.max(0,apn2-back);
-    function arow(k,v,cls){var d=el("div","pr"+(cls?" "+cls:""));
-      d.appendChild(el("span",null,k));d.appendChild(el("b",null,v));ab2.appendChild(d);}
-    arow(t("apPaid"),m0(apn2));
-    arow(t("apWhole"),wIn?"+"+m0(wIn):"—");
-    arow(t("apBuys"),bIn?"+"+m0(bIn):"—");
-    arow(t("apLeft"),m0(owed),"big");
-    var sh3=el("div","sh2");
-    apPayers().forEach(function(h){
-      var d=el("div");d.appendChild(el("span",null,h.name));
-      d.appendChild(el("b",null,mx(owed/(apPayers().length||1))));sh3.appendChild(d);});
-    ab2.appendChild(sh3);}
-
-  /* comprar créditos avulsos */
-  var bb2=document.getElementById("buyBox");
-  if(bb2){bb2.textContent="";
-    var hMe=hh(me);
-    var bw2=el("div","buyrow");
-    [10,20,50].forEach(function(n){
-      var x=bt(null,t("bqBuy",n,mm(n*EXTRA)));
-      x.addEventListener("click",function(){buyCredits(me,n);});
-      bw2.appendChild(x);});
-    bb2.appendChild(bw2);
-    var mine2=(st.buys||[]).filter(function(x){return x.hh===me;});
-    bb2.appendChild(el("p","sub2",mine2.length
-      ?t("bqMine",mine2.reduce(function(s,x){return s+x.n;},0),
-         mm(mine2.reduce(function(s,x){return s+(+x.amount||0);},0)))
-      :t("bqNone",hMe?hMe.name:"")));}
-
-  /* fim do contrato: o aporte volta primeiro, só depois sobra algo para dividir */
-  var pj=document.getElementById("proj");pj.textContent="";
-  var tf2=st.households.reduce(function(a,h){return a+h.fixed;},0);
-  var fixAnual=(tf2-RENT-RUN-FEE)*12;            /* as cotas contra o custo da casa */
-  var apAno=apTotal()*12;                        /* o aporte do ano inteiro */
-  var earn=wIn+bIn+gin;                          /* o que a casa ganhou */
-  var pot=fixAnual+apAno+earn;                   /* tudo que existe no fim; gastos são rateados à parte */
-  var apBack2=Math.min(apAno,Math.max(0,pot));   /* devolve o aporte primeiro */
-  var rest=pot-apBack2;                          /* só o que passar disso se divide */
-  pj.appendChild(el("h5",null,t("nEndLease")));
-  pj.appendChild(el("p","sub2",t("nProjSub")));
-  function pr(k,v,cls){var d=el("div","pr"+(cls?" "+cls:""));
-    d.appendChild(el("span",null,k));d.appendChild(el("b",null,v));pj.appendChild(d);}
-  pr(t("nCotaSurplus"),(fixAnual<0?"−":"+")+m0(Math.abs(fixAnual)));
-  pr(t("nAporteIn"),"+"+m0(apAno));
-  pr(t("nEarned"),earn?"+"+m0(earn):"—");
-  pr(t("nAporteBack"),"−"+m0(apBack2));
-  pr(t("nRestSplit"),m0(rest),"big");
-
-  /* primeiro: para quem pôs o aporte */
-  var pay=apPayers();
-  if(pay.length){
-    var s1=el("div","sh2");
-    s1.appendChild(el("div","shh",t("nBackToPayers")));
-    pay.forEach(function(h){
-      var d=el("div");
-      d.appendChild(el("span",null,h.name));
-      d.appendChild(el("b",null,mx(apBack2/pay.length)+
-        (apBack2<apAno?" "+t("nOfOwed",mx(apAno/pay.length)):"")));
-      s1.appendChild(d);});
-    pj.appendChild(s1);}
-
-  /* depois, se sobrar: por cota, para todos */
-  var tuAll=st.households.reduce(function(a,h){return a+(+h.units||0);},0)||1;
-  var s2=el("div","sh2");
-  s2.appendChild(el("div","shh",rest>0?t("nThenByCota"):t("nNothingLeft")));
-  if(rest>0)st.households.forEach(function(h){
-    var d=el("div");
-    d.appendChild(el("span",null,h.name));
-    d.appendChild(el("b",null,m0(rest*h.units/tuAll)));s2.appendChild(d);});
-  pj.appendChild(s2);
-
-  // guest list
+  /* convidados */
   var gl=document.getElementById("guestList");gl.textContent="";
-  var gs=st.bookings.map(nb).filter(isG)
-    .sort(function(a,b){return String(b.in).localeCompare(String(a.in));});
+  var gs=st.bookings.map(nb).filter(isG).sort(function(a,b){return String(b.in).localeCompare(String(a.in));});
   if(!gs.length)gl.appendChild(el("p","empty",t("nNoGuests")));
   else gs.forEach(function(g){
     var it=el("div","item"),m=el("div","mid");
@@ -3337,62 +3390,47 @@ function conta(){
       if(db&&cw)db.doc("bookings/"+g.id).delete().catch(werr);sv();render();});
     it.appendChild(d);gl.appendChild(it);});
 
+  /* créditos avulsos (aba Conta) */
+  var bb2=document.getElementById("buyBox");
+  if(bb2){bb2.textContent="";
+    var hMe=hh(me),bw2=el("div","buyrow");
+    [10,20,50].forEach(function(k){var x=bt(null,t("bqBuy",k,mm(k*EXTRA)));
+      x.addEventListener("click",function(){buyCredits(me,k);});bw2.appendChild(x);});
+    bb2.appendChild(bw2);
+    var mine2=(st.buys||[]).filter(function(x){return x.hh===me;});
+    bb2.appendChild(el("p","sub2",mine2.length
+      ?t("bqMine",mine2.reduce(function(a,x){return a+x.n;},0),mm(mine2.reduce(function(a,x){return a+(+x.amount||0);},0)))
+      :t("bqNone",hMe?hMe.name:"")));}
+
   splitUI();bankUI();}
 
-/* ---------- finance: a Splitwise for the house ---------- */
+/* ---------- finance: the split between people ---------- */
 function pName(id){return id===BANK_ID?t("fBank"):((hh(LEG[id]||id)||{}).name||"?");}
 function pColor(id){return id===BANK_ID?"var(--ink)":((hh(LEG[id]||id)||{}).color||"var(--ink3)");}
-function splitOf(e){var s=(e.split||[]).map(function(x){return LEG[x]||x;}).filter(function(x){return !!hh(x);});
-  return s.length?s:st.households.map(function(h){return h.id;});}
-/* positivo: tem a receber · negativo: deve */
+function splitOf(e){var s2=(e.split||[]).map(function(x){return LEG[x]||x;}).filter(function(x){return !!hh(x);});
+  return s2.length?s2:st.households.map(function(h){return h.id;});}
+/* positivo: tem a receber · negativo: deve. Conta fixa paga do bolso: a conta da casa devolve */
 function balances(){var b={};b[BANK_ID]=0;st.households.forEach(function(h){b[h.id]=0;});
   st.expenses.forEach(function(e){var a=+e.amount||0,by=LEG[e.by]||e.by||BANK_ID;if(!(by in b))b[by]=0;
     if(e.kind==="pay"){var to=LEG[e.to]||e.to||BANK_ID;if(!(to in b))b[to]=0;b[by]+=a;b[to]-=a;}
+    else if(e.kind==="bill"){if(by!==BANK_ID){b[by]+=a;b[BANK_ID]-=a;}}
     else{var sp=splitOf(e);b[by]+=a;sp.forEach(function(x){b[x]-=a/sp.length;});}});
   Object.keys(b).forEach(function(k){b[k]=Math.round(b[k]*100)/100;});return b;}
-/* o jeito mais curto de acertar: quem mais deve paga quem mais tem a receber */
-function settle(b){var dr=[],cr=[],out=[];
-  Object.keys(b).forEach(function(k){if(b[k]<-0.004)dr.push({id:k,v:-b[k]});else if(b[k]>0.004)cr.push({id:k,v:b[k]});});
-  dr.sort(function(x,y){return y.v-x.v;});cr.sort(function(x,y){return y.v-x.v;});
-  var i=0,j=0;while(i<dr.length&&j<cr.length){var v=Math.min(dr[i].v,cr[j].v);
-    out.push({from:dr[i].id,to:cr[j].id,v:Math.round(v*100)/100});
-    dr[i].v-=v;cr[j].v-=v;if(dr[i].v<0.005)i++;if(cr[j].v<0.005)j++;}
-  return out;}
 function saveE(rec){st.expenses.push(rec);sv();if(db&&cw)db.doc("expenses/"+rec.id).set(rec).catch(werr);render();}
 function people(){return [BANK_ID].concat(st.households.map(function(h){return h.id;}));}
 function fillSel(sel,val){sel.textContent="";people().forEach(function(id){var o=document.createElement("option");
   o.value=id;o.textContent=pName(id);if(id===val)o.selected=true;sel.appendChild(o);});}
 function splitUI(){
-  var b=balances(),mine=b[me]||0;
-  /* você, em uma linha */
-  var ms=document.getElementById("mySplit");ms.textContent="";
-  var r0=el("div","kv big");r0.appendChild(el("span",null,hh(me)?hh(me).name:"—"));
-  r0.appendChild(el("b",mine>0.004?"pos":mine<-0.004?"neg":null,Math.abs(mine)<0.005?t("fSquare"):mm(mine)));ms.appendChild(r0);
-  ms.appendChild(el("div","kv",mine>0.004?t("fOwedYou"):mine<-0.004?t("fYouOwe"):t("fAllSquare")));
-  var bk=b[BANK_ID]||0,rb=el("div","kv");rb.appendChild(el("span",null,t("fBank")));
-  rb.appendChild(el("b",bk>0.004?"pos":bk<-0.004?"neg":null,Math.abs(bk)<0.005?t("fSquare"):(bk>0?t("fToReceive",mm(bk)):t("fToPay",mm(bk)))));ms.appendChild(rb);
-  /* quem deve a quem */
-  var dl=document.getElementById("debts");dl.textContent="";
-  var plan=settle(b);
-  if(!plan.length)dl.appendChild(el("p","empty",t("fNoDebts")));
-  plan.forEach(function(x){var row=el("div","bal"),i=el("i");i.style.background=pColor(x.from);row.appendChild(i);
-    var n=el("div","n");n.appendChild(document.createTextNode(t("fOwes",pName(x.from),pName(x.to))));row.appendChild(n);
-    row.appendChild(el("div","v neg",mm(x.v)));
-    var key="s_"+x.from+"_"+x.to,go3=bt("ghost"+(armedE===key?" arm":""),armedE===key?t("dConfirm"):t("fSettle"));
-    go3.addEventListener("click",function(){
-      if(armedE!==key){armedE=key;splitUI();setTimeout(function(){if(armedE===key){armedE=null;splitUI();}},4000);return;}
-      armedE=null;saveE({id:uid(),kind:"pay",desc:"",amount:x.v,date:today(),by:x.from,to:x.to,split:[],mk:me});});
-    row.appendChild(go3);dl.appendChild(row);});
-  /* saldos de todo mundo */
+  var b=balances();
   var bl=document.getElementById("bals");bl.textContent="";
   people().forEach(function(id){var v=b[id]||0,row=el("div","bal"),i=el("i");i.style.background=pColor(id);row.appendChild(i);
-    var n=el("div","n");n.appendChild(document.createTextNode(pName(id)));
-    n.appendChild(el("small",null,v>0.004?t("fGetsBack"):v<-0.004?t("fOwesAll"):t("fSquare")));row.appendChild(n);
+    var nm=el("div","n");nm.appendChild(document.createTextNode(pName(id)));
+    nm.appendChild(el("small",null,v>0.004?t("fGetsBack"):v<-0.004?t("fOwesAll"):t("fSquare")));row.appendChild(nm);
     row.appendChild(el("div","v "+(v>0.004?"pos":v<-0.004?"neg":""),Math.abs(v)<0.005?"—":mm(v)));bl.appendChild(row);});
-  /* o formulário de gasto */
   if(fBy===null)fBy=hh(me)?me:BANK_ID;
   if(fSplit===null)fSplit=st.households.map(function(h){return h.id;});
   fillSel(document.getElementById("eBy"),fBy);
+  var bBy=document.getElementById("bBy");fillSel(bBy,bBy.value||BANK_ID);
   var es=document.getElementById("eSplit");es.textContent="";
   st.households.forEach(function(h){var onx=fSplit.indexOf(h.id)>=0,c=bt("rel"+(onx?" on":""));
     if(onx)c.style.background=h.color;c.appendChild(el("i"));c.appendChild(document.createTextNode(h.name));
@@ -3400,32 +3438,43 @@ function splitUI(){
     c.addEventListener("click",function(){var k=fSplit.indexOf(h.id);
       if(k>=0){if(fSplit.length>1)fSplit.splice(k,1);}else fSplit.push(h.id);splitUI();});
     es.appendChild(c);});
-  var amt=+document.getElementById("eAmt").value||0;
-  document.getElementById("ePer").textContent=t("fPer",fSplit.length,amt?mm(amt/fSplit.length):"—");
+  var amt=parseAmt(document.getElementById("eAmt").value);
+  document.getElementById("ePer").textContent=t("fPer",fSplit.length,amt>0?mm(amt/fSplit.length):"—");
   document.getElementById("eAdd").textContent=t("fAddExp");
+  document.getElementById("bAdd").textContent=t("fAddBill");
   var pf=document.getElementById("pFrom"),pt2=document.getElementById("pTo");
   fillSel(pf,pf.value||(hh(me)?me:BANK_ID));fillSel(pt2,pt2.value||BANK_ID);
   document.getElementById("pAdd").textContent=t("fAddPay");
-  /* movimentações */
-  var lg=document.getElementById("ledger");lg.textContent="";
-  var rows=st.expenses.slice().sort(function(a,b2){return String(b2.date).localeCompare(String(a.date))||String(b2.id).localeCompare(String(a.id));});
+  ledgerUI();}
+
+/* ---------- finance: every transaction in one list ---------- */
+function ledgerUI(){
+  var lg=document.getElementById("ledger");lg.textContent="";var rows=[];
+  st.expenses.forEach(function(e){rows.push({d:String(e.date||""),e:e});});
+  st.households.forEach(function(h){PAYM.forEach(function(m){var v=st.paid[h.id]&&st.paid[h.id][m];
+    if(v)rows.push({d:paidOn(v)||m+"-01",nd:!paidOn(v),cota:{h:h,m:m}});});});
+  PAYM.forEach(function(m){var v=(st.paid[m]||{}).__ap;if(v)rows.push({d:paidOn(v)||m+"-01",nd:!paidOn(v),ap:m});});
+  rows.sort(function(a,b){return b.d.localeCompare(a.d);});
   if(!rows.length){lg.appendChild(el("p","empty",t("nNoExp")));return;}
-  rows.forEach(function(e){
-    var it=el("div","item"),m=el("div","mid"),by=LEG[e.by]||e.by||BANK_ID;
-    if(e.kind==="pay"){
-      m.appendChild(el("b",null,t("fPaid",pName(by),pName(LEG[e.to]||e.to||BANK_ID))));
-      m.appendChild(el("small",null,sd(e.date)+" · "+t("fPayment")));
-    }else{var sp=splitOf(e);
-      m.appendChild(el("b",null,e.desc||"—"));
-      m.appendChild(el("small",null,sd(e.date)+" · "+t("fPaidBy",pName(by))+" · "+
-        (sp.length===st.households.length?t("fSplitAll",mm((+e.amount||0)/sp.length)):t("fSplitSome",sp.length,mm((+e.amount||0)/sp.length)))));}
-    it.appendChild(m);it.appendChild(el("div","rt",mm(+e.amount||0)));
-    var d=bt("ghost"+(armedE===e.id?" arm":""),armedE===e.id?t("dConfirm"):"✕");
-    d.addEventListener("click",function(){
-      if(armedE!==e.id){armedE=e.id;splitUI();setTimeout(function(){if(armedE===e.id){armedE=null;splitUI();}},4000);return;}
-      armedE=null;st.expenses=st.expenses.filter(function(y){return y.id!==e.id;});
-      if(db&&cw)db.doc("expenses/"+e.id).delete().catch(werr);sv();render();});
-    it.appendChild(d);lg.appendChild(it);});}
+  rows.forEach(function(r){var it=el("div","item"),m=el("div","mid"),amt=0,del=null;
+    if(r.cota){m.appendChild(el("b",null,t("fCotaPaid",r.cota.h.name,mLabel(r.cota.m))));
+      m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+t("fToBank")));amt=r.cota.h.fixed;}
+    else if(r.ap){m.appendChild(el("b",null,t("fApPaid",mLabel(r.ap))));
+      m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+apPayers().map(function(h){return h.name;}).join(", ")));amt=apMonth(r.ap);}
+    else{var e=r.e,by=LEG[e.by]||e.by||BANK_ID;amt=+e.amount||0;
+      if(e.kind==="pay"){m.appendChild(el("b",null,t("fPaid",pName(by),pName(LEG[e.to]||e.to||BANK_ID))));
+        m.appendChild(el("small",null,sd(e.date)+" · "+t("fPayment")));}
+      else if(e.kind==="bill"){m.appendChild(el("b",null,(e.desc||"—")+" · "+t("fBill")));
+        m.appendChild(el("small",null,sd(e.date)+" · "+t("fPaidBy",pName(by))));}
+      else{var sp=splitOf(e);m.appendChild(el("b",null,e.desc||"—"));
+        m.appendChild(el("small",null,sd(e.date)+" · "+t("fPaidBy",pName(by))+" · "+
+          (sp.length===st.households.length?t("fSplitAll",mm(amt/sp.length)):t("fSplitSome",sp.length,mm(amt/sp.length)))));}
+      del=bt("ghost"+(armedE===e.id?" arm":""),armedE===e.id?t("dConfirm"):"✕");
+      del.addEventListener("click",function(){
+        if(armedE!==e.id){armedE=e.id;ledgerUI();setTimeout(function(){if(armedE===e.id){armedE=null;ledgerUI();}},4000);return;}
+        armedE=null;st.expenses=st.expenses.filter(function(y){return y.id!==e.id;});
+        if(db&&cw)db.doc("expenses/"+e.id).delete().catch(werr);sv();render();});}
+    it.appendChild(m);it.appendChild(el("div","rt",mm(amt)));if(del)it.appendChild(del);lg.appendChild(it);});}
 
 /* ---------- finance: the house bank account ---------- */
 var BANKF=[["name","fbName"],["holder","fbHolder"],["bsb","fbBsb"],["acct","fbAcct"],["payid","fbPayid"],["ref","fbRef"]];
@@ -3545,19 +3594,36 @@ document.getElementById("whoBtn").addEventListener("click",function(){
   var i=st.households.findIndex(function(h){return h.id===me;});
   me=st.households[(i+1)%st.households.length].id;sv();whoUI();home();});
 document.getElementById("eDate").value=today();
+document.getElementById("bDate").value=today();
+document.getElementById("finSegs").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;finTab=b.getAttribute("data-p");finSegs();window.scrollTo(0,0);});
 document.getElementById("eBy").addEventListener("change",function(e){fBy=e.target.value;});
-document.getElementById("eAmt").addEventListener("input",function(){splitUI();});
+document.getElementById("eAmt").addEventListener("input",function(){
+  var a=parseAmt(this.value);document.getElementById("ePer").textContent=t("fPer",fSplit?fSplit.length:st.households.length,a>0?mm(a/(fSplit?fSplit.length:st.households.length)):"—");});
+function badAmt(id){document.getElementById(id).textContent=t("fBadAmt");return false;}
 document.getElementById("eAdd").addEventListener("click",function(){
-  var d=document.getElementById("eDesc"),a=document.getElementById("eAmt"),dt=document.getElementById("eDate");
-  if(!d.value.trim()||!(+a.value>0))return;
-  saveE({id:uid(),kind:"expense",desc:d.value.trim(),amount:Math.round(+a.value*100)/100,date:dt.value||today(),
+  var d=document.getElementById("eDesc"),a=parseAmt(document.getElementById("eAmt").value),dt=document.getElementById("eDate");
+  document.getElementById("eMsg").textContent="";
+  if(!d.value.trim()){document.getElementById("eMsg").textContent=t("fNeedDesc");return;}
+  if(!(a>0))return badAmt("eMsg");
+  saveE({id:uid(),kind:"expense",desc:d.value.trim(),amount:a,date:dt.value||today(),
     by:fBy||BANK_ID,split:fSplit.length===st.households.length?[]:fSplit.slice(),to:null,mk:me});
-  d.value="";a.value="";fSplit=null;});
+  d.value="";document.getElementById("eAmt").value="";fSplit=null;splitUI();});
+document.getElementById("bAdd").addEventListener("click",function(){
+  var d=document.getElementById("bDesc"),a=parseAmt(document.getElementById("bAmt").value),dt=document.getElementById("bDate");
+  document.getElementById("bMsg").textContent="";
+  if(!d.value.trim()){document.getElementById("bMsg").textContent=t("fNeedDesc");return;}
+  if(!(a>0))return badAmt("bMsg");
+  saveE({id:uid(),kind:"bill",desc:d.value.trim(),amount:a,date:dt.value||today(),
+    by:document.getElementById("bBy").value||BANK_ID,split:[],to:null,mk:me});
+  d.value="";document.getElementById("bAmt").value="";});
 document.getElementById("pAdd").addEventListener("click",function(){
-  var f=document.getElementById("pFrom").value,to=document.getElementById("pTo").value,a=document.getElementById("pAmt");
-  if(!(+a.value>0)||f===to)return;
-  saveE({id:uid(),kind:"pay",desc:"",amount:Math.round(+a.value*100)/100,date:today(),by:f,to:to,split:[],mk:me});
-  a.value="";});
+  var f=document.getElementById("pFrom").value,to=document.getElementById("pTo").value,a=parseAmt(document.getElementById("pAmt").value);
+  document.getElementById("pMsg").textContent="";
+  if(f===to){document.getElementById("pMsg").textContent=t("fSamePerson");return;}
+  if(!(a>0))return badAmt("pMsg");
+  saveE({id:uid(),kind:"pay",desc:"",amount:a,date:today(),by:f,to:to,split:[],mk:me});
+  document.getElementById("pAmt").value="";});
 
 /* ---------- boot ---------- */
 ld2();
