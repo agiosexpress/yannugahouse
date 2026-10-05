@@ -1578,6 +1578,7 @@ pt:{
  bNoConnect:"Não consegui conectar. Dados só neste navegador.",
  bReadFollow:"Modo leitura — você acompanha, mas não grava.",
  bReadSee:"Modo leitura — você vê tudo, mas não grava.",
+ bSaveFail:"Não consegui salvar a última mudança no servidor. Recarregue e tente de novo.",
  bLocalOnly:"Salvando apenas neste navegador.",
  bSupaCfg:"Configure o Supabase no config.js. Por enquanto os dados ficam só neste aparelho.",
  bSupaFail:"Não consegui conectar ao Supabase. Dados só neste aparelho.",
@@ -1821,6 +1822,7 @@ en:{
  bNoConnect:"Could not connect. Data stays in this browser only.",
  bReadFollow:"Read-only — you can follow along, but cannot save.",
  bReadSee:"Read-only — you can see everything, but cannot save.",
+ bSaveFail:"Could not save the last change to the server. Reload and try again.",
  bLocalOnly:"Saving in this browser only.",
  bSupaCfg:"Set up Supabase in config.js. For now the data stays on this device only.",
  bSupaFail:"Could not connect to Supabase. Data stays on this device only.",
@@ -2312,7 +2314,8 @@ function ld2(){try{var r=localStorage.getItem(LS);if(!r)return;var d=JSON.parse(
   if(Array.isArray(d.g))st.log=d.g; if(Array.isArray(d.y))st.buys=d.y;
   if(d.p)st.paid=d.p; if(d.c)st.consent=d.c; if(d.k)st.bank=d.k; if(d.me&&hh(LEG[d.me]||d.me))me=LEG[d.me]||d.me;}catch(x){}}
 function werr(e){if(e&&(e.code==="invalid_argument"||e.code==="not_granted")){cw=false;
-  ban("loc","bReadSee");}}
+  ban("loc","bReadSee");return;}
+  if(e){console.error(e);ban("loc","bSaveFail");}}
 var BANK="loc",BANT="bLocalConnecting";
 function ban(k,key){BANK=k;BANT=key;var b=document.getElementById("banner");
   if(!b)return;b.className="banner"+(k?" "+k:"");
@@ -3596,16 +3599,19 @@ function supaAdapter(sb){
             expenses:{to:expenseToRow,from:rowToExpense},
             log:{to:logToRow,from:rowToLog},
             buys:{to:buyToRow,from:rowToBuy}};
+  /* a query builder only runs when awaited and has no .catch: turn it into a real promise
+     that rejects on a database error, so every write runs and every failure is reported */
+  function run(q){return Promise.resolve(q).then(function(r){if(r&&r.error)throw r.error;return r;});}
   return {
     doc:function(path){
       var p=path.split("/"),coll=p[0],id=p[1];
       return {
         set:function(data){
           if(coll==="state")
-            return sb.from("app_state").upsert({key:id,value:data,updated_at:new Date().toISOString()});
-          return sb.from(coll).upsert(MAPS[coll].to(data));
+            return run(sb.from("app_state").upsert({key:id,value:data,updated_at:new Date().toISOString()}));
+          return run(sb.from(coll).upsert(MAPS[coll].to(data)));
         },
-        delete:function(){return sb.from(coll).delete().eq("id",id);},
+        delete:function(){return run(sb.from(coll).delete().eq("id",id));},
         onSnapshot:function(cb){
           function pull(){sb.from("app_state").select("value").eq("key",id).maybeSingle()
             .then(function(r){var v=(r&&r.data)?r.data.value:null;
