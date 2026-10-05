@@ -215,6 +215,7 @@ button{font-family:inherit}
 .alb{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .alb button{border:0;padding:0;background:var(--bg2);border-radius:12px;overflow:hidden;aspect-ratio:1/1;cursor:zoom-in}
 .alb img{width:100%;height:100%;object-fit:cover;display:block}
+#houseRow button:first-child{grid-column:1/-1;aspect-ratio:16/9}   /* a frente em destaque: as outras 6 fecham duas linhas */
 .alb .add{display:grid;place-items:center;border:1.5px dashed var(--line);background:var(--card);color:var(--ink2);
   font-weight:800;font-size:13px;cursor:pointer;text-align:center;padding:6px}
 .alb .add b{display:block;font-size:26px;line-height:1;color:var(--brand)}
@@ -1312,16 +1313,9 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div id="openRow"></div>
 
     <div class="sec"><h2 data-l="en">The house</h2><h2 data-l="pt">A casa</h2></div>
-    <p class="subt" data-l="en">Tap a photo to see it full size.</p>
-    <p class="subt" data-l="pt">Toque numa foto para ampliar.</p>
-    <div class="hrow" id="houseRow"></div>
-    <p class="subt" style="margin-top:6px" data-l="en">The six beds · 1 / 2 / 4 credits per person a night, in any bed.</p>
-    <p class="subt" style="margin-top:6px" data-l="pt">As seis camas · 1 / 2 / 4 créditos por pessoa a noite, em qualquer cama.</p>
-    <div class="hrow" id="roomsRow"></div>
+    <div class="pad"><div class="alb" id="houseRow"></div></div>
 
     <div class="sec"><h2 data-l="en">Album</h2><h2 data-l="pt">Álbum</h2></div>
-    <p class="subt" data-l="en">Photos from our time at the house, to remember it by. Only people with a sign-in can see them.</p>
-    <p class="subt" data-l="pt">Fotos dos dias na casa, para lembrar. Só quem tem login vê.</p>
     <input type="file" id="albFile" accept="image/*" multiple hidden>
     <div class="pad"><div class="alb" id="albGrid"></div><div class="fmsg" id="albMsg"></div></div>
 
@@ -2667,26 +2661,17 @@ function home(){
     ow.appendChild(r2);}
 
   var hr=document.getElementById("houseRow");hr.textContent="";
-  var house=PHOTOS.map(function(x){return {u:x.u,c:t2(x.k)};});
-  PHOTOS.forEach(function(x,i){var tl=bt("tile"),im=document.createElement("img");
-    im.src=x.u;im.alt=t2(x.k);im.loading="lazy";tl.appendChild(im);tl.appendChild(el("b",null,t2(x.k)));
+  var house=PHOTOS.map(function(x){return {u:x.u,c:""};});
+  PHOTOS.forEach(function(x,i){var tl=bt(),im=document.createElement("img");
+    im.src=x.u;im.alt=t2(x.k);im.loading="lazy";tl.appendChild(im);
     tl.addEventListener("click",function(){lbOpen(house,i);});hr.appendChild(tl);});
-  var rr=document.getElementById("roomsRow");rr.textContent="";
-  BEDS.forEach(function(x){
-    var tl=bt("tile");var im=document.createElement("img");
-    tl.addEventListener("click",function(){lbOpen([{u:PHOTOS[x.ph].u,c:t2(x.k)+" · "+t2("bSleeps",x.sl)}],0);});
-    im.src=PHOTOS[x.ph].u;im.alt=t2(x.k);im.loading="lazy";
-    tl.appendChild(im);tl.appendChild(el("b",null,t2(x.k)));
-    tl.appendChild(el("small",null,t2("bSleeps",x.sl)));
-    tl.appendChild(el("span","px",t2("bPrice",W.baixa,W.media,W.alta)));
-    rr.appendChild(tl);});
 }
 
 /* ---------- photo viewer ---------- */
 var LB={items:[],i:0,del:null};
 function lbShow(){var it=LB.items[LB.i];if(!it)return;
   var img=document.getElementById("lbImg");img.src=it.u;img.alt=it.c||"";
-  document.getElementById("lbCap").textContent=(it.c||"")+(LB.items.length>1?"  ·  "+(LB.i+1)+" / "+LB.items.length:"");
+  document.getElementById("lbCap").textContent=[it.c,LB.items.length>1?(LB.i+1)+" / "+LB.items.length:""].filter(Boolean).join("  ·  ");
   document.getElementById("lbP").hidden=document.getElementById("lbN").hidden=LB.items.length<2;
   var d=document.getElementById("lbDel");d.hidden=!it.del;d.textContent=t("albDel");d.className="ghost";d.dataset.arm="";}
 function lbOpen(items,i){LB.items=items;LB.i=i||0;lbShow();document.getElementById("lb").hidden=false;
