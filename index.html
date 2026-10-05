@@ -1315,7 +1315,9 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div class="sec"><h2 data-l="en">The house</h2><h2 data-l="pt">A casa</h2></div>
     <div class="pad"><div class="alb" id="houseRow"></div></div>
 
-    <div class="sec"><h2 data-l="en">Album</h2><h2 data-l="pt">Álbum</h2></div>
+    <div class="sec"><h2 data-l="en">Moments at the house</h2><h2 data-l="pt">Momentos na casa</h2></div>
+    <p class="subt" data-l="en">One shared album with what we live here. Add yours.</p>
+    <p class="subt" data-l="pt">Um álbum de todos, com o que a gente vive aqui. Coloque as suas.</p>
     <input type="file" id="albFile" accept="image/*" multiple hidden>
     <div class="pad"><div class="alb" id="albGrid"></div><div class="fmsg" id="albMsg"></div></div>
 
@@ -1694,8 +1696,8 @@ pt:{
  fPerAll:function(n,v){return "Todos os cotistas, inclusive quem entrar depois · hoje "+n+" · "+v+" cada";},
  phFront:"Frente e entrada", phLiving:"Sala", phLiving2:"Sala e jardim", phLiving3:"Sala", phKitchen2:"Canto da cozinha", phTv:"Canto da TV", phKitchen:"Cozinha",
  phBedroom:"Quarto", phBathroom:"Banheiro", phDeck:"Deck coberto",
- albAdd:"Adicionar fotos", albSending:"Enviando…", albLogin:"Entre com seu login para ver e adicionar fotos ao álbum.",
- albEmpty:"Ainda não tem foto. Toque em + para colocar a primeira.",
+ albAdd:"Adicionar momento", albSending:"Enviando…", albLogin:"Entre com seu login para ver e guardar os momentos na casa.",
+ albEmpty:"Nenhum momento ainda. Toque em + para guardar o primeiro.",
  albProgress:function(i,n){return "Enviando "+i+" de "+n+"…";},
  albDone:function(n){return n===1?"1 foto adicionada.":n+" fotos adicionadas.";},
  albSomeFail:function(d,f){return d+" enviada"+(d===1?"":"s")+", "+f+" não deu. Tente de novo.";},
@@ -1980,8 +1982,8 @@ en:{
  fPerAll:function(n,v){return "All cota holders, including whoever joins later · now "+n+" · "+v+" each";},
  phFront:"Front and entrance", phLiving:"Living room", phLiving2:"Living room and garden", phLiving3:"Living room", phKitchen2:"Kitchen corner", phTv:"TV corner", phKitchen:"Kitchen",
  phBedroom:"Bedroom", phBathroom:"Bathroom", phDeck:"Covered deck",
- albAdd:"Add photos", albSending:"Sending…", albLogin:"Sign in to see the album and add photos to it.",
- albEmpty:"No photos yet. Tap + to add the first one.",
+ albAdd:"Add a moment", albSending:"Sending…", albLogin:"Sign in to see and keep the moments at the house.",
+ albEmpty:"No moments yet. Tap + to keep the first one.",
  albProgress:function(i,n){return "Sending "+i+" of "+n+"…";},
  albDone:function(n){return n===1?"1 photo added.":n+" photos added.";},
  albSomeFail:function(d,f){return d+" sent, "+f+" failed. Try again.";},
