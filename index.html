@@ -1885,6 +1885,7 @@ pt:{
  nExpSplit:function(v,n){return "Total "+v+" ÷ "+n+" cotas · cada um paga";}, nTo:" a ",
  auSignOut:"Sair?",
  auNotLinked:"Sua conta entrou, mas ainda não está ligada a uma cota. Avisa o Pedro.",
+ auBadCode:function(c){return "Sua conta está ligada ao código \""+c+"\", que não é de nenhuma cota do app. Avisa o Pedro.";},
  auSignIn:"Entrar", auFill:"Preencha e-mail e senha.", auSigningIn:"Entrando…",
  auBadCreds:"E-mail ou senha não conferem.", auFail:"Não consegui entrar.",
  uCheckAvail:"Ver se tem cama", uSeeAll:"Ver todas", uCalendar:"Calendário",
@@ -2147,6 +2148,7 @@ en:{
  nExpSplit:function(v,n){return "Total "+v+" ÷ "+n+" cotas · each pays";}, nTo:" to ",
  auSignOut:"Sign out?",
  auNotLinked:"You are signed in, but your account is not linked to a cota yet. Let Pedro know.",
+ auBadCode:function(c){return "Your account is linked to the code \""+c+"\", which is not a cota in the app. Let Pedro know.";},
  auSignIn:"Sign in", auFill:"Enter your email and password.", auSigningIn:"Signing in…",
  auBadCreds:"Email or password does not match.", auFail:"Could not sign in.",
  uCheckAvail:"See if there's a bed", uSeeAll:"See all", uCalendar:"Calendar",
@@ -3546,7 +3548,9 @@ function acct(){
     SB.auth.updateUser({password:v2}).then(function(r){ip.value="";
       if(r.error){msg.className="fmsg neg";msg.textContent=r.error.message||t("aPwFail");}
       else{msg.className="fmsg";msg.textContent=t("aPwOk");}});});
-  out2.addEventListener("click",function(){SB.auth.signOut().then(function(){location.reload();});});
+  out2.addEventListener("click",function(){
+    try{localStorage.removeItem(LS);}catch(e){}   /* the next person on this device starts clean */
+    SB.auth.signOut().then(function(){location.reload();});});
   row.appendChild(cpw);row.appendChild(out2);pw.appendChild(row);pw.appendChild(msg);}
 
 /* ---------- nav ---------- */
@@ -3741,7 +3745,13 @@ function afterLogin(session){
        document.getElementById("lgBtn").textContent=t("auSignIn");
        SB.auth.signOut();SESSION=null;return;}
      PROFILE=r.data;
-     if(hh(myCode()))me=myCode();
+     /* signed in, you are your profile's member, never whoever this device saw last */
+     if(!hh(myCode())){
+       lgErr(t("auBadCode",String(PROFILE.hh)));PROFILE=null;
+       gate(true);document.getElementById("lgBtn").disabled=false;
+       document.getElementById("lgBtn").textContent=t("auSignIn");
+       SB.auth.signOut();SESSION=null;return;}
+     me=myCode();
      sv();gate(false);startLive();render();
      termsAfterLogin();instMaybe();
    });
