@@ -21,6 +21,8 @@ create table if not exists bookings (
 alter table bookings add column if not exists kind    text  not null default 'share';
 alter table bookings add column if not exists beds    jsonb not null default '[]'::jsonb;
 alter table bookings add column if not exists made_at timestamptz default now();
+-- one cota per person: who sleeps in a bed booking, each paying their own credits
+alter table bookings add column if not exists ppl     jsonb not null default '[]'::jsonb;
 
 create table if not exists expenses (
   id          text primary key,
@@ -33,7 +35,7 @@ create table if not exists expenses (
 -- the open history: every booking, cancellation, credit purchase and whole-house night
 create table if not exists log (
   id          text primary key,
-  ty          text not null,                   -- book | cancel | buy
+  ty          text not null,                   -- book | cancel | buy | deny
   hh          text,
   nm          text,
   checkin     date,
@@ -45,8 +47,12 @@ create table if not exists log (
   amt         numeric default 0,               -- cash
   at          timestamptz default now()
 );
+-- who slept, what each paid, and whether the cancellation came under 24h (credits kept)
+alter table log add column if not exists ppl  jsonb   not null default '[]'::jsonb;
+alter table log add column if not exists pc   int     default 0;
+alter table log add column if not exists late boolean not null default false;
 
--- extra credits bought at $25 each; the money goes to the aporte
+-- extra credits bought at $20 each; the money goes to the aporte
 create table if not exists buys (
   id          text primary key,
   hh          text not null,
@@ -132,14 +138,27 @@ create policy p_profiles_terms on profiles for update
   using (user_id = auth.uid()) with check (user_id = auth.uid());
 
 -- ─────────────── after creating the users ───────────────
--- Authentication → Users → Add user (tick "Auto Confirm User"), one per member.
--- Then copy each UUID and run:
+-- One account per person. Authentication → Users → Add user (tick "Auto Confirm User").
+-- Then copy each UUID and run (codes match the DEF array in index.html):
 --
 -- insert into profiles (user_id, hh, admin) values
---   ('pedro-uuid',  'pj', true),
---   ('niklas-uuid', 'nc', true),
---   ('du-uuid',     'dj', false),
---   ('bruna-uuid',  'bc', false),
---   ('couple5-uuid','n5', false),
---   ('victor-uuid', 'vt', false)
+--   ('pedro-uuid',  'pe', true),
+--   ('julia-uuid',  'ju', false),
+--   ('niklas-uuid', 'ni', true),
+--   ('carol-uuid',  'ca', false),
+--   ('du-uuid',     'du', false),
+--   ('john-uuid',   'jo', false),
+--   ('bruna-uuid',  'br', false),
+--   ('caio-uuid',   'cc', false)
 -- on conflict (user_id) do update set hh = excluded.hh, admin = excluded.admin;
+--
+-- Cotas 9 to 12 are c9, c10, c11, c12 once someone takes them.
+
+-- ─────────────── from couples to people (run once) ───────────────
+-- Old couple codes become the first person of the couple; the app maps them too.
+update profiles set hh = case hh when 'pj' then 'pe' when 'nc' then 'ni'
+  when 'dj' then 'du' when 'bc' then 'br' else hh end where hh in ('pj','nc','dj','bc');
+update bookings set hh = case hh when 'pj' then 'pe' when 'nc' then 'ni'
+  when 'dj' then 'du' when 'bc' then 'br' else hh end where hh in ('pj','nc','dj','bc');
+update buys set hh = case hh when 'pj' then 'pe' when 'nc' then 'ni'
+  when 'dj' then 'du' when 'bc' then 'br' else hh end where hh in ('pj','nc','dj','bc');

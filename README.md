@@ -25,23 +25,29 @@ Database on Supabase, hosting on GitHub Pages.
 
 ## Step 1b — the accounts
 
-1. **Authentication → Users → Add user**, once per member. One email each, a password you
-   choose, and tick **Auto Confirm User** — otherwise Supabase tries to send an email and stalls.
+1. **Authentication → Users → Add user**, once per person — every cota holder has their own
+   account. One email each, a password you choose, and tick **Auto Confirm User** — otherwise
+   Supabase tries to send an email and stalls.
 2. Copy each user's **UUID** (it shows in the list).
 3. **SQL Editor** → run this, swapping in the UUIDs:
 
 ```sql
 insert into profiles (user_id, hh, admin) values
-  ('pedro-uuid',   'pj', true),
-  ('niklas-uuid',  'nc', true),
-  ('du-uuid',      'dj', false),
-  ('bruna-uuid',   'bc', false),
-  ('couple5-uuid', 'n5', false),
-  ('victor-uuid',  'vt', false)
+  ('pedro-uuid',  'pe', true),
+  ('julia-uuid',  'ju', false),
+  ('niklas-uuid', 'ni', true),
+  ('carol-uuid',  'ca', false),
+  ('du-uuid',     'du', false),
+  ('john-uuid',   'jo', false),
+  ('bruna-uuid',  'br', false),
+  ('caio-uuid',   'cc', false)
 on conflict (user_id) do update set hh = excluded.hh, admin = excluded.admin;
 ```
 
-The member codes are `pj`, `nc`, `dj`, `bc`, `n5`, `vt` — same order they appear in the app.
+The codes come from `DEF` in `index.html`. Cotas 9–12 are `c9`, `c10`, `c11`, `c12`: when
+someone takes one, change its `name` (and `ab`, the initials) in `DEF`, delete `vaga:true`,
+create their account and add their profile row. The aporte and the sums on the cotas page
+recalculate on their own.
 Anyone with `admin = true` can book in anyone's name; the others only in their own.
 
 Send each member their password by WhatsApp. They sign in once and the browser remembers.
@@ -57,29 +63,31 @@ Send that link to everyone. On a phone, **Share → Add to Home Screen** install
 
 ## The model, as the code implements it
 
-**One cota = $190/month = 100 credits/year** (`COTA`, `PER`). Same price for everyone.
-A couple is two cotas: $380 and 200 credits. Eleven cotas bring in $2,090/month.
+**One person, one cota: $190/month = 100 credits/year** (`COTA`, `PER`). Same for everyone,
+couple or single — credits, payments, the ficha and expenses are all individual. Up to 12
+cotas (`DEF`); the ones still open carry `vaga:true` and stay out of every sum.
 
-**The aporte** is the gap between the cotas and the $2,500 the house costs (rent and bills,
-flat — `RENT`): **$410/month**,
-paid by Pedro & Júlia and Niklas & Carol, $205 each. It lives in the `ap` field of each
-household in `DEF`, has its own row in the payments grid, and every dollar the house earns
-goes back to the payers. There is no house fund: expenses are split between everyone by cota as they happen.
+**The aporte** is the gap between the filled cotas and the $2,500 the house costs (rent and
+bills, flat — `RENT`), split between the people marked `apo:true` (Pedro, Júlia, Niklas,
+Carol): `APO_TOTAL = RENT − COTA × filled cotas`. With 8 cotas that is $980/month, $245 each;
+every cota filled lowers it by $47.50 each. It has its own row in the payments grid, and every
+dollar the house earns goes back to the payers. There is no house fund: expenses are split
+between everyone by cota as they happen.
 
-**You book a bed, not a room.** The six beds are in `BEDS`, each with a weight:
+**Credits are per person, per night:** low 1, mid 2, peak 4 (`W`), in any bed, alone or not —
+nobody pays double for coming alone. Peak is 18 Dec – 26 Jan (`AI`/`AO`), mid is Fridays,
+Saturdays and the long weekends, low is everything else.
 
-| Bed | `id` | Sleeps | Low | Mid | Peak |
-|---|---|---|---|---|---|
-| Bedroom 1 (double) | `q1` | 2 | 2 | 4 | 8 |
-| Bedroom 2 (double) | `q2` | 2 | 2 | 4 | 8 |
-| Bunk, bottom | `bl` | 2 | 1 | 2 | 4 |
-| Bunk, top | `bu` | 2 | 1 | 2 | 4 |
-| Sofa bed | `sf` | 2 | 1 | 2 | 4 |
-| Folding single | `fd` | 1 | 1 | 2 | 4 |
+**You book a bed and mark who sleeps in it.** Each person on the booking (`ppl`) pays their
+share from their own credits; a bed takes as many people as it sleeps (`BEDS[].sl`):
+Bedrooms 1 and 2 and the bunks and sofa sleep 2, the folding single 1.
 
-A night costs `bed weight × season weight`, with season weights in `W`
-(peak 4, mid 2, low 1). Peak is 18 Dec – 26 Jan (`AI`/`AO`), mid is Fridays, Saturdays
-and the long weekends, low is everything else.
+**The ficha** (`FREE_N`, `FREE_MAX`, `FREE_AHEAD`): once a year each person can seal the whole
+house for free, up to 5 nights, booked up to 60 days ahead, with at least one free night
+between two fichas (no back-to-back). Dates touching peak or a major holiday (`CRIT`) need
+everyone else's approval: the request holds the dates, shows on the home screen with
+Approve / Decline, and approvals live in `app_state.consent` under `fr_<booking id>`.
+Cancelling a ficha under 24h uses it up.
 
 **The whole house is never paid in credits** — it is a daily rate, in `DAYR`:
 $200 Monday–Thursday, $350 weekends, $400 in summer. Same for a member and an outsider.
@@ -95,9 +103,9 @@ That money goes to the aporte.
 - Cancelling refunds the credits immediately and writes the cancellation to the open history —
   unless it is less than 24 hours before arrival (2pm on the first day, `CI_HOUR`, Melbourne time).
   Then the bed is freed but the credits are lost: the log entry is marked `late` and `used()`
-  keeps counting it. Whole-house nights and guests are not affected.
+  keeps counting it for each person on the booking (`ppl`, `pc`). Daily-rate nights and guests are not affected.
 - Extra house costs (gardener, repairs, damage) go in **House expenses** and are split equally
-  by cota; the app shows each household's share. They no longer come out of the fund or the aporte.
+  by cota; the app shows each person's share. They no longer come out of the fund or the aporte.
 - Everything is logged to `log` and shown to everyone: who booked, which bed, which nights,
   when the booking was made, what it cost, plus cancellations, credit purchases and
   whole-house nights.
@@ -106,7 +114,7 @@ That money goes to the aporte.
   6 months, in April 2027.
 
 To change any number, edit the constants at the start of the `<script>` in `index.html`.
-Names and cota counts live in the `DEF` array just below them.
+Names, initials, colours and who pays the aporte live in the `DEF` array just below them.
 
 ## First access: the cotas, then the terms, then the login
 
