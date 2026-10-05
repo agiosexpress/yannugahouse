@@ -773,7 +773,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 
 <div class="gate" id="gate" hidden>
   <div class="gatebox">
-    <div class="gmark"><i></i>Casa Yannuga</div>
+    <div class="gmark"><i></i>Casa Yannuga<button class="lang" id="lgLang" type="button" data-langbtn title="Português / English" style="margin-left:auto">EN</button></div>
     <h1 data-l="en">Sign in</h1><h1 data-l="pt">Entrar</h1>
     <p class="gsub" data-l="en">The beach house in Rye, shared between friends.</p>
     <p class="gsub" data-l="pt">A casa de praia em Rye, dividida entre amigos.</p>
@@ -791,7 +791,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 
 
 <div class="terms tpage" id="terms" hidden>
-  <div class="ttop"><div class="tmark"><i></i>Casa Yannuga</div></div>
+  <div class="ttop"><div class="tmark"><i></i>Casa Yannuga</div>
+    <button class="tlang" id="tcLang" type="button" data-langbtn title="Português / English">EN</button></div>
 <div class="twrap">
 
   <p class="eyebrow">Casa Yannuga · Rye</p>
@@ -2227,8 +2228,10 @@ function applyLang(){
   document.documentElement.setAttribute("data-lang",LANG);
   document.documentElement.setAttribute("lang",LANG==="pt"?"pt-BR":"en");
   if(typeof tcRender==="function"&&tcRender)tcRender();
-  var b=document.getElementById("langBtn");
-  if(b)b.textContent=(LANG==="pt"?"EN":"PT");
+  /* every language button (top bar, cotas page, sign-in) shows the language it switches to */
+  [].forEach.call(document.querySelectorAll("#langBtn,[data-langbtn]"),function(b){b.textContent=(LANG==="pt"?"EN":"PT");});
+  var tg=document.getElementById("tcGo");
+  if(tg)tg.textContent=tg.classList.contains("back")?(LANG==="pt"?"Voltar":"Back"):(LANG==="pt"?"Concordo e quero entrar":"I agree and want to join");
   paintUI();
 }
 function paintUI(){
@@ -3740,6 +3743,8 @@ function render(){whoUI();home();cal();resView();conta();acct();albUI();}
 [["t-home","home"],["t-cal","cal"],["t-res","res"],["t-fin","fin"],["t-conta","conta"]].forEach(function(p){
   document.getElementById(p[0]).addEventListener("click",function(){go(p[1]);});});
 document.getElementById("goCal").addEventListener("click",function(){go("cal");});
+[].forEach.call(document.querySelectorAll("[data-langbtn]"),function(b){b.addEventListener("click",function(){
+  setLang(LANG==="pt"?"en":"pt");});});
 document.getElementById("langBtn").addEventListener("click",function(){
   setLang(LANG==="pt"?"en":"pt");});
 document.getElementById("checkBtn").addEventListener("click",function(){
