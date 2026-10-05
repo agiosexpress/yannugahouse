@@ -1307,10 +1307,6 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div class="sec"><h2 data-l="en">Your bookings</h2><h2 data-l="pt">Suas reservas</h2><button id="goRes">See all</button></div>
     <div id="myTrips"></div>
 
-    <div class="sec"><h2 data-l="en">Free beds</h2><h2 data-l="pt">Camas livres</h2><button id="goCal2">Calendar</button></div>
-    <p class="subt" data-l="en">Dates someone already booked as a share, with a bed still free. Joining costs only your bed.</p>
-    <p class="subt" data-l="pt">Datas que alguém já reservou dividindo, com cama sobrando. Entrar custa só a sua cama.</p>
-    <div id="openRow"></div>
 
     <div class="sec"><h2 data-l="en">The house</h2><h2 data-l="pt">A casa</h2></div>
     <div class="pad"><div class="alb" id="houseRow"></div></div>
@@ -2240,7 +2236,7 @@ function paintUI(){
   function st(id,k){var e=E(id);if(e)e.textContent=t(k);}
   function ph(id,k){var e=E(id);if(e)e.placeholder=t(k);}
   function ar(id,k){var e=E(id);if(e)e.setAttribute("aria-label",t(k));}
-  st("checkBtnT","uCheckAvail"); st("goRes","uSeeAll"); st("goCal2","uCalendar");
+  st("checkBtnT","uCheckAvail"); st("goRes","uSeeAll");
   st("goCal","uBookDate"); st("vWeek","uWeek"); st("vMonth","uMonth"); st("eAdd","uAdd");
   ar("prev","uPrev"); ar("next","uNext"); ar("viewGrp","uView");
   ph("eDesc","phDesc"); ph("lgEmail","auEmailPh");
@@ -2648,24 +2644,6 @@ function home(){
       r.appendChild(t);});
     tw.appendChild(r);}
 
-  var ow=document.getElementById("openRow");ow.textContent="";
-  var sl=opens();
-  if(!sl.length)ow.appendChild(el("p","empty",t("hNoOpen")));
-  else{var r2=el("div","hrow");
-    sl.forEach(function(o,i){
-      var x=hh(o.b.hh),t=bt("tile"),w=el("div","tilewrap");
-      var im=document.createElement("img");im.src=PHOTOS[(i+3)%PHOTOS.length].u;im.alt="";im.loading="lazy";
-      w.appendChild(im);w.appendChild(el("span","badge",t2("hBedsFreeBadge",o.f.length)));
-      t.appendChild(w);
-      t.appendChild(el("b",null,sd(o.b.in)+" – "+sd(o.b.out)));
-      t.appendChild(el("small",null,t2("hWith",x?x.name:"?")+" · "+
-        o.f.map(bedN).join(", ")));
-      t.appendChild(el("span","px",t2("hCredFrom",pp(o.b.in,o.b.out))));
-      t.addEventListener("click",function(){
-        sel.a=o.b.in;sel.b=o.b.out;bkind="share";picked=[o.f[0]];go("cal");
-        var d=pd(o.b.in);cy=d.getUTCFullYear();cm=d.getUTCMonth();cal();sheet(true);});
-      r2.appendChild(t);});
-    ow.appendChild(r2);}
 
   var hr=document.getElementById("houseRow");hr.textContent="";
   var house=PHOTOS.map(function(x){return {u:x.u,c:""};});
@@ -3771,7 +3749,6 @@ document.getElementById("checkBtn").addEventListener("click",function(){
     var a=document.getElementById("ciDate"),o=document.getElementById("coDate");
     if(a.value&&(!o.value||o.value<=a.value))o.value=iso(ad(pd(a.value),2));
     avail();});});
-document.getElementById("goCal2").addEventListener("click",function(){go("cal");});
 document.getElementById("goRes").addEventListener("click",function(){go("res");});
 document.getElementById("vMonth").addEventListener("click",function(){view="month";cal();});
 document.getElementById("vWeek").addEventListener("click",function(){view="week";cal();});
