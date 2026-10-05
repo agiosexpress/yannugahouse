@@ -61,9 +61,10 @@ Send that link to everyone. On a phone, **Share → Add to Home Screen** install
 A couple is two cotas: $380 and 200 credits. Eleven cotas bring in $2,090/month.
 
 **The aporte** is the gap between the cotas and the $2,500 the house costs (rent and bills,
-flat — `RENT`): **$410/month**, paid by Pedro & Júlia and Niklas & Carol, $205 each. It lives in the `ap` field of each
+flat — `RENT`): **$410/month**,
+paid by Pedro & Júlia and Niklas & Carol, $205 each. It lives in the `ap` field of each
 household in `DEF`, has its own row in the payments grid, and every dollar the house earns
-goes back to the payers before anything reaches the house fund.
+goes back to the payers. There is no house fund: expenses are split between everyone by cota as they happen.
 
 **You book a bed, not a room.** The six beds are in `BEDS`, each with a weight:
 
@@ -84,7 +85,7 @@ and the long weekends, low is everything else.
 $200 Monday–Thursday, $350 weekends, $400 in summer. Same for a member and an outsider.
 That money goes to the aporte.
 
-**Extra credits** are $25 each (`EXTRA`), no limit, any time. Also to the aporte.
+**Extra credits** are $20 each (`EXTRA`), no limit, any time. Also to the aporte.
 
 ## Rules baked into the code
 
