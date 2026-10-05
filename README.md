@@ -64,7 +64,7 @@ Send that link to everyone. On a phone, **Share → Add to Home Screen** install
 ## The model, as the code implements it
 
 **One person, one cota: $190/month = 100 credits/year** (`COTA`, `PER`). Same for everyone,
-couple or single — credits, payments, the ficha and expenses are all individual. Up to 12
+credits, payments, the ficha and expenses are all individual. Up to 12
 cotas (`DEF`); the ones still open carry `vaga:true` and stay out of every sum.
 
 **The aporte** is the gap between the filled cotas and the $2,500 the house costs (rent and
@@ -109,7 +109,7 @@ That money goes to the aporte.
 - Everything is logged to `log` and shown to everyone: who booked, which bed, which nights,
   when the booking was made, what it cost, plus cancellations, credit purchases and
   whole-house nights.
-- Lease 2 Oct 2026 – 1 Oct 2027 (`IN`/`OUT`), in Pedro & Júlia's and Niklas & Carol's names.
+- Lease 2 Oct 2026 – 1 Oct 2027 (`IN`/`OUT`), in Pedro's, Júlia's, Niklas's and Carol's names.
   Joining is a 12-month commitment to the end of the lease; the group reviews the terms at
   6 months, in April 2027.
 
@@ -139,7 +139,7 @@ top bar does the same.
 
 The page is one block of bilingual HTML inside `index.html` (`<div class="terms tpage">`);
 the standalone copy published as an artifact is the same block with its own frame. When a
-number changes, change it in both. `TERMS_V` at the top of the terms code is the version (a date, `YYYY-MM-DD`) —
+number changes, change it in both. `TERMS_V` at the top of the terms code is the version (a UTC date and time) —
 bump it and everyone is asked to agree again.
 
 ## Language
