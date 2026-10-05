@@ -46,7 +46,9 @@ on conflict (user_id) do update set hh = excluded.hh, admin = excluded.admin;
 
 The codes come from `DEF` in `index.html`. Cotas 9–12 are `c9`, `c10`, `c11`, `c12`: when
 someone takes one, change its `name` (and `ab`, the initials) in `DEF`, delete `vaga:true`,
-create their account and add their profile row. The aporte and the sums on the cotas page
+create their account and add their profile row. If they join after the start, add `from: "2026-12"`
+(the month they join): they pay from that month, get credits for the months left
+(`100 × months ÷ 12`, so 83 for December) and the aporte drops from that month on. The aporte and the sums on the cotas page
 recalculate on their own.
 Anyone with `admin = true` can book in anyone's name; the others only in their own.
 
@@ -104,7 +106,8 @@ everyone's credits and the open history, filterable by person) · **Finance** ·
 
 1. **Expenses** — fixed bills (power, water, gas, internet; budgeted at `BILLS_EST` = $154 a month,
    anything above goes into that month's aporte), the fixed rent (`RENT_BASE` = $2,346), extra
-   expenses split between the people picked, and everyone's balance.
+   expenses split between the people picked (**All cota holders** stores no list, so it
+   also covers whoever joins later), and everyone's balance.
 2. **Payments** — the house bank details (in `app_state` under `bank`, signed-in members only,
    admins edit), the monthly cota grid (a tick stores the date it was marked) and settling
    extra expenses between people or with the house account.

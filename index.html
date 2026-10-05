@@ -1113,6 +1113,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li><b>Transferência todo dia 26</b>, valor fixo nos doze meses.</li>
           <li>Quem entra deixa <b>dois meses adiantados</b>: $380 por cota.</li>
+          <li><b>Quem entra no meio do contrato</b> paga a partir do mês de entrada e recebe <b>créditos proporcionais</b> aos meses que faltam: 100 × meses ÷ 12. Entrando em dezembro, são 10 meses e 83 créditos. A ficha vale igual.</li>
           <li><b>Quem entra fica até o fim do contrato.</b> O compromisso é de 12 meses, até 1º de outubro de 2027.</li>
           <li>Crédito não usado <b>não vira dinheiro</b> e não acumula para o ano seguinte.</li>
           <li>Crédito avulso e aluguel da casa fechada vão para quem paga o aporte.</li>
@@ -1170,6 +1171,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li><b>Transfer on the 26th of every month</b>, fixed amount for all twelve.</li>
           <li>Joining takes <b>two months in advance</b>: $380 per cota.</li>
+          <li><b>Joining partway through the lease</b> means paying from the month you join and getting <b>proportional credits</b> for the months left: 100 × months ÷ 12. Joining in December is 10 months and 83 credits. The ficha is the same.</li>
           <li><b>Whoever joins stays until the lease ends.</b> The commitment is for 12 months, until 1 October 2027.</li>
           <li>Unused credits <b>do not turn into money</b> and do not carry over to the next year.</li>
           <li>Extra credits and sealed-house rent go to whoever pays the aporte.</li>
@@ -1472,6 +1474,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <div class="sec"><h2 data-l="en">Cotas</h2><h2 data-l="pt">Cotas</h2></div>
       <p class="subt" data-l="en">One cota per person: $190 a month and 100 credits a year. Open cotas stay out of the sums.</p>
       <p class="subt" data-l="pt">Uma cota por pessoa: $190 por mês e 100 créditos por ano. Cota vaga fica fora das contas.</p>
+      <div class="mnav" data-mnav></div>
       <div class="tw"><table>
         <thead><tr data-l="en"><th>Member</th><th>Cota</th><th>Aporte</th><th>Credits</th></tr>
         <tr data-l="pt"><th>Membro</th><th>Cota</th><th>Aporte</th><th>Créditos</th></tr></thead>
@@ -1480,7 +1483,6 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <div class="sec"><h2 data-l="en">What the aporte is</h2><h2 data-l="pt">O que é o aporte</h2></div>
       <p class="subt" data-l="en">The cotas do not cover the whole house yet. The aporte is the gap: rent plus fixed bills, minus all the cotas, split between the four tenants on the lease. It closes at the end of each month, once that month's bills are in.</p>
       <p class="subt" data-l="pt">As cotas ainda não cobrem a casa inteira. O aporte é a diferença: aluguel mais contas fixas, menos todas as cotas, dividido entre os quatro do contrato. Fecha no fim de cada mês, quando as contas do mês estiverem lançadas.</p>
-      <div class="mnav" data-mnav></div>
       <div class="fcard calc2" id="apCalc"></div>
     </div>
 
@@ -1583,7 +1585,9 @@ var DOUBLES=["q1","q2"];
 function bed(id){for(var i=0;i<BEDS.length;i++)if(BEDS[i].id===id)return BEDS[i];return null;}
 function bedN(id){var b=bed(id);return b?t(b.k):id;}
 
-/* uma pessoa, uma cota. apo: paga o aporte. vaga: cota ainda sem dono (fica fora das contas) */
+/* uma pessoa, uma cota. apo: paga o aporte. vaga: cota ainda sem dono (fica fora das contas).
+   from: mês de entrada ("2026-12") para quem entra depois do início; paga dali em diante e recebe
+   créditos proporcionais aos meses que faltam. Sem from, entrou no começo do contrato. */
 var DEF=[
   {id:"pe",name:"Pedro",ab:"P",apo:true,color:"var(--c1)"},
   {id:"ju",name:"Júlia",ab:"J",apo:true,color:"var(--c7)"},
@@ -1684,6 +1688,9 @@ pt:{
  fPlanWait:function(n,t2){return "Prévia: o acerto abre quando as "+t2+" cotas estiverem preenchidas (hoje "+n+" de "+t2+"). Até lá, nada precisa ser pago.";},
  fPlanOpen:"A casa está cheia: dá para acertar.",
  fPlanFewer:function(a,b){return "Resumido em "+a+(a===1?" transferência":" transferências")+", em vez de "+b+".";},
+ fFrom:function(m){return "entra em "+m;}, fApProvOf:function(m){return "Aporte provisório de "+m+", com as contas lançadas até agora.";},
+ fAllCotas:"Todos os cotistas",
+ fPerAll:function(n,v){return "Todos os cotistas, inclusive quem entrar depois · hoje "+n+" · "+v+" cada";},
  fBank:"Conta da casa", fSquare:"em dia", fAllSquare:"Você está em dia com a casa.",
  fOwedYou:"Você tem a receber", fYouOwe:"Você deve",
  fToReceive:function(m){return m+" a receber";}, fToPay:function(m){return m+" a pagar";},
@@ -1811,7 +1818,7 @@ pt:{
  aOneRoom:function(c,l){return "Um quarto: "+c+" créditos · você tem "+l;},
  aBookIt:"Fazer a reserva",
  hHello:function(n){return "Bora pra praia, "+n+"?";},
- hSub:function(n){return nu(n)+(n===1?" cota":" cotas")+" · "+m0(n*COTA)+" por mês · "+(n*PER)+" créditos";},
+ hSub:function(n,c){return nu(n)+(n===1?" cota":" cotas")+" · "+m0(n*COTA)+" por mês · "+c+" créditos";},
  hCredSub:function(cap,n){return "de "+cap+" · sobram "+n+" por mês";},
  hNowNone:function(f){return "Ninguém na casa hoje · "+f+(f===1?" cama livre":" camas livres");},
  hNowWho:function(a){return a.length===1?a[0]+" está lá":a.slice(0,-1).join(", ")+" e "+a[a.length-1]+" estão lá";},
@@ -1959,6 +1966,9 @@ en:{
  fPlanWait:function(n,t2){return "Preview: settling opens once all "+t2+" cotas are filled (now "+n+" of "+t2+"). Nothing needs paying until then.";},
  fPlanOpen:"The house is full: you can settle up.",
  fPlanFewer:function(a,b){return "Boiled down to "+a+(a===1?" transfer":" transfers")+" instead of "+b+".";},
+ fFrom:function(m){return "joins "+m;}, fApProvOf:function(m){return "Provisional aporte for "+m+", with the bills logged so far.";},
+ fAllCotas:"All cota holders",
+ fPerAll:function(n,v){return "All cota holders, including whoever joins later · now "+n+" · "+v+" each";},
  fBank:"House account", fSquare:"settled", fAllSquare:"You are square with the house.",
  fOwedYou:"You are owed", fYouOwe:"You owe",
  fToReceive:function(m){return m+" to collect";}, fToPay:function(m){return m+" to pay";},
@@ -2086,7 +2096,7 @@ en:{
  aOneRoom:function(c,l){return "One room: "+c+" credits · you have "+l;},
  aBookIt:"Book it",
  hHello:function(n){return "Beach time, "+n+"?";},
- hSub:function(n){return nu(n)+(n===1?" cota":" cotas")+" · "+m0(n*COTA)+" a month · "+(n*PER)+" credits";},
+ hSub:function(n,c){return nu(n)+(n===1?" cota":" cotas")+" · "+m0(n*COTA)+" a month · "+c+" credits";},
  hCredSub:function(cap,n){return "of "+cap+" · "+n+" a month to go";},
  hNowNone:function(f){return "Nobody at the house today · "+f+(f===1?" bed free":" beds free");},
  hNowWho:function(a){return a.length===1?a[0]+" is there":a.slice(0,-1).join(", ")+" and "+a[a.length-1]+" are there";},
@@ -2239,9 +2249,9 @@ function t2(){return t.apply(null,arguments);}
 /* o aporte cobre o que as cotas preenchidas não cobrem, dividido entre quem paga o aporte */
 var ACTIVE=DEF.filter(function(h){return !h.vaga;}),VAGAS=DEF.filter(function(h){return h.vaga;});
 var APO_TOTAL=Math.max(0,RENT-COTA*ACTIVE.length),APO_N=ACTIVE.filter(function(h){return h.apo;}).length||1;
-var st={households:ACTIVE.map(function(h){return Object.assign({units:1,fixed:COTA},h,{ap:h.apo?APO_TOTAL/APO_N:0});}),
+var st={households:ACTIVE.map(function(h){return Object.assign({units:1,fixed:COTA,from:"2026-10"},h,{ap:h.apo?APO_TOTAL/APO_N:0});}),
   bookings:[],expenses:[],paid:{},consent:{},log:[],buys:[],bank:{}};
-var BANK_ID="bank",fBy=null,fSplit=null,logF="all",armedE=null;
+var BANK_ID="bank",fBy=null,fSplit=null,fAll=true,logF="all",armedE=null;
 var ppl=[];
 var me="pe",who="pe",gName="",gAmt="",sel={a:null,b:null},bkind="share",picked=["q1"];
 var mode="aberta",rooms=1;  /* legado, só para dados antigos */
@@ -2355,7 +2365,12 @@ function dblRun(id,bedId,a,o,skip){
   return best;}
 function nByT(a,b){var c={alta:0,media:0,baixa:0};nts(a,b).forEach(function(s){c[tier(s)]++;});return c;}
 function bought(id){var t=0;(st.buys||[]).forEach(function(b){if(b.hh===id)t+=(+b.n||0);});return t;}
-function allow(h){return PER*(+h.units||0)+bought(h.id);}
+/* meses de contrato que cabem a cada um, e os créditos proporcionais (100 × meses ÷ 12) */
+function monthsOf(h){var f=(h&&h.from)||PAYM[0];return PAYM.filter(function(m){return m>=f;}).length;}
+function credOf(h){return Math.round(PER*(+h.units||0)*monthsOf(h)/PAYM.length);}
+function allow(h){return credOf(h)+bought(h.id);}
+/* quem já está pagando cota num mês */
+function activeIn(m){return st.households.filter(function(h){return (h.from||PAYM[0])<=m;});}
 /* o aporte: quem paga, quanto já entrou e quanto já voltou */
 function apTotal(){return st.households.reduce(function(a,h){return a+(+h.ap||0);},0);}
 function apPayers(){return st.households.filter(function(h){return (+h.ap||0)>0;});}
@@ -2522,7 +2537,7 @@ function avail(){
 function home(){
   var h=hh(me)||st.households[0];
   document.getElementById("helloName").textContent=t("hHello",h.name);
-  document.getElementById("helloSub").textContent=t("hSub",h.units);
+  document.getElementById("helloSub").textContent=t("hSub",h.units,credOf(h));
   avail();
   var cap=allow(h),sp=used(h.id),left=cap-sp,pct=cap?Math.round(sp/cap*100):0;
   document.getElementById("stCred").textContent=left;
@@ -3304,7 +3319,7 @@ function billsOf(m){return st.expenses.filter(function(e){return e.kind==="bill"
   .reduce(function(a,e){return a+(+e.amount||0);},0);}
 function billsUsed(m){var b=billsOf(m);return b>0?b:BILLS_EST;}
 /* o aporte do mês: aluguel + contas fixas − todas as cotas, entre quem paga o aporte */
-function apMonth(m){return Math.max(0,RENT_BASE+billsUsed(m)-COTA*ACTIVE.length);}
+function apMonth(m){return Math.max(0,RENT_BASE+billsUsed(m)-COTA*activeIn(m).length);}
 function paidOn(v){return typeof v==="string"&&/^\d{4}-\d{2}-\d{2}/.test(v)?v.slice(0,10):"";}
 function finSegs(){
   [].forEach.call(document.querySelectorAll("#finSegs button"),function(b){
@@ -3314,7 +3329,8 @@ function finSegs(){
 function conta(){
   finSegs();
   mnavUI();
-  var n=ACTIVE.length,cm2=finM;
+  var cm2=finM,n=activeIn(cm2).length,past=cm2<curMonth();
+  var lg0=billsOf(cm2),apShow=past?apMonth(cm2):Math.max(0,RENT_BASE+lg0-n*COTA);
 
   /* cotas */
   var cb=document.getElementById("capB");cb.textContent="";
@@ -3323,8 +3339,9 @@ function conta(){
     i.style.background=h.color;nm.appendChild(i);nm.appendChild(el("span",null,h.name));
     td.appendChild(nm);tr.appendChild(td);
     tr.appendChild(el("td",null,m0(h.fixed)));
-    tr.appendChild(el("td",null,h.apo?t("fApTbd"):"—"));
-    tr.appendChild(el("td",null,String(PER*h.units+bought(h.id))));
+    tr.appendChild(el("td",null,h.apo&&h.from<=cm2?mm(apShow/APO_N):"—"));
+    tr.appendChild(el("td",null,String(allow(h))));
+    if(h.from>cm2){tr.style.opacity=".55";nm.lastChild.textContent=h.name+" · "+t("fFrom",mLabel(h.from));}
     cb.appendChild(tr);});
   VAGAS.forEach(function(v){
     var tr=el("tr"),td=el("td"),nm=el("div","nm"),i=el("i");
@@ -3332,13 +3349,15 @@ function conta(){
     td.appendChild(nm);tr.appendChild(td);tr.style.opacity=".55";
     ["—","—","—"].forEach(function(x){tr.appendChild(el("td",null,x));});cb.appendChild(tr);});
   var cf=document.getElementById("capF");cf.textContent="";
-  var tcr=st.households.reduce(function(a,h){return a+PER*h.units+bought(h.id);},0);
-  var ftr=el("tr");[t("nTotal"),m0(n*COTA),t("fApEom"),String(tcr)].forEach(function(v){ftr.appendChild(el("td",null,v));});
-  cf.appendChild(ftr);
+  var tcr=st.households.reduce(function(a,h){return a+allow(h);},0);
+  var ftr=el("tr");[t("nTotal"),m0(n*COTA),mm(apShow),String(tcr)].forEach(function(v){ftr.appendChild(el("td",null,v));});
+  var ftr3=el("tr"),fc3=el("td",null,past?t("fApClosed"):t("fApProvOf",mLabel(cm2)));fc3.colSpan=4;
+  fc3.style.cssText="font-family:var(--f);font-size:12px;color:var(--ink3);font-weight:500";ftr3.appendChild(fc3);cf.appendChild(ftr3);
+  cf.insertBefore(ftr,cf.firstChild);
 
   /* a conta do aporte, ao vivo */
   var ac=document.getElementById("apCalc");ac.textContent="";
-  var logged=billsOf(cm2),ap=apMonth(cm2),past=cm2<curMonth();
+  var logged=lg0,ap=apMonth(cm2);
   var apNow=Math.max(0,RENT_BASE+logged-n*COTA),apEnd=Math.max(0,RENT_BASE+Math.max(logged,BILLS_EST)-n*COTA);
   function arow2(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));ac.appendChild(r);}
   ac.appendChild(el("div","kv",past?t("fApClosed"):t("fApSoFar")));
@@ -3384,6 +3403,7 @@ function conta(){
     var tr=el("tr"),td=el("td"),nm=el("div","nm"),i=el("i");
     i.style.background=h.color;nm.appendChild(i);nm.appendChild(el("span",null,h.name));td.appendChild(nm);tr.appendChild(td);
     PAYM.forEach(function(m){var ok=!!(st.paid[h.id]&&st.paid[h.id][m]);
+      if(m<h.from){var c0=el("td",null,"—");c0.style.color="var(--ink3)";tr.appendChild(c0);return;}
       tick(tr,ok,h.color,h.name+" "+m,function(){st.paid[h.id]=st.paid[h.id]||{};
         if(st.paid[h.id][m])delete st.paid[h.id][m];else st.paid[h.id][m]=today();});});
     pb.appendChild(tr);});
@@ -3406,7 +3426,7 @@ function conta(){
   var bIn=(st.buys||[]).reduce(function(a,x){return a+(+x.amount||0);},0);
   var gin=st.bookings.map(nb).filter(function(b){return isG(b)&&b.kind!=="whole";}).reduce(function(a,g){return a+(+g.amount||0);},0);
   var rentY=RENT_BASE*PAYM.length,billsY=PAYM.reduce(function(a,m){return a+billsUsed(m);},0);
-  var billsLog=PAYM.reduce(function(a,m){return a+billsOf(m);},0),costY=rentY+billsY,cotasY=n*COTA*PAYM.length;
+  var billsLog=PAYM.reduce(function(a,m){return a+billsOf(m);},0),costY=rentY+billsY,cotasY=PAYM.reduce(function(a,m){return a+activeIn(m).length*COTA;},0);
   var apY=PAYM.reduce(function(a,m){return a+apMonth(m);},0);
   var apPaid=PAYM.reduce(function(a,m){return a+((st.paid[m]||{}).__ap?apMonth(m):0);},0);
   var earn=wIn+bIn+gin,extra=st.expenses.filter(function(e){return !e.kind||e.kind==="expense";}).reduce(function(a,e){return a+(+e.amount||0);},0);
@@ -3416,7 +3436,7 @@ function conta(){
   row(t("fyBills",mm(BILLS_EST)),mm(billsY));
   row(t("fyBillsLogged"),mm(billsLog));
   row(t("fyCost"),mm(costY),"tot");
-  row(t("fyCotas",n,m0(COTA)),"− "+mm(cotasY));
+  row(t("fyCotas",ACTIVE.length,m0(COTA)),"− "+mm(cotasY));
   row(t("fyAporte"),mm(apY),"tot");
   row(t("fyAporteEach",APO_N),mm(apY/APO_N),"big");
   row(t("fyApPaid"),mm(apPaid));
@@ -3458,6 +3478,7 @@ function conta(){
 function pName(id){return id===BANK_ID?t("fBank"):((hh(LEG[id]||id)||{}).name||"?");}
 function pColor(id){return id===BANK_ID?"var(--ink)":((hh(LEG[id]||id)||{}).color||"var(--ink3)");}
 function splitOf(e){var s2=(e.split||[]).map(function(x){return LEG[x]||x;}).filter(function(x){return !!hh(x);});
+  /* vazio = todos os cotistas, inclusive quem entrar depois */
   return s2.length?s2:st.households.map(function(h){return h.id;});}
 /* positivo: tem a receber · negativo: deve. Conta fixa paga do bolso: a conta da casa devolve */
 function balances(){var b={};b[BANK_ID]=0;st.households.forEach(function(h){b[h.id]=0;});
@@ -3517,10 +3538,17 @@ function splitUI(){
   if(fSplit===null)fSplit=st.households.map(function(h){return h.id;});
   fillSel(document.getElementById("eBy"),fBy);
   var es=document.getElementById("eSplit");es.textContent="";
-  st.households.forEach(function(h){var onx=fSplit.indexOf(h.id)>=0,c=bt("rel"+(onx?" on":""));
+  /* todos os cotistas: guarda a divisão vazia, que inclui quem entrar depois */
+  var ca=bt("rel"+(fAll?" on":""));if(fAll)ca.style.background="var(--ink)";
+  ca.appendChild(el("i"));ca.appendChild(document.createTextNode(t("fAllCotas")));ca.setAttribute("aria-pressed",fAll?"true":"false");
+  ca.addEventListener("click",function(){fAll=true;fSplit=st.households.map(function(h){return h.id;});splitUI();});
+  es.appendChild(ca);
+  st.households.forEach(function(h){var onx=!fAll&&fSplit.indexOf(h.id)>=0,c=bt("rel"+(onx?" on":""));
     if(onx)c.style.background=h.color;c.appendChild(el("i"));c.appendChild(document.createTextNode(h.name));
     c.setAttribute("aria-pressed",onx?"true":"false");
-    c.addEventListener("click",function(){var k=fSplit.indexOf(h.id);
+    c.addEventListener("click",function(){
+      if(fAll){fAll=false;fSplit=[h.id];splitUI();return;}
+      var k=fSplit.indexOf(h.id);
       if(k>=0){if(fSplit.length>1)fSplit.splice(k,1);}else fSplit.push(h.id);splitUI();});
     es.appendChild(c);});
   var fx=document.getElementById("eFixed");fx.setAttribute("aria-pressed",fFixed?"true":"false");
@@ -3560,7 +3588,7 @@ function ledgerUI(){
         m.appendChild(el("small",null,sd(e.date)+" · "+t("fPaidBy",pName(by))));}
       else{var sp=splitOf(e);m.appendChild(el("b",null,e.desc||"—"));
         m.appendChild(el("small",null,sd(e.date)+" · "+t("fPaidBy",pName(by))+" · "+
-          (sp.length===st.households.length?t("fSplitAll",mm(amt/sp.length)):t("fSplitSome",sp.length,mm(amt/sp.length)))));}
+          (!(e.split||[]).length?t("fSplitAll",mm(amt/sp.length)):t("fSplitSome",sp.length,mm(amt/sp.length)))));}
       del=bt("ghost"+(armedE===e.id?" arm":""),armedE===e.id?t("dConfirm"):"✕");
       del.addEventListener("click",function(){
         if(armedE!==e.id){armedE=e.id;ledgerUI();setTimeout(function(){if(armedE===e.id){armedE=null;ledgerUI();}},4000);return;}
@@ -3596,7 +3624,7 @@ function acct(){
   var top=document.getElementById("acctTop");top.textContent="";
   var av=el("i",null,abOf(h));av.style.background=h.color;top.appendChild(av);
   var tt=el("div");tt.appendChild(el("b",null,h.name));
-  tt.appendChild(el("small",null,t("aSub",m0(h.fixed),PER)+(PROFILE&&PROFILE.admin?" · admin":"")));top.appendChild(tt);
+  tt.appendChild(el("small",null,t("aSub",m0(h.fixed),credOf(h))+(PROFILE&&PROFILE.admin?" · admin":"")));top.appendChild(tt);
   var cap=allow(h),sp=used(h.id),left=cap-sp;
   var cr=document.getElementById("acctCred");cr.textContent="";
   [[t("aLeft"),String(left)],[t("aUsed"),String(sp)],[t("aBought"),String(bought(h.id))],[t("aNightsYr"),String(nightsOf(h.id))]]
@@ -3700,8 +3728,9 @@ document.getElementById("finSegs").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;finTab=b.getAttribute("data-p");finSegs();window.scrollTo(0,0);});
 document.getElementById("eBy").addEventListener("change",function(e){fBy=e.target.value;});
 var fFixed=false;
-function perUI(){var a=parseAmt(document.getElementById("eAmt").value),n2=fSplit?fSplit.length:st.households.length;
-  document.getElementById("ePer").textContent=fFixed?t("fFixedNote"):t("fPer",n2,a>0?mm(a/n2):"—");}
+function perUI(){var a=parseAmt(document.getElementById("eAmt").value),n2=fAll||!fSplit?st.households.length:fSplit.length;
+  document.getElementById("ePer").textContent=fFixed?t("fFixedNote"):
+    (fAll?t("fPerAll",n2,a>0?mm(a/n2):"—"):t("fPer",n2,a>0?mm(a/n2):"—"));}
 document.getElementById("eAmt").addEventListener("input",perUI);
 document.getElementById("eFixed").addEventListener("click",function(){
   fFixed=!fFixed;fBy=fFixed?BANK_ID:(hh(me)?me:BANK_ID);splitUI();});
@@ -3712,8 +3741,8 @@ document.getElementById("eAdd").addEventListener("click",function(){
   if(!d.value.trim()){document.getElementById("eMsg").textContent=t("fNeedDesc");return;}
   if(!(a>0))return badAmt("eMsg");
   saveE({id:uid(),kind:fFixed?"bill":"expense",desc:d.value.trim(),amount:a,date:dt.value||today(),
-    by:fBy||BANK_ID,split:fFixed||fSplit.length===st.households.length?[]:fSplit.slice(),to:null,mk:me});
-  d.value="";document.getElementById("eAmt").value="";fSplit=null;splitUI();});
+    by:fBy||BANK_ID,split:fFixed||fAll?[]:fSplit.slice(),to:null,mk:me});
+  d.value="";document.getElementById("eAmt").value="";fSplit=null;fAll=true;splitUI();});
 document.getElementById("pAdd").addEventListener("click",function(){
   var f=document.getElementById("pFrom").value,to=document.getElementById("pTo").value,a=parseAmt(document.getElementById("pAmt").value);
   document.getElementById("pMsg").textContent="";
