@@ -1439,6 +1439,9 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <div class="sec"><h2 data-l="en">Settle extra expenses</h2><h2 data-l="pt">Acertar gastos extras</h2></div>
       <p class="subt" data-l="en">When someone pays someone back, or pays their share into the house account.</p>
       <p class="subt" data-l="pt">Quando alguém paga outra pessoa de volta, ou deposita a sua parte na conta da casa.</p>
+      <div class="pad" id="plan"></div>
+      <p class="subt" style="margin-top:10px" data-l="en">Paid a different amount? Record it by hand:</p>
+      <p class="subt" style="margin-top:10px" data-l="pt">Pagou um valor diferente? Registre à mão:</p>
       <div class="pad fgrid">
         <div class="frow">
           <select id="pFrom" aria-label="From"></select>
@@ -1665,6 +1668,9 @@ pt:{
  fyAporteEach:function(n){return "Aporte por pessoa · ÷ "+n;}, fyApPaid:"Aporte já pago",
  fyEarn:"Diárias, avulsos e convidados (voltam para o aporte)", fyApNet:"Aporte líquido, depois do que voltou",
  fyExtra:"Gastos extras rateados à parte",
+ fDone:"Já paguei", fPays:function(a,b){return a+" paga a "+b;},
+ fYouPay:function(b){return b==="Conta da casa"?"Deposite na conta da casa":"Pague a "+b;},
+ fPaysYou:function(a){return a+" te paga";}, fTheyMark:"quando pagar, marca no app dela ou dele",
  fBank:"Conta da casa", fSquare:"em dia", fAllSquare:"Você está em dia com a casa.",
  fOwedYou:"Você tem a receber", fYouOwe:"Você deve",
  fToReceive:function(m){return m+" a receber";}, fToPay:function(m){return m+" a pagar";},
@@ -1929,6 +1935,9 @@ en:{
  fyAporteEach:function(n){return "Aporte per person · ÷ "+n;}, fyApPaid:"Aporte paid so far",
  fyEarn:"Daily rates, extra credits and guests (back to the aporte)", fyApNet:"Net aporte, after what came back",
  fyExtra:"Extra expenses, split separately",
+ fDone:"I paid", fPays:function(a,b){return a+" pays "+b;},
+ fYouPay:function(b){return b==="House account"?"Pay into the house account":"Pay "+b;},
+ fPaysYou:function(a){return a+" pays you";}, fTheyMark:"they mark it in the app when they pay",
  fBank:"House account", fSquare:"settled", fAllSquare:"You are square with the house.",
  fOwedYou:"You are owed", fYouOwe:"You owe",
  fToReceive:function(m){return m+" to collect";}, fToPay:function(m){return m+" to pay";},
@@ -3418,6 +3427,32 @@ function balances(){var b={};b[BANK_ID]=0;st.households.forEach(function(h){b[h.
     else if(e.kind==="bill"){if(by!==BANK_ID){b[by]+=a;b[BANK_ID]-=a;}}
     else{var sp=splitOf(e);b[by]+=a;sp.forEach(function(x){b[x]-=a/sp.length;});}});
   Object.keys(b).forEach(function(k){b[k]=Math.round(b[k]*100)/100;});return b;}
+/* quem deve a quem, direto: cada um paga a quem de fato pagou o gasto, e só se compensa
+   entre as mesmas duas pessoas (fica claro de onde vem cada dívida) */
+function settle(){var d={};
+  function add(a,b,v){if(a===b||!v)return;d[a]=d[a]||{};d[a][b]=(d[a][b]||0)+v;}
+  st.expenses.forEach(function(e){var a=+e.amount||0,by=LEG[e.by]||e.by||BANK_ID;
+    if(e.kind==="pay")add(LEG[e.to]||e.to||BANK_ID,by,a);   /* pagar reduz o que se deve */
+    else if(e.kind==="bill"){if(by!==BANK_ID)add(BANK_ID,by,a);}
+    else{var sp=splitOf(e);sp.forEach(function(x){add(x,by,a/sp.length);});}});
+  var out=[],seen={};
+  Object.keys(d).forEach(function(a){Object.keys(d[a]).forEach(function(b){
+    var k=[a,b].sort().join("|");if(seen[k])return;seen[k]=1;
+    var v=(d[a][b]||0)-((d[b]||{})[a]||0);v=Math.round(v*100)/100;
+    if(v>=0.01)out.push({from:a,to:b,v:v});else if(v<=-0.01)out.push({from:b,to:a,v:-v});});});
+  out.sort(function(x,y){return y.v-x.v;});return out;}
+/* uma linha de acerto: quem paga, para quem, quanto, e o botão que registra (dois toques) */
+function planRow(box,x,label,again){var key="s_"+x.from+"_"+x.to,row=el("div","bal"),i=el("i");
+  i.style.background=pColor(x.from);row.appendChild(i);
+  var nm=el("div","n");nm.appendChild(document.createTextNode(label));
+  if(x.to===BANK_ID&&st.bank&&(st.bank.bsb||st.bank.acct||st.bank.payid))
+    nm.appendChild(el("small",null,[st.bank.bsb&&("BSB "+st.bank.bsb),st.bank.acct,st.bank.payid&&("PayID "+st.bank.payid)].filter(Boolean).join(" · ")));
+  row.appendChild(nm);row.appendChild(el("div","v neg",mm(x.v)));
+  var b2=bt("ghost"+(armedE===key?" arm":""),armedE===key?t("dConfirm"):t("fDone"));
+  b2.addEventListener("click",function(){
+    if(armedE!==key){armedE=key;again();setTimeout(function(){if(armedE===key){armedE=null;again();}},4000);return;}
+    armedE=null;saveE({id:uid(),kind:"pay",desc:"",amount:x.v,date:today(),by:x.from,to:x.to,split:[],mk:me});});
+  row.appendChild(b2);box.appendChild(row);}
 function saveE(rec){st.expenses.push(rec);sv();if(db&&cw)db.doc("expenses/"+rec.id).set(rec).catch(werr);render();}
 function people(){return [BANK_ID].concat(st.households.map(function(h){return h.id;}));}
 function fillSel(sel,val){sel.textContent="";people().forEach(function(id){var o=document.createElement("option");
@@ -3447,6 +3482,10 @@ function splitUI(){
   var pf=document.getElementById("pFrom"),pt2=document.getElementById("pTo");
   fillSel(pf,pf.value||(hh(me)?me:BANK_ID));fillSel(pt2,pt2.value||BANK_ID);
   document.getElementById("pAdd").textContent=t("fAddPay");
+  var pl=document.getElementById("plan");pl.textContent="";
+  var plan=settle();
+  if(!plan.length)pl.appendChild(el("p","empty",t("fNoDebts")));
+  plan.forEach(function(x){planRow(pl,x,t("fPays",pName(x.from),pName(x.to)),splitUI);});
   ledgerUI();}
 
 /* ---------- finance: every transaction in one list ---------- */
@@ -3531,9 +3570,16 @@ function acct(){
     it.style.cursor="pointer";it.addEventListener("click",function(){go("cal");
       var d=pd(b.in);cy=d.getUTCFullYear();cm=d.getUTCMonth();sel.a=b.in;sel.b=b.out;cal();});
     tl.appendChild(it);});
-  var ab=document.getElementById("acctBal");ab.textContent="";var v=balances()[me]||0;
+  var ab=document.getElementById("acctBal");ab.textContent="";var bb3=balances(),v=bb3[me]||0;
   var r3=el("div","kv big");r3.appendChild(el("span",null,v>0.004?t("fOwedYou"):v<-0.004?t("fYouOwe"):t("fAllSquare")));
   r3.appendChild(el("b",v>0.004?"pos":v<-0.004?"neg":null,Math.abs(v)<0.005?"—":mm(v)));ab.appendChild(r3);
+  var plan3=settle();
+  plan3.filter(function(x){return x.from===me;}).forEach(function(x){planRow(ab,x,t("fYouPay",pName(x.to)),acct);});
+  plan3.filter(function(x){return x.to===me;}).forEach(function(x){
+    var row=el("div","bal"),i=el("i");i.style.background=pColor(x.from);row.appendChild(i);
+    var nm=el("div","n");nm.appendChild(document.createTextNode(t("fPaysYou",pName(x.from))));
+    nm.appendChild(el("small",null,t("fTheyMark")));row.appendChild(nm);
+    row.appendChild(el("div","v pos",mm(x.v)));ab.appendChild(row);});
   var gf=bt("ghost",t("aSeeFin"));gf.style.margin="4px 0 12px";gf.addEventListener("click",function(){go("fin");});ab.appendChild(gf);
   var lb2=document.getElementById("loginBox");lb2.textContent="";
   var pw=document.getElementById("pwBox");pw.textContent="";
