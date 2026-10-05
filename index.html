@@ -245,6 +245,7 @@ button{font-family:inherit}
 .meter i{display:block;height:100%;background:var(--blue);border-radius:99px}
 .meter i.over{background:var(--brand)}
 .frow{display:flex;gap:9px}.frow>*{flex:1;min-width:0}
+.fld{display:grid;gap:6px;align-content:start}
 .fnote{font-size:12.5px;color:var(--ink2)}
 .fmsg{font-size:12.5px;color:var(--good);min-height:1em}
 .acct-top{display:flex;align-items:center;gap:14px;padding:18px 16px 4px}
@@ -1259,7 +1260,6 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       </svg>
     </div>
     <div class="hello">
-      <small id="helloSub">Casa Yannuga · Rye</small>
       <h1 id="helloName">Hello</h1>
       <p class="intro" data-l="en">Your house in Rye, all year round. Book a bed, keep an eye on your credits and see who is there.</p>
       <p class="intro" data-l="pt">Sua casa em Rye, o ano inteiro. Reserve uma cama, acompanhe seus créditos e veja quem está lá.</p>
@@ -1437,9 +1437,12 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <p class="subt" style="margin-top:10px" data-l="pt">Pagou um valor diferente? Registre à mão:</p>
       <div class="pad fgrid">
         <div class="frow">
-          <select id="pFrom" aria-label="From"></select>
-          <select id="pTo" aria-label="To"></select>
+          <div class="fld"><label class="lab" for="pFrom"><span data-l="pt">Quem pagou</span><span data-l="en">Who paid</span></label>
+            <select id="pFrom"></select></div>
+          <div class="fld"><label class="lab" for="pTo"><span data-l="pt">Para quem</span><span data-l="en">Paid to</span></label>
+            <select id="pTo"></select></div>
         </div>
+        <label class="lab" for="pAmt"><span data-l="pt">Valor</span><span data-l="en">Amount</span></label>
         <div class="frow">
           <input id="pAmt" type="text" inputmode="decimal" placeholder="$ 0,00">
           <button class="ghost" id="pAdd" type="button"></button>
@@ -2547,7 +2550,6 @@ function avail(){
 function home(){
   var h=hh(me)||st.households[0];
   document.getElementById("helloName").textContent=t("hHello",h.name);
-  document.getElementById("helloSub").textContent=t("hSub",h.units,credOf(h));
   avail();
   var cap=allow(h),sp=used(h.id),left=cap-sp,pct=cap?Math.round(sp/cap*100):0;
   document.getElementById("stCred").textContent=left;
