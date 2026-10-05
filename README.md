@@ -82,9 +82,9 @@ Saturdays and the long weekends, low is everything else.
 share from their own credits; a bed takes as many people as it sleeps (`BEDS[].sl`):
 Bedrooms 1 and 2 and the bunks and sofa sleep 2, the folding single 1.
 
-**The ficha** (`FREE_N`, `FREE_MAX`, `FREE_AHEAD`): once a year each person can seal the whole
-house for free, up to 5 nights, booked up to 60 days ahead, with at least one free night
-between two fichas (no back-to-back). Dates touching peak or a major holiday (`CRIT`) need
+**The ficha** (`FREE_N`, `FREE_MAX`, `FREE_AHEAD`, `FREE_GAP`): once a year each person can seal the whole
+house for free, up to 5 nights, booked up to 60 days ahead, with at least 7 free nights
+between any two fichas (`FREE_GAP`), so nobody seals two weekends in a row. Dates touching peak or a major holiday (`CRIT`) need
 everyone else's approval: the request holds the dates, shows on the home screen with
 Approve / Decline, and approvals live in `app_state.consent` under `fr_<booking id>`.
 Cancelling a ficha under 24h uses it up.

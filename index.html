@@ -965,7 +965,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li><b>Cada pessoa tem 1 ficha por ano</b>: fecha a casa só para si, sem pagar diária e sem gastar crédito.</li>
           <li><b>Até 5 noites seguidas.</b> Dá para marcar com até <b>60 dias</b> de antecedência, desde que ninguém tenha reservado aquelas noites.</li>
-          <li><b>Não pode emendar.</b> Entre duas fichas — de quem for — precisa ficar pelo menos uma noite livre. Duas pessoas não juntam as fichas numa estadia de 10 noites.</li>
+          <li><b>Uma semana livre entre fichas.</b> Entre duas fichas — de quem for — precisa ter pelo menos <b>7 noites livres</b>. Assim ninguém fecha a casa em dois fins de semana seguidos, nem juntando a sua ficha com a de outra pessoa.</li>
           <li><b>Verão e feriados grandes, só com todo mundo de acordo.</b> O pedido segura as datas e aparece para o grupo; vale quando todos aprovarem. Se alguém recusar, o pedido cai e a ficha volta.</li>
           <li>Cancelar com menos de 24 horas da chegada <b>gasta a ficha</b>, como acontece com os créditos.</li>
         </ul></div>
@@ -1001,7 +1001,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li><b>Everyone has 1 ficha a year</b>: the house sealed just for them, no daily rate and no credits.</li>
           <li><b>Up to 5 nights in a row.</b> It can be booked up to <b>60 days</b> ahead, as long as nobody has booked those nights.</li>
-          <li><b>No back-to-back.</b> Between two fichas — whoever's they are — there has to be at least one free night. Two people cannot join their fichas into a 10-night stay.</li>
+          <li><b>A free week between fichas.</b> Between two fichas — whoever's they are — there have to be at least <b>7 free nights</b>. So nobody seals the house two weekends in a row, not even by pairing their ficha with someone else's.</li>
           <li><b>Summer and major holidays only with everyone's agreement.</b> The request holds the dates and shows up for the group; it stands once everyone approves. If anyone declines, it falls through and the ficha comes back.</li>
           <li>Cancelling with less than 24 hours to go <b>uses up the ficha</b>, just as it does with credits.</li>
         </ul></div>
@@ -1471,7 +1471,7 @@ var CRIT=[
   {id:"king",l:"King's Birthday",i:"2027-06-11",o:"2027-06-15"},
   {id:"afl",l:"Grand Final",i:"2027-09-24",o:"2027-09-27"}];
 var WIN=15,AHEAD=21,MAXWK=2,W={alta:4,media:2,baixa:1};   /* W: créditos por pessoa, por noite */
-var FREE_N=1,FREE_MAX=5,FREE_AHEAD=60;  /* a ficha: 1 fechamento grátis por pessoa no ano, até 5 noites */
+var FREE_N=1,FREE_MAX=5,FREE_AHEAD=60,FREE_GAP=7;  /* a ficha: 1 fechamento grátis por pessoa no ano, até 5 noites, 7 noites livres entre fichas */
 var PAYM=["2026-10","2026-11","2026-12","2027-01","2027-02","2027-03","2027-04","2027-05",
           "2027-06","2027-07","2027-08","2027-09"];
 /* ---------- language ---------- */
@@ -1509,7 +1509,7 @@ pt:{
  fUsed:function(n){return n+" já usou a ficha deste ano.";},
  fMax:function(n){return "A ficha vale até "+n+" noites seguidas.";},
  fWindow:function(w,d){return "A ficha dá para marcar até "+w+" dias antes. Essa data abre em "+d+" dia"+(d===1?"":"s")+".";},
- fGlued:"Não dá para emendar: precisa de pelo menos uma noite livre entre duas fichas.",
+ fGlued:function(g,nm,a,o){return "Muito perto da ficha de "+nm+" ("+a+" a "+o+"). Entre duas fichas precisa ter pelo menos "+g+" noites livres.";},
  cTwoWeekendsP:function(nm,bd,n){return nm+" chegaria a mais de "+n+" fins de semana seguidos no "+bd+". No próximo, troca de cama.";},
  pAsk:function(nm,a,o){return nm+" quer fechar a casa de "+a+" a "+o+" com a ficha";},
  pCount:function(y,n){return "É verão ou feriado, então todo mundo precisa aprovar · "+y+" de "+n;},
@@ -1523,7 +1523,7 @@ pt:{
  dFreeWait:function(y,n){return "ficha aguardando aprovação · "+y+" de "+n;},
  dConfirmLateFree:"menos de 24h: perde a ficha. Confirmar?",
  sFree:"Ficha", sFreeSub:function(n){return n?"grátis · "+n+" no ano":"já usada";},
- sFreeNote:function(m,w){return "A ficha fecha a casa só para você, de graça, uma vez no ano: até "+m+" noites, marcando até "+w+" dias antes, sem emendar com outra ficha.";},
+ sFreeNote:function(m,w){return "A ficha fecha a casa só para você, de graça, uma vez no ano: até "+m+" noites, marcando até "+w+" dias antes, com pelo menos 7 noites livres antes e depois de qualquer outra ficha.";},
  sFreeVote:"Essas datas pegam verão ou feriado. Pode, mas todo mundo precisa aprovar — as datas ficam seguras até lá. Se alguém recusar, o pedido cai.",
  sFreeLine:function(n){return n+(n===1?" noite":" noites")+" de casa fechada";},
  sFreeLeft:function(n){return "Fichas de "+n;},
@@ -1731,7 +1731,7 @@ en:{
  fUsed:function(n){return n+" has already used this year's ficha.";},
  fMax:function(n){return "The ficha covers up to "+n+" nights in a row.";},
  fWindow:function(w,d){return "The ficha can be booked up to "+w+" days ahead. That date opens in "+d+" day"+(d===1?"":"s")+".";},
- fGlued:"No back-to-back: there has to be at least one free night between two fichas.",
+ fGlued:function(g,nm,a,o){return "Too close to "+nm+"'s ficha ("+a+" to "+o+"). Two fichas need at least "+g+" free nights between them.";},
  cTwoWeekendsP:function(nm,bd,n){return nm+" would pass "+n+" weekends in a row in "+bd+". Next one, change bed.";},
  pAsk:function(nm,a,o){return nm+" wants to seal the house from "+a+" to "+o+" with the ficha";},
  pCount:function(y,n){return "It is summer or a holiday, so everyone has to approve · "+y+" of "+n;},
@@ -1745,7 +1745,7 @@ en:{
  dFreeWait:function(y,n){return "ficha waiting for approval · "+y+" of "+n;},
  dConfirmLateFree:"under 24h: the ficha is lost. Confirm?",
  sFree:"Ficha", sFreeSub:function(n){return n?"free · "+n+" a year":"already used";},
- sFreeNote:function(m,w){return "The ficha seals the house just for you, free, once a year: up to "+m+" nights, booked up to "+w+" days ahead, never back-to-back with another ficha.";},
+ sFreeNote:function(m,w){return "The ficha seals the house just for you, free, once a year: up to "+m+" nights, booked up to "+w+" days ahead, with at least 7 free nights before and after anyone else's ficha.";},
  sFreeVote:"These dates touch summer or a holiday. That is allowed, but everyone has to approve — the dates are held until then. If anyone declines, the request falls through.",
  sFreeLine:function(n){return n+(n===1?" night":" nights")+" of sealed house";},
  sFreeLeft:function(n){return n+"'s fichas";},
@@ -2144,8 +2144,10 @@ function freeClash(a,o,id){
   if(freeUsed(id)>=FREE_N)return t("fUsed",h.name);
   var n=nts(a,o).length;if(n>FREE_MAX)return t("fMax",FREE_MAX);
   var d=dU(a);if(d>FREE_AHEAD)return t("fWindow",FREE_AHEAD,d-FREE_AHEAD);
-  var glued=on(iso(ad(pd(a),-1))).concat(on(o)).some(function(b){return b.kind==="free";});
-  if(glued)return t("fGlued");
+  /* entre duas fichas, de quem for, pelo menos FREE_GAP noites livres: nada de fins de semana seguidos */
+  var lo=iso(ad(pd(a),-FREE_GAP)),hi=iso(ad(pd(o),FREE_GAP));
+  var near=st.bookings.map(nb).filter(function(b){return b.kind==="free"&&b.out>lo&&b.in<hi;})[0];
+  if(near)return t("fGlued",FREE_GAP,bName(near),sd(near.in),sd(near.out));
   return null;}
 function clash(a,b,kind,beds,id){
   var ns=nts(a,b);
