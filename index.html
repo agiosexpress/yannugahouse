@@ -1556,11 +1556,14 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 var PHOTOS=[
   {u:"photos/front.jpg",c:"Front and entrance",k:"phFront"},
   {u:"photos/living.jpg",c:"Living room",k:"phLiving"},
-  {u:"photos/living2.jpg",c:"Living and kitchen",k:"phLiving2"},
+  {u:"photos/living-garden.jpg",c:"Living room and garden",k:"phLiving2"},
   {u:"photos/kitchen.jpg",c:"Kitchen",k:"phKitchen"},
   {u:"photos/bedroom.jpg",c:"Bedroom",k:"phBedroom"},
   {u:"photos/bathroom.jpg",c:"Bathroom",k:"phBathroom"},
-  {u:"photos/deck.jpg",c:"Covered deck",k:"phDeck"}
+  {u:"photos/deck.jpg",c:"Covered deck",k:"phDeck"},
+  {u:"photos/living-sofa.jpg",c:"Living room",k:"phLiving3"},
+  {u:"photos/kitchen-corner.jpg",c:"Kitchen corner",k:"phKitchen2"},
+  {u:"photos/living-tv.jpg",c:"TV corner",k:"phTv"}
 ];
 var ROOMS=[
   {u:PHOTOS[4].u,k:"rBed1",s:"2.8 × 3.5 m"},
@@ -1689,7 +1692,7 @@ pt:{
  fFrom:function(m){return "entra em "+m;}, fApProvOf:function(m){return "Aporte provisório de "+m+", com as contas lançadas até agora.";},
  fAllCotas:"Todos os cotistas",
  fPerAll:function(n,v){return "Todos os cotistas, inclusive quem entrar depois · hoje "+n+" · "+v+" cada";},
- phFront:"Frente e entrada", phLiving:"Sala", phLiving2:"Sala e cozinha", phKitchen:"Cozinha",
+ phFront:"Frente e entrada", phLiving:"Sala", phLiving2:"Sala e jardim", phLiving3:"Sala", phKitchen2:"Canto da cozinha", phTv:"Canto da TV", phKitchen:"Cozinha",
  phBedroom:"Quarto", phBathroom:"Banheiro", phDeck:"Deck coberto",
  albAdd:"Adicionar fotos", albSending:"Enviando…", albLogin:"Entre com seu login para ver e adicionar fotos ao álbum.",
  albEmpty:"Ainda não tem foto. Toque em + para colocar a primeira.",
@@ -1975,7 +1978,7 @@ en:{
  fFrom:function(m){return "joins "+m;}, fApProvOf:function(m){return "Provisional aporte for "+m+", with the bills logged so far.";},
  fAllCotas:"All cota holders",
  fPerAll:function(n,v){return "All cota holders, including whoever joins later · now "+n+" · "+v+" each";},
- phFront:"Front and entrance", phLiving:"Living room", phLiving2:"Living and kitchen", phKitchen:"Kitchen",
+ phFront:"Front and entrance", phLiving:"Living room", phLiving2:"Living room and garden", phLiving3:"Living room", phKitchen2:"Kitchen corner", phTv:"TV corner", phKitchen:"Kitchen",
  phBedroom:"Bedroom", phBathroom:"Bathroom", phDeck:"Covered deck",
  albAdd:"Add photos", albSending:"Sending…", albLogin:"Sign in to see the album and add photos to it.",
  albEmpty:"No photos yet. Tap + to add the first one.",
