@@ -215,7 +215,6 @@ button{font-family:inherit}
 .alb{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .alb button{border:0;padding:0;background:var(--bg2);border-radius:12px;overflow:hidden;aspect-ratio:1/1;cursor:zoom-in}
 .alb img{width:100%;height:100%;object-fit:cover;display:block}
-#houseRow button:first-child{grid-column:1/-1;aspect-ratio:16/9}   /* a frente em destaque: as outras 6 fecham duas linhas */
 .alb .add{display:grid;place-items:center;border:1.5px dashed var(--line);background:var(--card);color:var(--ink2);
   font-weight:800;font-size:13px;cursor:pointer;text-align:center;padding:6px}
 .alb .add b{display:block;font-size:26px;line-height:1;color:var(--brand)}
@@ -554,7 +553,12 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
   padding:5px 8px;font-size:11px;font-weight:800;cursor:pointer;letter-spacing:.04em;
   font-family:var(--f);flex:none}
 .lang:active{background:var(--line2)}
-.bedpick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.bedpick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.bedshot{display:block;width:100%;border:0;padding:0;margin:0 0 14px;border-radius:14px;overflow:hidden;
+  background:var(--bg2);position:relative;cursor:zoom-in;aspect-ratio:4/3}
+.bedshot img{width:100%;height:100%;object-fit:cover;display:block}
+.bedshot span{position:absolute;left:10px;bottom:10px;background:rgba(10,18,26,.72);color:#fff;
+  font-size:12px;font-weight:800;padding:5px 10px;border-radius:99px}
 .bp{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;
   border:1.5px solid var(--line);background:var(--card);border-radius:13px;padding:10px 11px;
   cursor:pointer;font-family:var(--f);transition:border-color .15s,background .15s}
@@ -841,7 +845,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <tr><td>Qualquer cama</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
         </tbody>
       </table>
-      <caption>As camas: Quarto 1 e Quarto 2 (cama dupla, 2 pessoas cada), beliche de baixo e de cima (quarto 3, 2 pessoas cada), sofá-cama da sala (2) e cama dobrável (1). Quem reserva marca quem dorme; cada pessoa paga com os próprios créditos.</caption>
+      <caption>As camas: Quarto 1 com cama queen e Quarto 2 com cama de casal (2 pessoas cada), o beliche duplo no quarto 3 (casal embaixo e casal em cima, 2 pessoas cada), o sofá-cama queen da sala (2) e a cama de solteiro (1). Quem reserva marca quem dorme; cada pessoa paga com os próprios créditos.</caption>
     </div>
     <div class="note">
       <b>Um fim de semana é sexta + sábado</b>, as duas noites na faixa média: <b>4 créditos por pessoa</b>.
@@ -864,7 +868,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <tr><td>Any bed</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
         </tbody>
       </table>
-      <caption>The beds: Bedroom 1 and Bedroom 2 (double, 2 people each), bunk bottom and top (bedroom 3, 2 people each), the living-room sofa bed (2) and the folding single (1). Whoever books marks who sleeps; each person pays with their own credits.</caption>
+      <caption>The beds: Bedroom 1 with a queen and Bedroom 2 with a double (2 people each), the double bunk in bedroom 3 (a double below and a double above, 2 people each), the queen sofa bed in the living room (2) and the single bed (1). Whoever books marks who sleeps; each person pays with their own credits.</caption>
     </div>
     <div class="note">
       <b>A weekend is Friday + Saturday</b>, both nights in the mid band: <b>4 credits per person</b>.
@@ -1309,8 +1313,6 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div id="myTrips"></div>
 
 
-    <div class="sec"><h2 data-l="en">The house</h2><h2 data-l="pt">A casa</h2></div>
-    <div class="pad"><div class="alb" id="houseRow"></div></div>
 
     <div class="sec"><h2 data-l="en">Moments at the house</h2><h2 data-l="pt">Momentos na casa</h2></div>
     <p class="subt" data-l="en">One shared album with what we live here. Add yours.</p>
@@ -1575,12 +1577,12 @@ var ROOMS=[
 
 /* as seis camas da casa. w = peso da cama, multiplicado pelo peso da estação */
 var BEDS=[
-  {id:"q1",k:"bQ1",w:2,sl:2,ph:4},
-  {id:"q2",k:"bQ2",w:2,sl:2,ph:4},
-  {id:"bl",k:"bBunkLow",w:1,sl:2,ph:4},
-  {id:"bu",k:"bBunkTop",w:1,sl:2,ph:4},
-  {id:"sf",k:"bSofa",w:1,sl:2,ph:1},
-  {id:"fd",k:"bFold",w:1,sl:1,ph:1}];
+  {id:"q1",k:"bQ1",w:2,sl:2,ph:4,img:"photos/bed-queen.jpg"},
+  {id:"q2",k:"bQ2",w:2,sl:2,ph:4,img:"photos/bed-double.jpg"},
+  {id:"bl",k:"bBunkLow",w:1,sl:2,ph:4,img:"photos/bed-bunk.jpg"},
+  {id:"bu",k:"bBunkTop",w:1,sl:2,ph:4,img:"photos/bed-bunk.jpg"},
+  {id:"sf",k:"bSofa",w:1,sl:2,ph:1,img:"photos/bed-sofa.jpg"},
+  {id:"fd",k:"bFold",w:1,sl:1,ph:1,img:"photos/bed-single.jpg"}];
 var DOUBLES=["q1","q2"];
 function bed(id){for(var i=0;i<BEDS.length;i++)if(BEDS[i].id===id)return BEDS[i];return null;}
 function bedN(id){var b=bed(id);return b?t(b.k):id;}
@@ -1655,8 +1657,8 @@ pt:{
  bSupaCfg:"Configure o Supabase no config.js. Por enquanto os dados ficam só neste aparelho.",
  bSupaFail:"Não consegui conectar ao Supabase. Dados só neste aparelho.",
  rBed1:"Quarto 1", rBed2:"Quarto 2", rBed3:"Quarto 3",
- bQ1:"Quarto 1", bQ2:"Quarto 2", bBunkLow:"Beliche de baixo", bBunkTop:"Beliche de cima",
- bSofa:"Sofá-cama", bFold:"Cama dobrável",
+ bQ1:"Quarto 1 · queen", bQ2:"Quarto 2 · casal", bBunkLow:"Beliche duplo · baixo", bBunkTop:"Beliche duplo · cima",
+ bSofa:"Sofá-cama queen", bFold:"Cama de solteiro",
  bSleeps:function(n){return "dorme "+n;},
  fApTbd:"fim do mês", fApEom:"fecha no fim do mês",
  fApMonth:function(m){return "Aporte de "+m+", com o que já foi lançado";},
@@ -1941,8 +1943,8 @@ en:{
  bSupaCfg:"Set up Supabase in config.js. For now the data stays on this device only.",
  bSupaFail:"Could not connect to Supabase. Data stays on this device only.",
  rBed1:"Bedroom 1", rBed2:"Bedroom 2", rBed3:"Bedroom 3",
- bQ1:"Bedroom 1", bQ2:"Bedroom 2", bBunkLow:"Bunk, bottom", bBunkTop:"Bunk, top",
- bSofa:"Sofa bed", bFold:"Folding single",
+ bQ1:"Bedroom 1 · queen", bQ2:"Bedroom 2 · double", bBunkLow:"Double bunk · bottom", bBunkTop:"Double bunk · top",
+ bSofa:"Queen sofa bed", bFold:"Single bed",
  bSleeps:function(n){return "sleeps "+n;},
  fApTbd:"month end", fApEom:"set at month end",
  fApMonth:function(m){return "Aporte for "+m+", with what has been logged";},
@@ -2633,7 +2635,8 @@ function home(){
   else{var r=el("div","hrow");
     mine.forEach(function(b,i){
       var t=bt("tile"),w=el("div","tilewrap");
-      var im=document.createElement("img");im.src=PHOTOS[(i+1)%PHOTOS.length].u;im.alt="";im.loading="lazy";
+      var bd0=bed((b.beds||[])[0]);
+      var im=document.createElement("img");im.src=b.kind==="share"&&bd0&&bd0.img?bd0.img:PHOTOS[0].u;im.alt="";im.loading="lazy";
       w.appendChild(im);
       w.appendChild(el("span","badge",b.kind==="free"?t2("hFreeHouse"):b.kind==="whole"?t2("hWholeHouse"):bedN((b.beds||[])[0])));
       t.appendChild(w);
@@ -2648,11 +2651,6 @@ function home(){
     tw.appendChild(r);}
 
 
-  var hr=document.getElementById("houseRow");hr.textContent="";
-  var house=PHOTOS.map(function(x){return {u:x.u,c:""};});
-  PHOTOS.forEach(function(x,i){var tl=bt(),im=document.createElement("img");
-    im.src=x.u;im.alt=t2(x.k);im.loading="lazy";tl.appendChild(im);
-    tl.addEventListener("click",function(){lbOpen(house,i);});hr.appendChild(tl);});
 }
 
 /* ---------- photo viewer ---------- */
@@ -2942,6 +2940,14 @@ function shBody(){
         shBody();});
       bg.appendChild(bx);});
     b.appendChild(bg);
+    /* a foto da última cama escolhida; toque para ampliar */
+    var last=bed(picked[picked.length-1]);
+    if(last&&last.img){var shot=bt("bedshot"),im2=document.createElement("img");
+      im2.src=last.img;im2.alt=t2(last.k);shot.appendChild(im2);shot.appendChild(el("span",null,t2(last.k)));
+      shot.addEventListener("click",function(){
+        var ph2=picked.map(function(id){var d=bed(id);return d&&d.img?{u:d.img,c:t2(d.k)}:null;}).filter(Boolean);
+        lbOpen(ph2,ph2.length-1);});
+      b.appendChild(shot);}
   }else if(bkind==="free"){
     b.appendChild(el("div","wnote",t("sFreeNote",FREE_MAX,FREE_AHEAD)));
     if(freeVote(a,o))b.appendChild(el("div","alert soft",t("sFreeVote")));
