@@ -554,11 +554,11 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
   font-family:var(--f);flex:none}
 .lang:active{background:var(--line2)}
 .bedpick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.bedshot{display:block;width:100%;border:0;padding:0;margin:0 0 14px;border-radius:14px;overflow:hidden;
-  background:var(--bg2);position:relative;cursor:zoom-in;aspect-ratio:4/3}
-.bedshot img{width:100%;height:100%;object-fit:cover;display:block}
-.bedshot span{position:absolute;left:10px;bottom:10px;background:rgba(10,18,26,.72);color:#fff;
-  font-size:12px;font-weight:800;padding:5px 10px;border-radius:99px}
+/* a foto da cama é só referência: miniatura inteira, sem corte, ao lado do nome */
+.bedshot{display:flex;align-items:center;gap:12px;width:100%;border:1.5px solid var(--line);padding:8px;margin:0 0 14px;
+  border-radius:12px;background:var(--bg2);cursor:zoom-in;text-align:left;font-family:var(--f)}
+.bedshot img{height:96px;width:auto;max-width:50%;object-fit:contain;border-radius:8px;display:block;flex:none}
+.bedshot span{font-size:13px;font-weight:800;color:var(--ink)}
 .bp{display:flex;flex-direction:column;gap:2px;align-items:flex-start;text-align:left;
   border:1.5px solid var(--line);background:var(--card);border-radius:13px;padding:10px 11px;
   cursor:pointer;font-family:var(--f);transition:border-color .15s,background .15s}
