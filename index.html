@@ -1722,6 +1722,7 @@ pt:{
  aNewPw:"Nova senha", aChangePw:"Trocar senha", aSignOut:"Sair",
  aPwShort:"A senha precisa de pelo menos 6 caracteres.", aPwOk:"Senha trocada.", aPwFail:"Não consegui trocar a senha.",
  lgAll:"Todos",
+ sPickBed:"Escolha uma cama.",
  fGuest:"A ficha é só para quem tem cota.",
  aUseFicha:"Usar a ficha",
  fUsed:function(n){return n+" já usou a ficha deste ano.";},
@@ -2008,6 +2009,7 @@ en:{
  aNewPw:"New password", aChangePw:"Change password", aSignOut:"Sign out",
  aPwShort:"The password needs at least 6 characters.", aPwOk:"Password changed.", aPwFail:"Could not change the password.",
  lgAll:"Everyone",
+ sPickBed:"Pick a bed.",
  fGuest:"The ficha is for cota holders only.",
  aUseFicha:"Use the ficha",
  fUsed:function(n){return n+" has already used this year's ficha.";},
@@ -2924,7 +2926,6 @@ function shBody(){
 
   if(bkind==="share"){
     picked=picked.filter(function(x){return fb.indexOf(x)>=0;});
-    if(!picked.length&&fb.length)picked=[fb.indexOf("q1")>=0?"q1":fb[0]];
     b.appendChild(el("span","lab",t("sWhichBed")));
     var bg=el("div","bedpick");
     BEDS.forEach(function(x){
@@ -2936,7 +2937,7 @@ function shBody(){
       bx.appendChild(el("small",null,free?t2("bSleeps",x.sl):t2("sTaken")));
       bx.addEventListener("click",function(){
         var i=picked.indexOf(x.id);
-        if(i>=0){if(picked.length>1)picked.splice(i,1);}else picked.push(x.id);
+        if(i>=0)picked.splice(i,1);else picked.push(x.id);   /* qualquer cama sai, inclusive a que veio marcada */
         shBody();});
       bg.appendChild(bx);});
     b.appendChild(bg);
@@ -3048,6 +3049,7 @@ function shBody(){
   b.appendChild(cl);
 
   var cls2=clash(a,o,bkind,useB,who);
+  if(!cls2&&bkind==="share"&&!useB.length)cls2=t("sPickBed");
   if(!cls2&&bkind==="share"&&who!=="gx"&&nP>capOf(useB))cls2=t("sTooMany",nP,capOf(useB));
   var go2=bt("cta");go2.style.width="100%";go2.style.margin="0";
   if(cls2){b.appendChild(el("div","alert stop",cls2));go2.disabled=true;go2.textContent=t("sUnavailable");}
