@@ -72,6 +72,8 @@
 
 *{box-sizing:border-box}
 html,body{min-height:100%}
+/* a página nunca anda de lado: se algo ficar largo demais, parte em linhas em vez de empurrar o resto */
+html{overflow-x:hidden}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f);
   font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased;
   overscroll-behavior-y:none}
@@ -193,8 +195,9 @@ button{font-family:inherit}
 .fcard{margin:0 16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:6px 16px;box-shadow:var(--sh)}
 .kv{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:10px 0;border-bottom:1px solid var(--line2);font-size:13.5px}
 .kv:last-child{border-bottom:0}
-.kv span{color:var(--ink2);flex:none}
-.kv b{font-family:var(--mono);font-weight:500;text-align:right;overflow-wrap:anywhere}
+/* etiqueta encolhe e quebra em linhas; o valor fica inteiro, à direita, e só parte se for texto comprido (e-mail, PayID) */
+.kv span{color:var(--ink2);flex:1 1 auto;min-width:0}
+.kv b{font-family:var(--mono);font-weight:500;text-align:right;flex:none;max-width:62%;overflow-wrap:anywhere}
 .kv.big b{font-family:var(--fd);font-size:26px;font-weight:800}
 .pos{color:var(--good)} .neg{color:var(--brand)}
 .bal{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)}
@@ -202,7 +205,7 @@ button{font-family:inherit}
 .bal i{width:10px;height:10px;border-radius:50%;flex:none}
 .bal .n{flex:1;min-width:0;font-size:14px;font-weight:700}
 .bal .n small{display:block;font-size:12px;font-weight:500;color:var(--ink3)}
-.bal .v{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right}
+.bal .v{font-family:var(--mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right;flex:none;max-width:45%;overflow-wrap:anywhere}
 .fgrid{display:grid;gap:9px;margin-bottom:8px}
 .segs{display:flex;gap:6px;overflow-x:auto;padding:14px 16px 4px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .segs::-webkit-scrollbar{display:none}
@@ -257,7 +260,7 @@ button{font-family:inherit}
 .proj .sub2{font-size:12px;opacity:.7;margin:0 0 12px}
 .proj .pr{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px;
   border-bottom:1px solid rgba(255,255,255,.13);opacity:.88}
-.proj .pr b{font-family:var(--mono);flex:none}
+.proj .pr b{font-family:var(--mono);flex:none;max-width:55%;text-align:right;overflow-wrap:anywhere}
 .proj .pr.big{opacity:1;border-bottom:0;padding-top:12px;font-weight:800;font-size:14.5px}
 .proj .pr.big b{font-size:19px;color:var(--brand)}
 .proj .sh2{margin-top:11px;padding-top:11px;border-top:1px solid rgba(255,255,255,.18);
@@ -274,7 +277,8 @@ button{font-family:inherit}
   padding:12px 14px;box-shadow:var(--sh)}
 .agenda .at{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .agenda .at b{font-size:13.5px;font-weight:800}
-.agenda .at span{font-family:var(--mono);font-size:12px;color:var(--ink2)}
+.agenda .at span{font-family:var(--mono);font-size:12px;color:var(--ink2);flex:none}
+.agenda .at b{min-width:0}
 .agenda .ab{height:6px;border-radius:99px;background:var(--bg2);overflow:hidden;margin-top:8px}
 .agenda .ab i{display:block;height:100%;border-radius:99px}
 .agenda .an{font-size:11.5px;color:var(--ink3);margin-top:6px;line-height:1.4}
@@ -301,7 +305,7 @@ button{font-family:inherit}
 .item .mid{flex:1;min-width:0}
 .item .mid b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
 .item .mid small{display:block;font-size:12.5px;color:var(--ink2)}
-.item .rt{font-family:var(--mono);font-size:12.5px;color:var(--ink2);flex:none;text-align:right}
+.item .rt{font-family:var(--mono);font-size:12.5px;color:var(--ink2);flex:none;text-align:right;max-width:45%;overflow-wrap:anywhere}
 
 .pill{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:99px;
   letter-spacing:.01em}
@@ -436,14 +440,15 @@ html.lock,html.lock body{overflow:hidden}
   color:var(--ink);border-radius:11px;padding:10px 12px;font-family:var(--f);font-size:14px;
   font-weight:600;margin-bottom:12px}
 .calcl{border-top:1px solid var(--line2);padding-top:12px;display:grid;gap:7px;margin-bottom:12px}
-.cl{display:flex;justify-content:space-between;gap:12px;font-size:13px;color:var(--ink2)}
-.cl b{font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500}
+.cl{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px;color:var(--ink2)}
+.cl span{flex:1 1 auto;min-width:0}
+.cl b{font-family:var(--mono);font-size:13px;color:var(--ink);font-weight:500;flex:none;max-width:60%;text-align:right;overflow-wrap:anywhere}
 .cl.tot{border-top:1px solid var(--line2);padding-top:9px;color:var(--ink);font-weight:800}
 .cl.tot b{font-size:18px;font-weight:800;font-family:var(--f)}
 .grp{padding:9px 0;border-bottom:1px solid var(--line2)}
 .gt{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
-.gt span{font-size:14px;font-weight:700;color:var(--ink)}
-.gt b{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--ink);flex:none}
+.gt span{font-size:14px;font-weight:700;color:var(--ink);flex:1 1 auto;min-width:0}
+.gt b{font-family:var(--mono);font-size:15px;font-weight:500;color:var(--ink);flex:none;max-width:60%;text-align:right;overflow-wrap:anywhere}
 .gs{font-size:12px;color:var(--ink3);margin-top:2px;font-family:var(--mono)}
 .alert{border-radius:11px;padding:10px 12px;font-size:12.5px;line-height:1.4;margin-bottom:12px}
 .alert.stop{background:var(--brand-s);color:var(--brand)}
@@ -460,6 +465,9 @@ td{padding:10px 11px;border-bottom:1px solid var(--line2);text-align:right;
 td:first-child{text-align:left;font-family:var(--f);font-size:13.5px;font-weight:600}
 tr:last-child td{border-bottom:0}
 tfoot td{background:var(--bg2);font-weight:500}
+/* no telemóvel a tabela anda de lado; a primeira coluna (o nome) fica presa para se saber de quem é a linha */
+.tw td:first-child,.tw th:first-child{position:sticky;left:0;z-index:1;background:var(--card)}
+.tw tfoot td:first-child{background:var(--bg2)}
 .nm{display:flex;align-items:center;gap:8px}
 .nm i{width:9px;height:9px;border-radius:3px;flex:none;display:block}
 .tick{width:26px;height:26px;border-radius:8px;border:1.5px solid var(--line);background:var(--bg2);
@@ -658,7 +666,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 .tpage .tw{overflow-x:auto;margin:0;border:0;border-radius:0;background:none}
 .tpage .card.tw{border:1px solid var(--linha);border-radius:14px;background:var(--papel)}
 .tpage table{width:100%;border-collapse:collapse;font-size:14.5px;min-width:440px}
-.tpage caption{caption-side:bottom;text-align:left;padding:12px 16px 14px;font-size:13px;color:var(--tinta2);
+/* a nota debaixo da tabela fica fora dela: tem a largura do cartão, não a da tabela que rola de lado */
+.tpage .tcap{display:block;margin:0;text-align:left;padding:12px 16px 14px;font-size:13px;color:var(--tinta2);
   border-top:1px solid var(--linha2)}
 .tpage th{font-size:10.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--tinta3);
   padding:14px 14px 9px;text-align:center;border-bottom:1px solid var(--linha);white-space:normal}
@@ -668,7 +677,16 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 .tpage td:first-child{text-align:left;font-family:var(--tf);font-size:14.5px;font-weight:600}
 .tpage tbody tr:last-child td{border-bottom:0}
 .tpage tr.total td{background:var(--mar-s);font-weight:700;border-top:2px solid var(--linha)}
+.tpage .tw td:first-child,.tpage .tw th:first-child{background:var(--papel)}
+.tpage .tw tr.total td:first-child{background:var(--mar-s)}
 .tpage .cr::after{content:" cr";font-size:11px;color:var(--tinta3)}
+/* no telemóvel as tabelas da página de cotas cabem inteiras: colunas mais justas em vez de rolar de lado */
+@media (max-width:520px){
+  .tpage table{min-width:0}
+  .tpage th,.tpage td{padding:12px 9px}
+  .tpage th:first-child,.tpage td:first-child{padding-left:14px}
+  .tpage th:last-child,.tpage td:last-child{padding-right:14px}
+}
 .tpage .chip{display:inline-block;font-family:var(--tf);font-size:11px;font-weight:800;padding:3px 9px;
   border-radius:99px;letter-spacing:.01em}
 .tpage .chip.b{background:var(--tbaixa);color:var(--tbaixa-t)}
@@ -845,7 +863,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <tr><td>Qualquer cama</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
         </tbody>
       </table>
-      <caption>As camas: Quarto 1 com cama queen e Quarto 2 com cama de casal (2 pessoas cada), o beliche duplo no quarto 3 (casal embaixo e casal em cima, 2 pessoas cada), o sofá-cama queen da sala (2) e a cama de solteiro (1). Quem reserva marca quem dorme; cada pessoa paga com os próprios créditos.</caption>
+      <p class="tcap">As camas: Quarto 1 com cama queen e Quarto 2 com cama de casal (2 pessoas cada), o beliche duplo no quarto 3 (casal embaixo e casal em cima, 2 pessoas cada), o sofá-cama queen da sala (2) e a cama de solteiro (1). Quem reserva marca quem dorme; cada pessoa paga com os próprios créditos.</p>
     </div>
     <div class="note">
       <b>Um fim de semana é sexta + sábado</b>, as duas noites na faixa média: <b>4 créditos por pessoa</b>.
@@ -868,7 +886,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <tr><td>Any bed</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
         </tbody>
       </table>
-      <caption>The beds: Bedroom 1 with a queen and Bedroom 2 with a double (2 people each), the double bunk in bedroom 3 (a double below and a double above, 2 people each), the queen sofa bed in the living room (2) and the single bed (1). Whoever books marks who sleeps; each person pays with their own credits.</caption>
+      <p class="tcap">The beds: Bedroom 1 with a queen and Bedroom 2 with a double (2 people each), the double bunk in bedroom 3 (a double below and a double above, 2 people each), the queen sofa bed in the living room (2) and the single bed (1). Whoever books marks who sleeps; each person pays with their own credits.</p>
     </div>
     <div class="note">
       <b>A weekend is Friday + Saturday</b>, both nights in the mid band: <b>4 credits per person</b>.
@@ -989,7 +1007,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <tr><td>1 semana no verão</td><td class="cr">28</td><td>$560</td><td>~$1.542</td></tr>
         </tbody>
       </table>
-      <caption>Airbnb em Rye: diária média de $395 ($412 em janeiro) mais $200 de limpeza por estadia, dividido por duas pessoas.</caption>
+      <p class="tcap">Airbnb em Rye: diária média de $395 ($412 em janeiro) mais $200 de limpeza por estadia, dividido por duas pessoas.</p>
     </div>
     <div class="note">
       <b>Crédito não compra a casa fechada.</b> O avulso serve para esticar a sua estadia numa cama.
@@ -1014,7 +1032,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <tr><td>1 summer week</td><td class="cr">28</td><td>$560</td><td>~$1,542</td></tr>
         </tbody>
       </table>
-      <caption>Airbnb in Rye: average $395 a night ($412 in January) plus $200 cleaning per stay, split between two people.</caption>
+      <p class="tcap">Airbnb in Rye: average $395 a night ($412 in January) plus $200 cleaning per stay, split between two people.</p>
     </div>
     <div class="note">
       <b>Credits do not buy the sealed house.</b> Extras are for stretching your stay in a bed.
@@ -1190,20 +1208,18 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <h2>7. As contas do mês</h2>
     <p class="lead" id="t7leadPt"></p>
     <div class="card tw"><table>
-      <caption id="t7capPt"></caption>
       <thead><tr><th>Quem</th><th>Cota</th><th>Aporte</th><th>Paga</th></tr></thead>
       <tbody id="t7bodyPt"></tbody>
-    </table></div>
+    </table><p class="tcap" id="t7capPt"></p></div>
     <div class="warn" id="t7warnPt"></div>
   </section>
   <section data-l="en">
     <h2>7. The monthly sums</h2>
     <p class="lead" id="t7leadEn"></p>
     <div class="card tw"><table>
-      <caption id="t7capEn"></caption>
       <thead><tr><th>Who</th><th>Cota</th><th>Aporte</th><th>Pays</th></tr></thead>
       <tbody id="t7bodyEn"></tbody>
-    </table></div>
+    </table><p class="tcap" id="t7capEn"></p></div>
     <div class="warn" id="t7warnEn"></div>
   </section>
 
@@ -1599,7 +1615,7 @@ var DEF=[
   {id:"jo",name:"John",ab:"Jo",color:"var(--c9)"},
   {id:"br",name:"Bruna",ab:"B",color:"var(--c4)"},
   {id:"cc",name:"Caio",ab:"Ci",color:"var(--c10)"},
-  {id:"c9",name:"Cota 9",vaga:true,color:"var(--c5)"},
+  {id:"c9",name:"Victor Hugo",ab:"VH",color:"var(--c5)"},
   {id:"c10",name:"Cota 10",vaga:true,color:"var(--c11)"},
   {id:"c11",name:"Cota 11",vaga:true,color:"var(--c6)"},
   {id:"c12",name:"Cota 12",vaga:true,color:"var(--c12)"}];

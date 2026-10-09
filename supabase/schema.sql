@@ -156,10 +156,11 @@ create policy p_profiles_terms on profiles for update
 --   ('du-uuid',     'du', false),
 --   ('john-uuid',   'jo', false),
 --   ('bruna-uuid',  'br', false),
---   ('caio-uuid',   'cc', false)
+--   ('caio-uuid',   'cc', false),
+--   ('victor-uuid', 'c9', false)
 -- on conflict (user_id) do update set hh = excluded.hh, admin = excluded.admin;
 --
--- Cotas 9 to 12 are c9, c10, c11, c12 once someone takes them.
+-- Victor Hugo took cota 9 and kept its code, c9. Cotas 10 to 12 are c10, c11, c12 once someone takes them.
 
 -- ─────────────── from couples to people (run once) ───────────────
 -- Old couple codes become the first person of the couple; the app maps them too.

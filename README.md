@@ -40,11 +40,13 @@ insert into profiles (user_id, hh, admin) values
   ('du-uuid',     'du', false),
   ('john-uuid',   'jo', false),
   ('bruna-uuid',  'br', false),
-  ('caio-uuid',   'cc', false)
+  ('caio-uuid',   'cc', false),
+  ('victor-uuid', 'c9', false)
 on conflict (user_id) do update set hh = excluded.hh, admin = excluded.admin;
 ```
 
-The codes come from `DEF` in `index.html`. Cotas 9–12 are `c9`, `c10`, `c11`, `c12`: when
+The codes come from `DEF` in `index.html`. Victor Hugo took cota 9 and kept its code, `c9`.
+Cotas 10–12 are `c10`, `c11`, `c12`: when
 someone takes one, change its `name` (and `ab`, the initials) in `DEF`, delete `vaga:true`,
 create their account and add their profile row. If they join after the start, add `from: "2026-12"`
 (the month they join): they pay from that month, get credits for the months left
