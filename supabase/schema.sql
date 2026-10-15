@@ -23,6 +23,8 @@ alter table bookings add column if not exists beds    jsonb not null default '[]
 alter table bookings add column if not exists made_at timestamptz default now();
 -- one cota per person: who sleeps in a bed booking, each paying their own credits
 alter table bookings add column if not exists ppl     jsonb not null default '[]'::jsonb;
+-- who sleeps in which bed ({bed: [people]}); a bed with nobody is the booker's guest, paid by the booker
+alter table bookings add column if not exists seat    jsonb;
 
 create table if not exists expenses (
   id          text primary key,
@@ -58,6 +60,7 @@ create table if not exists log (
 alter table log add column if not exists ppl  jsonb   not null default '[]'::jsonb;
 alter table log add column if not exists pc   int     default 0;
 alter table log add column if not exists late boolean not null default false;
+alter table log add column if not exists seat jsonb;
 
 -- extra credits bought at $20 each; the money goes to the aporte
 create table if not exists buys (

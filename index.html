@@ -421,6 +421,10 @@ html.lock,html.lock body{overflow:hidden}
 .dates b{display:block;font-size:15px;font-weight:700;letter-spacing:-.01em}
 .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(96px,1fr));gap:9px;margin-bottom:12px}
 .pplpick{margin-bottom:12px}
+.seatrow{margin-bottom:10px}
+.seatrow>b{display:block;font-size:13px;margin-bottom:6px}
+.seatrow .pplpick{margin-bottom:4px}
+.seatrow .gbed{margin-top:6px}
 .pend{margin:14px 16px 0}
 .pend .avail{margin:0 0 10px}
 .pend .af button.ghost{background:none;color:var(--ink);border:1.5px solid var(--line)}
@@ -488,6 +492,7 @@ table.pg td:first-child{text-align:left;padding-left:11px}
 .rel i{width:6px;height:6px;border-radius:50%;background:var(--line);display:block}
 .rel.on{border-color:transparent;color:#fff}
 .rel.on i{background:rgba(255,255,255,.9)}
+.rel:disabled{opacity:.4;cursor:default}
 .cn{font-size:11.5px;color:var(--ink3);margin-top:7px;line-height:1.4}
 
 .dx{border:1px solid var(--line);border-radius:14px;background:var(--card);margin-bottom:9px;
@@ -850,7 +855,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
   <!-- ============ 1 ============ -->
   <section data-l="pt">
     <h2>1. Quanto custa cada noite</h2>
-    <p class="lead">O preço é <b>por pessoa</b> e depende só de <b>quando</b>. Qualquer cama, sozinho ou acompanhado.</p>
+    <p class="lead">O preço é <b>por pessoa</b> e depende de <b>quando</b> e de <b>qual cama</b>: nos quartos 1 e 2 é o dobro.</p>
     <div class="card tw">
       <table>
         <thead><tr>
@@ -860,20 +865,22 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <th><span class="chip a">Alta</span><span class="quando">18 dez – 26 jan</span></th>
         </tr></thead>
         <tbody>
-          <tr><td>Qualquer cama</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
+          <tr><td>Quartos 1 e 2</td><td class="cr">2</td><td class="cr">4</td><td class="cr">8</td></tr>
+          <tr><td>Beliche, sofá-cama e solteiro</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
         </tbody>
       </table>
-      <p class="tcap">As camas: Quarto 1 com cama queen e Quarto 2 com cama de casal (2 pessoas cada), o beliche duplo no quarto 3 (casal embaixo e casal em cima, 2 pessoas cada), o sofá-cama queen da sala (2) e a cama de solteiro (1). Quem reserva marca quem dorme; cada pessoa paga com os próprios créditos.</p>
+      <p class="tcap">As camas: Quarto 1 com cama queen e Quarto 2 com cama de casal (2 pessoas cada), o beliche duplo no quarto 3 (casal embaixo e casal em cima, 2 pessoas cada), o sofá-cama queen da sala (2) e a cama de solteiro (1). Quem reserva marca quem dorme em cada cama; cada pessoa paga a sua com os próprios créditos. Cama reservada sem ninguém marcado é de um convidado, e quem reservou paga por ela.</p>
     </div>
     <div class="note">
-      <b>Um fim de semana é sexta + sábado</b>, as duas noites na faixa média: <b>4 créditos por pessoa</b>.
-      Duas pessoas no Quarto 1 gastam 4 cada. Quem vai sozinho gasta os mesmos 4 — <b>ninguém paga o dobro
-      por estar só</b>. No verão, o dobro disso.
+      <b>Um fim de semana é sexta + sábado</b>, as duas noites na faixa média: <b>4 créditos por pessoa</b>
+      no beliche, no sofá-cama ou no solteiro, e <b>8 no Quarto 1 ou 2</b>. Duas pessoas no Quarto 1 gastam 8 cada.
+      Quem vai sozinho numa cama de casal gasta os mesmos 8 — <b>ninguém paga o dobro por estar só</b>.
+      Reservar <b>uma cama a mais</b> para um amigo é pagar essa cama também. No verão, o dobro de tudo.
     </div>
   </section>
   <section data-l="en">
     <h2>1. What each night costs</h2>
-    <p class="lead">The price is <b>per person</b> and depends only on <b>when</b>. Any bed, alone or with someone.</p>
+    <p class="lead">The price is <b>per person</b> and depends on <b>when</b> and <b>which bed</b>: Bedrooms 1 and 2 cost double.</p>
     <div class="card tw">
       <table>
         <thead><tr>
@@ -883,15 +890,17 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <th><span class="chip a">Peak</span><span class="quando">18 Dec – 26 Jan</span></th>
         </tr></thead>
         <tbody>
-          <tr><td>Any bed</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
+          <tr><td>Bedrooms 1 and 2</td><td class="cr">2</td><td class="cr">4</td><td class="cr">8</td></tr>
+          <tr><td>Bunk, sofa bed and single</td><td class="cr">1</td><td class="cr">2</td><td class="cr">4</td></tr>
         </tbody>
       </table>
-      <p class="tcap">The beds: Bedroom 1 with a queen and Bedroom 2 with a double (2 people each), the double bunk in bedroom 3 (a double below and a double above, 2 people each), the queen sofa bed in the living room (2) and the single bed (1). Whoever books marks who sleeps; each person pays with their own credits.</p>
+      <p class="tcap">The beds: Bedroom 1 with a queen and Bedroom 2 with a double (2 people each), the double bunk in bedroom 3 (a double below and a double above, 2 people each), the queen sofa bed in the living room (2) and the single bed (1). Whoever books marks who sleeps in each bed; each person pays for theirs with their own credits. A bed booked with nobody marked is a guest's, and whoever booked pays for it.</p>
     </div>
     <div class="note">
-      <b>A weekend is Friday + Saturday</b>, both nights in the mid band: <b>4 credits per person</b>.
-      Two people in Bedroom 1 spend 4 each. Someone on their own spends the same 4 — <b>nobody pays double
-      for coming alone</b>. In summer, double that.
+      <b>A weekend is Friday + Saturday</b>, both nights in the mid band: <b>4 credits per person</b>
+      in the bunk, the sofa bed or the single, and <b>8 in Bedroom 1 or 2</b>. Two people in Bedroom 1 spend 8 each.
+      Someone on their own in a double spends the same 8 — <b>nobody pays double for coming alone</b>.
+      Booking <b>an extra bed</b> for a friend means paying for that bed too. In summer, double all of it.
     </div>
   </section>
 
@@ -899,8 +908,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
   <section>
     <h2 data-l="pt">2. Faça a conta da sua viagem</h2>
     <h2 data-l="en">2. Work out your trip</h2>
-    <p class="lead" data-l="pt">Escolha a época e quantas noites. A cama não muda o preço. A barra mostra quanto da sua cota isso consome.</p>
-    <p class="lead" data-l="en">Pick the season and how many nights. The bed does not change the price. The bar shows how much of your cota that uses.</p>
+    <p class="lead" data-l="pt">Escolha a época e quantas noites. Nos quartos 1 e 2, dobre. A barra mostra quanto da sua cota isso consome.</p>
+    <p class="lead" data-l="en">Pick the season and how many nights. In Bedrooms 1 and 2, double it. The bar shows how much of your cota that uses.</p>
     <div class="card calc">
       <div class="row">
         <label id="tcL2"><span data-l="pt">Quando</span><span data-l="en">When</span></label>
@@ -1096,7 +1105,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li><b>Quem reserva primeiro, fica.</b> Não existe reserva antecipada, fila nem transferência entre cotas.</li>
           <li><b>Cancelar até 24 horas antes da chegada devolve os créditos na hora</b> e libera a data para os outros.</li>
           <li><b>Cancelou com menos de 24 horas, perde os créditos.</b> A chegada conta a partir das 14h do primeiro dia: cancelar depois das 14h da véspera libera a cama, mas os créditos não voltam.</li>
-          <li><b>Quem reserva marca quem dorme.</b> Cada pessoa marcada paga a sua parte com os próprios créditos, e tudo aparece no histórico.</li>
+          <li><b>Quem reserva marca quem dorme em cada cama.</b> Cada pessoa marcada paga a sua cama com os próprios créditos. Cama sem ninguém marcado é de um convidado e fica por conta de quem reservou. Tudo aparece no histórico.</li>
           <li>Reserva de uma cama não vira casa fechada depois. Quem quer a casa só para si usa a ficha, na hora de reservar.</li>
         </ul></div>
       <div class="ex"><h3>Os quartos 1 e 2</h3>
@@ -1154,7 +1163,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li><b>First to book keeps it.</b> There is no advance booking, no queue and no transfer between cotas.</li>
           <li><b>Cancelling up to 24 hours before arrival returns the credits at once</b> and frees the date for the others.</li>
           <li><b>Cancel with less than 24 hours to go and the credits are lost.</b> Arrival counts from 2pm on the first day: cancelling after 2pm the day before frees the bed, but the credits do not come back.</li>
-          <li><b>Whoever books marks who sleeps.</b> Each person marked pays their own share with their own credits, and all of it shows in the history.</li>
+          <li><b>Whoever books marks who sleeps in each bed.</b> Each person marked pays for their bed with their own credits. A bed with nobody marked is a guest's and goes on whoever booked it. All of it shows in the history.</li>
           <li>A bed booking never turns into a sealed house later. Whoever wants the house to themselves uses the ficha, at booking time.</li>
         </ul></div>
       <div class="ex"><h3>Bedrooms 1 and 2</h3>
@@ -1591,7 +1600,7 @@ var ROOMS=[
   {u:PHOTOS[6].u,k:"rDeck",s:"1.8 × 4.6 m"}
 ];
 
-/* as seis camas da casa. w = peso da cama, multiplicado pelo peso da estação */
+/* as seis camas da casa. w = peso da cama: nos quartos 1 e 2 cada pessoa paga o dobro */
 var BEDS=[
   {id:"q1",k:"bQ1",w:2,sl:2,ph:4,img:"photos/bed-queen.jpg"},
   {id:"q2",k:"bQ2",w:2,sl:2,ph:4,img:"photos/bed-double.jpg"},
@@ -1642,6 +1651,8 @@ var CRIT=[
   {id:"king",l:"King's Birthday",i:"2027-06-11",o:"2027-06-15"},
   {id:"afl",l:"Grand Final",i:"2027-09-24",o:"2027-09-27"}];
 var WIN=15,AHEAD=21,MAXWK=2,W={alta:4,media:2,baixa:1};   /* W: créditos por pessoa, por noite */
+/* reservas sem "quem dorme em qual cama" que chegam antes disso ficam no preço antigo (por pessoa, qualquer cama) */
+var PRICE_FROM="2026-10-15";
 var FREE_N=1,FREE_MAX=5,FREE_AHEAD=60,FREE_GAP=7;  /* a ficha: 1 fechamento grátis por pessoa no ano, até 5 noites, 7 noites livres entre fichas */
 var PAYM=["2026-10","2026-11","2026-12","2027-01","2027-02","2027-03","2027-04","2027-05",
           "2027-06","2027-07","2027-08","2027-09"];
@@ -1763,8 +1774,13 @@ pt:{
  sFreeLine:function(n){return n+(n===1?" noite":" noites")+" de casa fechada";},
  sFreeLeft:function(n){return "Fichas de "+n;},
  sAskAll:"Pedir aprovação de todos",
- sWho:function(c){return "Quem dorme · até "+c+(c===1?" pessoa":" pessoas");},
- sTooMany:function(n,c){return n+" pessoas não cabem: as camas escolhidas dormem "+c+". Escolha mais uma cama ou tire alguém.";},
+ sWhoBed:"Quem dorme em cada cama",
+ sGuestBed:function(n){return "Ninguém marcado: é cama de convidado, e "+n+" paga por ela com os próprios créditos.";},
+ sGuestBedPh:"Nome do convidado", sNeedGuestBed:"Escreva o nome de quem dorme em cada cama de convidado.",
+ guestOf:function(g,n){return g+" (convidado de "+n+")";},
+ bRate:function(c){return c+" cr/pessoa";},
+ sBedBreak:function(n,p,r){return n+(n===1?" noite":" noites")+" · "+p+(p===1?" pessoa":" pessoas")+" × "+r+" cr";},
+ sBedGuest:function(n,r,nm){return n+(n===1?" noite":" noites")+" · convidado de "+nm+" · "+r+" cr";},
  lgDeny:function(nm,a,o){return nm+" recusou a ficha de "+a+" a "+o;},
  nVacant:"vaga",
  bPrice:function(a,b,c){return a+" / "+b+" / "+c+" cr por pessoa";},
@@ -2050,8 +2066,13 @@ en:{
  sFreeLine:function(n){return n+(n===1?" night":" nights")+" of sealed house";},
  sFreeLeft:function(n){return n+"'s fichas";},
  sAskAll:"Ask everyone to approve",
- sWho:function(c){return "Who sleeps · up to "+c+(c===1?" person":" people");},
- sTooMany:function(n,c){return n+" people do not fit: the beds you picked sleep "+c+". Pick another bed or take someone off.";},
+ sWhoBed:"Who sleeps in each bed",
+ sGuestBed:function(n){return "Nobody marked: it is a guest bed, and "+n+" pays for it with their own credits.";},
+ sGuestBedPh:"Guest's name", sNeedGuestBed:"Enter the name of whoever sleeps in each guest bed.",
+ guestOf:function(g,n){return g+" ("+n+"'s guest)";},
+ bRate:function(c){return c+" cr/person";},
+ sBedBreak:function(n,p,r){return n+(n===1?" night":" nights")+" · "+p+(p===1?" person":" people")+" × "+r+" cr";},
+ sBedGuest:function(n,r,nm){return n+(n===1?" night":" nights")+" · "+nm+"'s guest · "+r+" cr";},
  lgDeny:function(nm,a,o){return nm+" declined the ficha from "+a+" to "+o;},
  nVacant:"open",
  bPrice:function(a,b,c){return a+" / "+b+" / "+c+" cr per person";},
@@ -2290,7 +2311,7 @@ var APO_TOTAL=Math.max(0,RENT-COTA*ACTIVE.length),APO_N=ACTIVE.filter(function(h
 var st={households:ACTIVE.map(function(h){return Object.assign({units:1,fixed:COTA,from:"2026-10"},h,{ap:h.apo?APO_TOTAL/APO_N:0});}),
   bookings:[],expenses:[],paid:{},consent:{},log:[],buys:[],bank:{}};
 var BANK_ID="bank",fBy=null,fSplit=null,fAll=true,logF="all",armedE=null;
-var ppl=[];
+var seat={};   /* na folha de reserva: quem dorme em cada cama */
 var me="pe",who="pe",gName="",gAmt="",sel={a:null,b:null},bkind="share",picked=["q1"];
 var mode="aberta",rooms=1;  /* legado, só para dados antigos */
 function selNights(){return sel.a?nts(sel.a,sel.b||iso(ad(pd(sel.a),1))):[];}
@@ -2345,13 +2366,40 @@ function nb(b){var o=Object.assign({},b);
   if(o.kind==="free")o.mode="exclusiva";
   o.hh=LEG[o.hh]||o.hh;o.rooms=nOf(o);return o;}
 function on(s){return st.bookings.map(nb).filter(function(b){return nts(b.in,b.out).indexOf(s)>=0;});}
-/* o preço é por pessoa: 1 / 2 / 4 créditos a noite, em qualquer cama, sozinho ou acompanhado */
+/* o preço é por pessoa: 1 / 2 / 4 créditos a noite, vezes o peso da cama (quartos 1 e 2 valem o dobro) */
 function pp(a,b){var t=0;nts(a,b).forEach(function(s){t+=W[tier(s)];});return t;}
+function rate(a,b,x){var d=bed(x);return pp(a,b)*((d&&d.w)||1);}
 function sealed(b){return b.kind==="whole"||b.kind==="free";}
+function hasSeat(b){return !!b.seat&&typeof b.seat==="object"&&!Array.isArray(b.seat);}
 function pplOf(b){if(isG(b)||b.kind!=="share")return [];
+  if(hasSeat(b)){var o=[];(b.beds||[]).forEach(function(x){(b.seat[x]||[]).forEach(function(y){
+    y=LEG[y]||y;if(o.indexOf(y)<0)o.push(y);});});return o;}
   return Array.isArray(b.ppl)&&b.ppl.length?b.ppl.map(function(x){return LEG[x]||x;}):[b.hh];}
-function crOf(b){return b.kind==="share"&&!isG(b)?pp(b.in,b.out)*pplOf(b).length:0;}
-function capOf(beds){var c=0;(beds||[]).forEach(function(x){var d=bed(x);if(d)c+=d.sl;});return c;}
+/* quem dorme em qual cama. Reserva antiga, sem isso: uma pessoa por cama, na ordem, e o resto onde couber */
+function seatOf(b){var s={},bs=b.beds||[];bs.forEach(function(x){s[x]=[];});
+  if(hasSeat(b)){bs.forEach(function(x){s[x]=(b.seat[x]||[]).map(function(y){return LEG[y]||y;});});return s;}
+  pplOf(b).forEach(function(id,i){
+    if(i<bs.length){s[bs[i]].push(id);return;}
+    var f=bs.filter(function(x){return s[x].length<((bed(x)||{}).sl||1);})[0]||bs[0];
+    if(f)s[f].push(id);});
+  return s;}
+/* os convidados do cotista: o nome de quem dorme em cada cama sem cotista (seat._g) */
+function guestsOf(b){if(!hasSeat(b))return [];var g=b.seat._g||{},s=seatOf(b);
+  return (b.beds||[]).filter(function(x){return !(s[x]||[]).length&&g[x];}).map(function(x){return g[x];});}
+function oldPrice(b){return !hasSeat(b)&&b.in<PRICE_FROM;}
+/* o que cada um paga: a própria cama, por pessoa. Cama sem ninguém marcado é de quem reservou
+   (o convidado do cotista): uma pessoa sozinha numa cama de casal paga uma vez só */
+function shareOf(b,id){if(b.kind!=="share"||isG(b))return 0;
+  if(oldPrice(b))return pplOf(b).indexOf(id)>=0?pp(b.in,b.out):0;
+  var s=seatOf(b),t=0;
+  (b.beds||[]).forEach(function(x){var p=s[x]||[];
+    if(p.indexOf(id)>=0||(!p.length&&b.hh===id))t+=rate(b.in,b.out,x);});
+  return t;}
+function crOf(b){if(b.kind!=="share"||isG(b))return 0;
+  if(oldPrice(b))return pp(b.in,b.out)*pplOf(b).length;
+  var s=seatOf(b),t=0;
+  (b.beds||[]).forEach(function(x){t+=rate(b.in,b.out,x)*Math.max(1,(s[x]||[]).length);});
+  return t;}
 function inB(b,id){return b.hh===id||pplOf(b).indexOf(id)>=0;}
 /* quem está numa reserva: as pessoas da cama, ou quem fechou a casa */
 function whoOf(b){var p=pplOf(b);return p.length?p:[b.hh];}
@@ -2393,8 +2441,7 @@ function dblRun(id,bedId,a,o,skip){
   nts(a,o).forEach(function(s){var k=wkKey(s);if(k)wks[k]=1;});
   if(!Object.keys(wks).length)return 0;
   st.bookings.map(nb).forEach(function(b){
-    if(b.id===skip||pplOf(b).indexOf(id)<0)return;
-    if((b.beds||[]).indexOf(bedId)<0)return;
+    if(b.id===skip||(seatOf(b)[bedId]||[]).indexOf(id)<0)return;
     nts(b.in,b.out).forEach(function(s){var k=wkKey(s);if(k)wks[k]=1;});});
   var ks=Object.keys(wks).sort(),best=1,run=1;
   for(var i=1;i<ks.length;i++){
@@ -2421,9 +2468,9 @@ function apBack(){var t=0;
 function tooEarly(a){var d=dU(a);return (d>AHEAD&&!critOf(a))?d-AHEAD:0;}
 function nightsOf(id){var n=0;st.bookings.map(nb).forEach(function(b){
   if(!isG(b)&&whoOf(b).indexOf(id)>=0)n+=nts(b.in,b.out).length;});return n;}
-function used(id){var t=0;st.bookings.map(nb).forEach(function(b){
-  if(pplOf(b).indexOf(id)>=0)t+=pp(b.in,b.out);});
+function used(id){var t=0;st.bookings.map(nb).forEach(function(b){t+=shareOf(b,id);});
   (st.log||[]).forEach(function(e){if(e.ty!=="cancel"||!e.late)return;
+    if(hasSeat(e)){t+=shareOf({kind:e.kind,hh:LEG[e.hh]||e.hh,in:e.a,out:e.o,beds:e.beds,seat:e.seat},id);return;}
     var ps=(e.ppl&&e.ppl.length)?e.ppl.map(function(x){return LEG[x]||x;}):null;
     if(ps){if(ps.indexOf(id)>=0)t+=(+e.pc||0);}
     else if((LEG[e.hh]||e.hh)===id)t+=(+e.cr||0);});
@@ -2472,9 +2519,9 @@ function clash(a,b,kind,beds,id){
       for(var j=0;j<beds.length;j++)if(tk[beds[j]])
         return t("cBedTaken",bedN(beds[j]),sd(ns[i]),bName(tk[beds[j]]));}}
   if(kind==="share"&&id&&id!=="gx"){
-    var who2=ppl.length?ppl:[id];
     for(var m=0;m<beds.length;m++){
       if(DOUBLES.indexOf(beds[m])<0)continue;
+      var who2=seat[beds[m]]||[];
       for(var q=0;q<who2.length;q++){
         var run=dblRun(who2[q],beds[m],a,b,null);
         if(run>MAXWK)return t("cTwoWeekendsP",(hh(who2[q])||{}).name||"?",bedN(beds[m]),MAXWK);}}}
@@ -2565,7 +2612,7 @@ function avail(){
   }else{
     var best=fb.indexOf("q1")>=0?"q1":(fb.indexOf("q2")>=0?"q2":fb[0]);
     ft.appendChild(el("div","pr",
-      t("aBedCost",pp(a,o),left)));
+      t("aBedCost",rate(a,o,best),left)));
     var mk=bt(null,t("aBookIt"));
     mk.addEventListener("click",function(){
       sel.a=a;sel.b=o;bkind="share";picked=[best];sheet(true);});
@@ -2613,7 +2660,7 @@ function home(){
     }else{
       ids.slice(0,4).forEach(function(id){var x=hh(id),i1=el("i",null,abOf(x));
         i1.style.background=x?x.color:"var(--ink3)";av.appendChild(i1);});
-      var minC=pp(td,iso(ad(pd(td),1)));
+      var minC=0;BEDS.forEach(function(x){if(!tkn[x.id]){var c0=rate(td,iso(ad(pd(td),1)),x.id);if(!minC||c0<minC)minC=c0;}});
       tx.appendChild(el("b",null,sealedB?t("hNowSealed",bName(sealedB)):t("hNowWho",ids.map(function(id){var x=hh(id);return x?x.name:"?";}))));
       tx.appendChild(el("small",null,t("hNowSub",ld(until),sealedB?0:freeN,minC)));}
     nw.appendChild(av);nw.appendChild(tx);}
@@ -2662,7 +2709,7 @@ function home(){
       t.appendChild(el("small",null,t2("hNights",nts(b.in,b.out).length)+(b.note?" · "+b.note:"")));
       t.appendChild(el("span","px",b.kind==="free"?(freePending(b)?t2("rFreeWait"):t2("rFreeTag"))
         :b.kind==="whole"?mm(+b.amount||money(b.in,b.out))
-        :t2("hCredits",pplOf(b).indexOf(me)>=0?pp(b.in,b.out):crOf(b))));
+        :t2("hCredits",inB(b,me)?shareOf(b,me):crOf(b))));
       t.addEventListener("click",function(){go("cal");
         var d=pd(b.in);cy=d.getUTCFullYear();cm=d.getUTCMonth();sel.a=b.in;sel.b=b.out;cal();});
       r.appendChild(t);});
@@ -2894,7 +2941,7 @@ function drop(){
     var bb=fbs.indexOf("q1")>=0?"q1":(fbs.indexOf("q2")>=0?"q2":fbs[0]);
     var e2=sel.b||iso(ad(pd(sel.a),1));
     ft.appendChild(el("div","txt",
-      t("dBedCr",pp(sel.a,e2),left)));
+      t("dBedCr",rate(sel.a,e2,bb),left)));
     var go2=bt(null,t("dBook"));
     go2.addEventListener("click",function(){
       if(!sel.b)sel.b=iso(ad(pd(sel.a),1));
@@ -2907,11 +2954,18 @@ function sheet(on2){
   var sh=document.getElementById("sheet"),bd=document.getElementById("backdrop");
   if(!on2){sh.classList.remove("on");bd.classList.remove("on");document.documentElement.classList.remove("lock");return;}
   if(!sel.a)return;
-  who=me;ppl=[me];gName="";gAmt="";
+  who=me;seat={};seatFor=null;gBed={};gName="";gAmt="";
   sh.classList.add("on");bd.classList.add("on");document.documentElement.classList.add("lock");shBody();}
 
-function peopleTxt(b){var p=pplOf(b);
-  return p.length>1||(p.length===1&&p[0]!==b.hh)?" · "+p.map(function(x){return (hh(x)||{}).name||"?";}).join(", "):"";}
+/* acerta quem dorme com as camas escolhidas: cama que saiu leva as pessoas junto. Quem reserva
+   começa sozinho na primeira cama, uma vez só, para poder sair dela depois */
+var seatFor=null,gBed={};
+function syncSeat(){var s={},g={},fresh=seatFor!==who&&picked.length;
+  picked.forEach(function(x){s[x]=fresh?[]:(seat[x]||[]).slice();if(gBed[x])g[x]=gBed[x];});seat=s;gBed=g;
+  if(fresh){seatFor=who;seat[picked[0]].push(who);}}
+function peopleTxt(b){var p=pplOf(b),g=guestsOf(b);
+  var n=p.map(function(x){return (hh(x)||{}).name||"?";}).concat(g.map(function(x){return t2("guestOf",x,bName(b));}));
+  return g.length||p.length>1||(p.length===1&&p[0]!==b.hh)?" · "+n.join(", "):"";}
 function shBody(){
   if(bkind==="whole")bkind="share";   /* a diária saiu: só cama ou ficha */
   var b=document.getElementById("shBody");b.textContent="";
@@ -2950,7 +3004,7 @@ function shBody(){
       bx.disabled=!free;
       bx.setAttribute("aria-pressed",onx?"true":"false");
       bx.appendChild(el("b",null,t2(x.k)));
-      bx.appendChild(el("small",null,free?t2("bSleeps",x.sl):t2("sTaken")));
+      bx.appendChild(el("small",null,free?t2("bSleeps",x.sl)+" · "+t2("bRate",rate(a,o,x.id)):t2("sTaken")));
       bx.addEventListener("click",function(){
         var i=picked.indexOf(x.id);
         if(i>=0)picked.splice(i,1);else picked.push(x.id);   /* qualquer cama sai, inclusive a que veio marcada */
@@ -2980,25 +3034,39 @@ function shBody(){
   var og=document.createElement("option");og.value="gx";og.textContent=t("sOutsideGuest");
   if(who==="gx")og.selected=true;sl.appendChild(og);
   sl.addEventListener("change",function(){
-    who=sl.value;ppl=who==="gx"?[]:[who];
+    who=sl.value;
     if(who!=="gx"&&!SB){me=who;sv();whoUI();home();}shBody();});
   b.appendChild(sl);
 
-  /* quem dorme: cada pessoa paga a sua parte, com os próprios créditos */
+  /* quem dorme em cada cama: cada pessoa paga a sua cama, com os próprios créditos.
+     Cama sem ninguém é o convidado de quem reserva, que paga por ela (Cotista Guest) */
   if(bkind==="share"&&who!=="gx"){
-    b.appendChild(el("span","lab",t("sWho",capOf(picked))));
-    var pw=el("div","rels pplpick");
-    st.households.forEach(function(x){
-      var onx=ppl.indexOf(x.id)>=0,c3=bt("rel"+(onx?" on":""));
-      if(onx)c3.style.background=x.color;
-      c3.appendChild(el("i"));c3.appendChild(document.createTextNode(x.name));
-      c3.setAttribute("aria-pressed",onx?"true":"false");
-      c3.addEventListener("click",function(){
-        var i=ppl.indexOf(x.id);
-        if(i>=0){if(ppl.length>1)ppl.splice(i,1);}else ppl.push(x.id);
-        shBody();});
-      pw.appendChild(c3);});
-    b.appendChild(pw);}
+    syncSeat();
+    if(picked.length)b.appendChild(el("span","lab",t("sWhoBed")));
+    picked.forEach(function(bx2){var d=bed(bx2),cap=(d||{}).sl||1,inb=seat[bx2];
+      var sr=el("div","seatrow");
+      sr.appendChild(el("b",null,bedN(bx2)+" · "+t("bSleeps",cap)));
+      var pw=el("div","rels pplpick");
+      st.households.forEach(function(x){
+        var onx=inb.indexOf(x.id)>=0,c3=bt("rel"+(onx?" on":""));
+        if(onx)c3.style.background=x.color;
+        c3.disabled=!onx&&inb.length>=cap;
+        c3.appendChild(el("i"));c3.appendChild(document.createTextNode(x.name));
+        c3.setAttribute("aria-pressed",onx?"true":"false");
+        c3.addEventListener("click",function(){
+          if(onx)inb.splice(inb.indexOf(x.id),1);
+          else{picked.forEach(function(y){seat[y]=seat[y].filter(function(z){return z!==x.id;});});
+            seat[bx2].push(x.id);}
+          shBody();});
+        pw.appendChild(c3);});
+      sr.appendChild(pw);
+      if(!inb.length){
+        sr.appendChild(el("div","wnote",t("sGuestBed",(hh(who)||{}).name||"")));
+        var gi=document.createElement("input");gi.className="gbed";gi.placeholder=t("sGuestBedPh");
+        gi.setAttribute("aria-label",t("sGuestName"));gi.value=gBed[bx2]||"";
+        gi.addEventListener("input",function(){gBed[bx2]=gi.value;gReady();});
+        sr.appendChild(gi);}
+      b.appendChild(sr);});}
 
   if(who==="gx"){
     b.appendChild(el("span","lab",t("sGuestName")));
@@ -3016,7 +3084,12 @@ function shBody(){
   b.appendChild(nt);
 
   var useB=bkind==="share"?picked:BEDS.map(function(x){return x.id;});
-  var nP=ppl.length||1,nbt=nByT(a,o),per=pp(a,o),c=bkind==="share"?per*nP:0,ns=nts(a,o).length;
+  var nbt=nByT(a,o),ns=nts(a,o).length;
+  var rec0={kind:"share",hh:who,in:a,out:o,beds:useB,seat:seat};
+  var c=bkind==="share"&&who!=="gx"?crOf(rec0):0;
+  /* quem paga: quem dorme, e quem reserva se sobrar cama de convidado */
+  var payers=pplOf(rec0).slice();
+  if(who!=="gx"&&payers.indexOf(who)<0&&shareOf(rec0,who))payers.push(who);
   var cash=money(a,o);
   var cl=el("div","calcl");
   var whatR=(bkind==="share"?useB.map(bedN).join(", "):t("sWholeHouse"));
@@ -3033,14 +3106,13 @@ function shBody(){
       g.appendChild(top);
       g.appendChild(el("div","gs",t2("sBreakDay",nbt[tk],mm(DAYR[tk]))));
       cl.appendChild(g);});
-  }else{
-    ["alta","media","baixa"].forEach(function(tk){
-      if(!nbt[tk])return;
-      var g=el("div","grp"),top=el("div","gt");
-      top.appendChild(el("span",null,t2("sSeason",TL[tk])));
-      top.appendChild(el("b",null,String(nbt[tk]*W[tk]*(who==="gx"?0:nP))));
+  }else if(who!=="gx"){
+    useB.forEach(function(x){
+      var k=(seat[x]||[]).length,g=el("div","grp"),top=el("div","gt");
+      top.appendChild(el("span",null,bedN(x)));
+      top.appendChild(el("b",null,String(rate(a,o,x)*Math.max(1,k))));
       g.appendChild(top);
-      g.appendChild(el("div","gs",t2("sBreak",nbt[tk],who==="gx"?0:nP,W[tk])));
+      g.appendChild(el("div","gs",k?t2("sBedBreak",ns,k,rate(a,o,x)):t2("sBedGuest",ns,rate(a,o,x),(hh(who)||{}).name||"")));
       cl.appendChild(g);});}
   var tt=el("div","cl tot");
   tt.appendChild(el("span",null,t("sTotal",ns,whatR)));
@@ -3058,34 +3130,42 @@ function shBody(){
     gv.appendChild(el("span",null,t("sIntoFund")));
     gv.appendChild(el("b",null,gAmt?mm(+gAmt):"—"));cl.appendChild(gv);
   }else{
-    ppl.forEach(function(id){var x=hh(id);if(!x)return;
+    payers.forEach(function(id){var x=hh(id);if(!x)return;
       var lf=allow(x)-used(id),sb=el("div","cl");
       sb.appendChild(el("span",null,t("sBalance",x.name)));
-      sb.appendChild(el("b",null,lf+" → "+(lf-per)));cl.appendChild(sb);});}
+      sb.appendChild(el("b",null,lf+" → "+(lf-shareOf(rec0,id))));cl.appendChild(sb);});}
   b.appendChild(cl);
 
   var cls2=clash(a,o,bkind,useB,who);
   if(!cls2&&bkind==="share"&&!useB.length)cls2=t("sPickBed");
-  if(!cls2&&bkind==="share"&&who!=="gx"&&nP>capOf(useB))cls2=t("sTooMany",nP,capOf(useB));
   var go2=bt("cta");go2.style.width="100%";go2.style.margin="0";
+  /* cama de convidado sem nome não fecha: o botão acompanha o que se digita */
+  function gMiss(){return bkind==="share"&&who!=="gx"&&useB.some(function(x){return !(seat[x]||[]).length&&!(gBed[x]||"").trim();});}
+  var gAlert=el("div","alert soft",t("sNeedGuestBed"));
+  function gReady(){if(cls2)return;var m=gMiss();go2.disabled=m;gAlert.style.display=m?"":"none";
+    go2.textContent=m?t("sNameMissing"):who==="gx"?t("sRegGuest"):bkind==="free"&&freeVote(a,o)?t("sAskAll"):t("sConfirmBooking");}
   if(cls2){b.appendChild(el("div","alert stop",cls2));go2.disabled=true;go2.textContent=t("sUnavailable");}
   else if(who==="gx"&&!(gName||"").trim()){
     b.appendChild(el("div","alert soft",t("sNeedName")));
     go2.disabled=true;go2.textContent=t("sNameMissing");
   }else{
-    if(bkind==="share"&&who!=="gx")ppl.forEach(function(id){var x=hh(id);if(!x)return;
-      var lf=allow(x)-used(id);
+    if(bkind==="share"&&who!=="gx")payers.forEach(function(id){var x=hh(id);if(!x)return;
+      var lf=allow(x)-used(id),per=shareOf(rec0,id);
       if(per>lf)b.appendChild(el("div","alert soft",t("sOverBalance",x.name,per-lf,mm((per-lf)*EXTRA))));});
-    go2.textContent=who==="gx"?t("sRegGuest"):bkind==="free"&&freeVote(a,o)?t("sAskAll"):t("sConfirmBooking");
+    b.appendChild(gAlert);gReady();
     go2.addEventListener("click",function(){
+      if(gMiss())return;
       var rec={id:uid(),hh:who,in:a,out:o,kind:bkind,beds:useB.slice(),
-        ppl:bkind==="share"&&who!=="gx"?ppl.slice():[],
+        ppl:bkind==="share"&&who!=="gx"?pplOf(rec0):[],
         at:new Date().toISOString(),
         note:(document.getElementById("shNote")||{}).value||""};
+      if(bkind==="share"&&who!=="gx"){rec.seat={};var gg={};useB.forEach(function(x){rec.seat[x]=(seat[x]||[]).slice();
+        if(!rec.seat[x].length)gg[x]=(gBed[x]||"").trim();});
+        if(Object.keys(gg).length)rec.seat._g=gg;}
       if(bkind==="whole")rec.amount=cash;
       if(who==="gx"){rec.guestName=(gName||"").trim();if(bkind!=="whole")rec.amount=+gAmt||0;}
       st.bookings.push(rec);
-      logit("book",{hh:who,nm:bName(rec),a:a,o:o,kind:bkind,beds:useB.slice(),ppl:rec.ppl.slice(),pc:per,
+      logit("book",{hh:who,nm:bName(rec),a:a,o:o,kind:bkind,beds:useB.slice(),ppl:rec.ppl.slice(),seat:rec.seat||null,pc:shareOf(rec,who),
         cr:bkind==="share"&&who!=="gx"?c:0,amt:bkind==="whole"?cash:(+rec.amount||0)});
       sv();
       if(db&&cw)db.doc("bookings/"+rec.id).set(rec).catch(werr);
@@ -3166,7 +3246,8 @@ function logit(ty,o){
   sv();return e;}
 function logCancel(b){
   logit("cancel",{hh:b.hh,nm:bName(b),a:b.in,o:b.out,kind:b.kind,late:lateCancel(b),
-    beds:(b.beds||[]).slice(),ppl:pplOf(b),pc:b.kind==="share"&&!isG(b)?pp(b.in,b.out):0,
+    beds:(b.beds||[]).slice(),ppl:pplOf(b),pc:shareOf(b,b.hh),
+    seat:b.kind==="share"&&!isG(b)&&!oldPrice(b)?(hasSeat(b)?b.seat:seatOf(b)):null,
     cr:crOf(b),
     amt:b.kind==="whole"?(+b.amount||money(b.in,b.out)):0});}
 
@@ -3202,8 +3283,10 @@ function logView(){
     var i=el("i");i.style.background=h?h.color:"var(--ink3)";row.appendChild(i);
     var b=el("div","b"),head,sub;
     var ep=(e.ppl||[]).map(function(x){return LEG[x]||x;});
+    var eg=guestsOf({beds:e.beds,seat:e.seat,ppl:e.ppl,kind:e.kind,hh:e.hh}),en=e.nm||(h?h.name:"?");
     var what=e.kind==="free"?t("rFree"):e.kind==="whole"?t("rWhole"):(e.beds||[]).map(bedN).join(", ")+
-      (ep.length>1||(ep.length===1&&ep[0]!==(LEG[e.hh]||e.hh))?" · "+ep.map(function(x){return (hh(x)||{}).name||"?";}).join(", "):"");
+      (eg.length||ep.length>1||(ep.length===1&&ep[0]!==(LEG[e.hh]||e.hh))?" · "+ep.map(function(x){return (hh(x)||{}).name||"?";})
+        .concat(eg.map(function(x){return t2("guestOf",x,en);})).join(", "):"");
     if(e.ty==="book")head=t("lgBook",e.nm||(h?h.name:"?"),what);
     else if(e.ty==="cancel")head=t(e.late?(e.kind==="free"?"lgCancelLateFree":"lgCancelLate"):"lgCancel",e.nm||(h?h.name:"?"),what);
     else if(e.ty==="deny")head=t("lgDeny",e.nm||(h?h.name:"?"),sd(e.a),sd(e.o));
@@ -3713,7 +3796,7 @@ function acct(){
   mine.forEach(function(b){var it=el("div","item"),m=el("div","mid");
     m.appendChild(el("b",null,sd(b.in)+" – "+sd(b.out)));
     m.appendChild(el("small",null,(b.kind==="free"?t("rFree"):b.kind==="whole"?t("rWhole"):(b.beds||[]).map(bedN).join(", ")+peopleTxt(b))));
-    it.appendChild(m);it.appendChild(el("div","rt",b.kind==="free"?t("rFreeTag"):b.kind==="whole"?mm(+b.amount||money(b.in,b.out)):t("rCr",pp(b.in,b.out))));
+    it.appendChild(m);it.appendChild(el("div","rt",b.kind==="free"?t("rFreeTag"):b.kind==="whole"?mm(+b.amount||money(b.in,b.out)):t("rCr",shareOf(b,me))));
     it.style.cursor="pointer";it.addEventListener("click",function(){go("cal");
       var d=pd(b.in);cy=d.getUTCFullYear();cm=d.getUTCMonth();sel.a=b.in;sel.b=b.out;cal();});
     tl.appendChild(it);});
@@ -3850,9 +3933,9 @@ function myCode(){return PROFILE?(LEG[PROFILE.hh]||PROFILE.hh):me;}
 function supaAdapter(sb){
   function rowToBooking(r){return {id:r.id,hh:r.hh,in:r.checkin,out:r.checkout,
     kind:r.kind||"share",beds:Array.isArray(r.beds)?r.beds:[],ppl:Array.isArray(r.ppl)?r.ppl:[],
-    note:r.note||"",guestName:r.guest_name||"",amount:+r.amount||0,at:r.made_at||""};}
+    seat:r.seat||null,note:r.note||"",guestName:r.guest_name||"",amount:+r.amount||0,at:r.made_at||""};}
   function bookingToRow(b){return {id:b.id,hh:b.hh,checkin:b.in,checkout:b.out,
-    kind:b.kind||"share",beds:b.beds||[],ppl:b.ppl||[],
+    kind:b.kind||"share",beds:b.beds||[],ppl:b.ppl||[],seat:b.seat||null,
     note:b.note||"",guest_name:b.guestName||null,amount:+b.amount||0,
     made_at:b.at||new Date().toISOString()};}
   function rowToExpense(r){return {id:r.id,desc:r.descr,amount:+r.amount||0,date:r.date,
@@ -3861,11 +3944,11 @@ function supaAdapter(sb){
     kind:e.kind||"expense",paid_by:e.by||"bank",to_id:e.to||null,split:e.split||[],created_by:e.mk||null};}
   function rowToLog(r){return {id:r.id,ty:r.ty,hh:r.hh,nm:r.nm||"",a:r.checkin||"",o:r.checkout||"",
     kind:r.kind||"",beds:Array.isArray(r.beds)?r.beds:[],n:+r.n||0,
-    ppl:Array.isArray(r.ppl)?r.ppl:[],pc:+r.pc||0,late:!!r.late,
+    ppl:Array.isArray(r.ppl)?r.ppl:[],seat:r.seat||null,pc:+r.pc||0,late:!!r.late,
     cr:+r.cr||0,amt:+r.amt||0,at:r.at||""};}
   function logToRow(e){return {id:e.id,ty:e.ty,hh:e.hh,nm:e.nm||null,checkin:e.a||null,
     checkout:e.o||null,kind:e.kind||null,beds:e.beds||[],n:+e.n||0,
-    ppl:e.ppl||[],pc:+e.pc||0,late:!!e.late,
+    ppl:e.ppl||[],seat:e.seat||null,pc:+e.pc||0,late:!!e.late,
     cr:+e.cr||0,amt:+e.amt||0,at:e.at||new Date().toISOString()};}
   function rowToBuy(r){return {id:r.id,hh:r.hh,n:+r.n||0,amount:+r.amount||0,at:r.at||""};}
   function buyToRow(b){return {id:b.id,hh:b.hh,n:+b.n||0,amount:+b.amount||0,
