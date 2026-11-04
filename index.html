@@ -1802,9 +1802,20 @@ pt:{
  sWhichBed:"Qual cama",
  sCr:function(c){return c+" cr";},
  sTaken:"ocupada",
- sWholeNote:"A casa toda não gasta crédito em nenhuma época — paga a tabela: $200 de segunda a quinta, $350 no fim de semana, $400 no verão. O valor vai para o aporte.",
+ sWholeNote:"A casa inteira fica fechada para um amigo de fora nessas noites: ninguém do grupo reserva cama. Não gasta crédito. O que ele pagar abate o aporte do mês seguinte.",
  sBreakDay:function(n,m){return n+" noite"+(n===1?"":"s")+" × "+m;},
  sToAporte:"Vai para o aporte",
+ sHost:"Quem responde pelo amigo", sFriendName:"Nome do amigo", sFriendPh:"Ex.: Tom e Ana, de Sydney",
+ sCollected:"Valor arrecadado", sCollectedPh:"Ex.: 600",
+ sNeedFriend:"Escreva o nome do amigo e o valor arrecadado para fechar a casa.",
+ sNeedAmt:"Falta o valor", sCloseHouse:"Fechar a casa",
+ sToAporteOf:function(m){return "Abate o aporte de "+m;},
+ friendOf:function(n){return "amigo de "+n;},
+ fWholeDed:function(m){return "Casa fechada em "+m+" (abate)";},
+ fWholeCarry:"Sobra da casa fechada, para o mês seguinte",
+ fWholeLine:function(g,h){return "Casa fechada · "+g+(h?" · amigo de "+h:"");},
+ fWholeSub:function(a,b,m){return a+" a "+b+" · abate o aporte de "+m;},
+ fyWhole:"Casa fechada para amigos (já abatida do aporte)",
  scLine:function(u,c,n){return u+" de "+c+" créditos · "+n+" noite"+(n===1?"":"s")+" no ano";},
  scHouse:"Aporte a devolver",
  scHouseSub:function(m){return "já voltou "+m;},
@@ -1904,7 +1915,7 @@ pt:{
  dBook:"Reservar", dWholeSealed:"casa inteira fechada",
  sBook:"Reservar", sCheckin:"Chegada", sCheckout:"Saída",
  sShare:"Dividir", sShareSub:"cama, em créditos",
- sSeal:"Diária", sSealSub:"casa toda, em dinheiro",
+ sSeal:"Fechar a casa", sSealSub:"amigo de fora, em dinheiro",
  sHowMany:"Quantos quartos",
  sBookingFor:"Reservar para", sOutsideGuest:"Convidado de fora",
  sGuestName:"Nome do convidado", sGuestPh:"Ex.: Marina e Téo",
@@ -2094,9 +2105,20 @@ en:{
  sWhichBed:"Which bed",
  sCr:function(c){return c+" cr";},
  sTaken:"taken",
- sWholeNote:"The whole house costs no credits in any season — it is paid at the rate: $200 Monday to Thursday, $350 at the weekend, $400 in summer. The money goes to the aporte.",
+ sWholeNote:"The whole house is closed for a friend from outside on these nights: nobody in the group books a bed. No credits are spent. What they pay comes off the next month's aporte.",
  sBreakDay:function(n,m){return n+" night"+(n===1?"":"s")+" × "+m;},
  sToAporte:"Goes to the aporte",
+ sHost:"Who answers for the friend", sFriendName:"Friend's name", sFriendPh:"E.g. Tom and Ana, from Sydney",
+ sCollected:"Amount collected", sCollectedPh:"E.g. 600",
+ sNeedFriend:"Write the friend's name and the amount collected to close the house.",
+ sNeedAmt:"Amount missing", sCloseHouse:"Close the house",
+ sToAporteOf:function(m){return "Comes off the aporte of "+m;},
+ friendOf:function(n){return "friend of "+n;},
+ fWholeDed:function(m){return "House closed in "+m+" (comes off)";},
+ fWholeCarry:"Left over from the closed house, for the next month",
+ fWholeLine:function(g,h){return "House closed · "+g+(h?" · friend of "+h:"");},
+ fWholeSub:function(a,b,m){return a+" to "+b+" · comes off the aporte of "+m;},
+ fyWhole:"House closed for friends (already off the aporte)",
  scLine:function(u,c,n){return u+" of "+c+" credits · "+n+" night"+(n===1?"":"s")+" this year";},
  scHouse:"Aporte still owed",
  scHouseSub:function(m){return m+" back so far";},
@@ -2195,7 +2217,7 @@ en:{
  dBook:"Book", dWholeSealed:"whole house sealed",
  sBook:"Book", sCheckin:"Check-in", sCheckout:"Check-out",
  sShare:"Share", sShareSub:"a bed, in credits",
- sSeal:"Daily rate", sSealSub:"whole house, in cash",
+ sSeal:"Close the house", sSealSub:"outside friend, in cash",
  sHowMany:"How many rooms",
  sBookingFor:"Booking for", sOutsideGuest:"Outside guest",
  sGuestName:"Guest name", sGuestPh:"e.g. Marina and Téo",
@@ -2966,8 +2988,12 @@ function syncSeat(){var s={},g={},fresh=seatFor!==who&&picked.length;
 function peopleTxt(b){var p=pplOf(b),g=guestsOf(b);
   var n=p.map(function(x){return (hh(x)||{}).name||"?";}).concat(g.map(function(x){return t2("guestOf",x,bName(b));}));
   return g.length||p.length>1||(p.length===1&&p[0]!==b.hh)?" · "+n.join(", "):"";}
+/* casa fechada para amigo de fora: quem do grupo responde por ele fica em ppl[0] */
+function hostOf(b){var x=b.kind==="whole"&&Array.isArray(b.ppl)&&b.ppl[0];return x?hh(LEG[x]||x):null;}
+function hostTxt(b){var h=hostOf(b);return h?" · "+t2("friendOf",h.name):"";}
 function shBody(){
-  if(bkind==="whole")bkind="share";   /* a diária saiu: só cama ou ficha */
+  /* casa fechada para amigo de fora: quem responde por ele é sempre alguém do grupo */
+  if(bkind==="whole"&&who==="gx")who=hh(me)?me:(st.households[0]||{}).id;
   var b=document.getElementById("shBody");b.textContent="";
   var a=sel.a,o=sel.b||iso(ad(pd(sel.a),1)),h=hh(me);
   b.appendChild(el("h3",null,t("sBook")));
@@ -2987,7 +3013,8 @@ function shBody(){
 
   var fb=freeBeds(a,o);
   var md=el("div","modes");
-  [["share",t("sShare"),t("sShareSub")],["free",t("sFree"),t("sFreeSub",Math.max(0,FREE_N-freeUsed(who)))]]
+  [["share",t("sShare"),t("sShareSub")],["free",t("sFree"),t("sFreeSub",Math.max(0,FREE_N-freeUsed(who)))],
+   ["whole",t("sSeal"),t("sSealSub")]]
     .forEach(function(p){
       var x=bt("mb");x.setAttribute("aria-pressed",bkind===p[0]?"true":"false");
       x.appendChild(el("b",null,p[1]));x.appendChild(el("small",null,p[2]));
@@ -3025,14 +3052,14 @@ function shBody(){
   }else{
     b.appendChild(el("div","wnote",t("sWholeNote")));}
 
-  b.appendChild(el("span","lab",t("sBookingFor")));
+  b.appendChild(el("span","lab",bkind==="whole"?t("sHost"):t("sBookingFor")));
   var sl=document.createElement("select");
   st.households.forEach(function(x){
     if(PROFILE&&!PROFILE.admin&&x.id!==myCode())return; // members book only for themselves
     var op=document.createElement("option");
     op.value=x.id;op.textContent=x.name;if(x.id===who)op.selected=true;sl.appendChild(op);});
-  var og=document.createElement("option");og.value="gx";og.textContent=t("sOutsideGuest");
-  if(who==="gx")og.selected=true;sl.appendChild(og);
+  if(bkind!=="whole"){var og=document.createElement("option");og.value="gx";og.textContent=t("sOutsideGuest");
+    if(who==="gx")og.selected=true;sl.appendChild(og);}
   sl.addEventListener("change",function(){
     who=sl.value;
     if(who!=="gx"&&!SB){me=who;sv();whoUI();home();}shBody();});
@@ -3068,15 +3095,16 @@ function shBody(){
         sr.appendChild(gi);}
       b.appendChild(sr);});}
 
-  if(who==="gx"){
-    b.appendChild(el("span","lab",t("sGuestName")));
-    var gn=document.createElement("input");gn.id="shGName";gn.placeholder=t("sGuestPh");
+  if(who==="gx"||bkind==="whole"){
+    var wh=bkind==="whole";
+    b.appendChild(el("span","lab",wh?t("sFriendName"):t("sGuestName")));
+    var gn=document.createElement("input");gn.id="shGName";gn.placeholder=wh?t("sFriendPh"):t("sGuestPh");
     gn.value=gName||"";b.appendChild(gn);
-    gn.addEventListener("input",function(){gName=gn.value;});
-    b.appendChild(el("span","lab",t("sHowMuch")));
-    var ga=document.createElement("input");ga.id="shGAmt";ga.type="number";ga.step="0.01";
-    ga.placeholder=t("sFundPh");ga.value=gAmt||"";b.appendChild(ga);
-    ga.addEventListener("input",function(){gAmt=ga.value;});
+    gn.addEventListener("input",function(){gName=gn.value;gReady();});
+    b.appendChild(el("span","lab",wh?t("sCollected"):t("sHowMuch")));
+    var ga=document.createElement("input");ga.id="shGAmt";ga.inputMode="decimal";
+    ga.placeholder=wh?t("sCollectedPh"):t("sFundPh");ga.value=gAmt||"";b.appendChild(ga);
+    ga.addEventListener("input",function(){gAmt=ga.value;gReady();});
   }
 
   b.appendChild(el("span","lab",t("sNote")));
@@ -3090,7 +3118,8 @@ function shBody(){
   /* quem paga: quem dorme, e quem reserva se sobrar cama de convidado */
   var payers=pplOf(rec0).slice();
   if(who!=="gx"&&payers.indexOf(who)<0&&shareOf(rec0,who))payers.push(who);
-  var cash=money(a,o);
+  function cashNow(){var v=parseAmt(gAmt);return v>0?v:0;}
+  var nextL=mLabel(mShift(a.slice(0,7),1));
   var cl=el("div","calcl");
   var whatR=(bkind==="share"?useB.map(bedN).join(", "):t("sWholeHouse"));
   if(bkind==="free"){
@@ -3098,14 +3127,7 @@ function shBody(){
     ftp.appendChild(el("span",null,t("sFreeLine",ns)));ftp.appendChild(el("b",null,t("rFreeTag")));
     fg.appendChild(ftp);cl.appendChild(fg);
   }else if(bkind==="whole"){
-    ["alta","media","baixa"].forEach(function(tk){
-      if(!nbt[tk])return;
-      var g=el("div","grp"),top=el("div","gt");
-      top.appendChild(el("span",null,t2("sSeason",TL[tk])));
-      top.appendChild(el("b",null,mm(nbt[tk]*DAYR[tk])));
-      g.appendChild(top);
-      g.appendChild(el("div","gs",t2("sBreakDay",nbt[tk],mm(DAYR[tk]))));
-      cl.appendChild(g);});
+    /* o valor é o que o amigo pagou, digitado; nada de tabela */
   }else if(who!=="gx"){
     useB.forEach(function(x){
       var k=(seat[x]||[]).length,g=el("div","grp"),top=el("div","gt");
@@ -3116,19 +3138,20 @@ function shBody(){
       cl.appendChild(g);});}
   var tt=el("div","cl tot");
   tt.appendChild(el("span",null,t("sTotal",ns,whatR)));
-  tt.appendChild(el("b",null,bkind==="free"?t("rFreeTag"):bkind==="whole"?mm(cash)
-    :(who==="gx"?t("sNoCred"):t("hCredits",c))));cl.appendChild(tt);
+  var wTot=el("b",null,bkind==="free"?t("rFreeTag"):bkind==="whole"?(cashNow()?mm(cashNow()):"—")
+    :(who==="gx"?t("sNoCred"):t("hCredits",c)));
+  tt.appendChild(wTot);cl.appendChild(tt);
   if(bkind==="free"){
     var fl=el("div","cl");fl.appendChild(el("span",null,t("sFreeLeft",(hh(who)||{}).name||"")));
     fl.appendChild(el("b",null,Math.max(0,FREE_N-freeUsed(who))+" → "+Math.max(0,FREE_N-freeUsed(who)-1)));cl.appendChild(fl);
   }else if(bkind==="whole"){
-    var av=el("div","cl");
-    av.appendChild(el("span",null,t("sToAporte")));
-    av.appendChild(el("b",null,mm(cash)));cl.appendChild(av);
+    var av=el("div","cl"),wAp=el("b",null,cashNow()?"− "+mm(cashNow()):"—");
+    av.appendChild(el("span",null,t("sToAporteOf",nextL)));
+    av.appendChild(wAp);cl.appendChild(av);
   }else if(who==="gx"){
-    var gv=el("div","cl");
+    var gv=el("div","cl"),gvb=el("b",null,cashNow()?mm(cashNow()):"—");
     gv.appendChild(el("span",null,t("sIntoFund")));
-    gv.appendChild(el("b",null,gAmt?mm(+gAmt):"—"));cl.appendChild(gv);
+    gv.appendChild(gvb);cl.appendChild(gv);
   }else{
     payers.forEach(function(id){var x=hh(id);if(!x)return;
       var lf=allow(x)-used(id),sb=el("div","cl");
@@ -3142,31 +3165,37 @@ function shBody(){
   /* cama de convidado sem nome não fecha: o botão acompanha o que se digita */
   function gMiss(){return bkind==="share"&&who!=="gx"&&useB.some(function(x){return !(seat[x]||[]).length&&!(gBed[x]||"").trim();});}
   var gAlert=el("div","alert soft",t("sNeedGuestBed"));
-  function gReady(){if(cls2)return;var m=gMiss();go2.disabled=m;gAlert.style.display=m?"":"none";
-    go2.textContent=m?t("sNameMissing"):who==="gx"?t("sRegGuest"):bkind==="free"&&freeVote(a,o)?t("sAskAll"):t("sConfirmBooking");}
+  /* convidado de fora sem nome, ou casa fechada sem nome ou sem valor, não fecha */
+  function nMiss(){if(bkind==="whole")return !(gName||"").trim()||!cashNow();return who==="gx"&&!(gName||"").trim();}
+  var nAlert=el("div","alert soft",bkind==="whole"?t("sNeedFriend"):t("sNeedName"));
+  function gReady(){
+    if(wTot&&bkind==="whole"){wTot.textContent=cashNow()?mm(cashNow()):"—";wAp.textContent=cashNow()?"− "+mm(cashNow()):"—";}
+    if(typeof gvb!=="undefined"&&gvb)gvb.textContent=cashNow()?mm(cashNow()):"—";
+    if(cls2)return;var m=gMiss(),n=nMiss();go2.disabled=m||n;
+    gAlert.style.display=m?"":"none";nAlert.style.display=n?"":"none";
+    go2.textContent=n?((gName||"").trim()?t("sNeedAmt"):t("sNameMissing")):m?t("sNameMissing")
+      :bkind==="whole"?t("sCloseHouse"):who==="gx"?t("sRegGuest"):bkind==="free"&&freeVote(a,o)?t("sAskAll"):t("sConfirmBooking");}
   if(cls2){b.appendChild(el("div","alert stop",cls2));go2.disabled=true;go2.textContent=t("sUnavailable");}
-  else if(who==="gx"&&!(gName||"").trim()){
-    b.appendChild(el("div","alert soft",t("sNeedName")));
-    go2.disabled=true;go2.textContent=t("sNameMissing");
-  }else{
+  else{
     if(bkind==="share"&&who!=="gx")payers.forEach(function(id){var x=hh(id);if(!x)return;
       var lf=allow(x)-used(id),per=shareOf(rec0,id);
       if(per>lf)b.appendChild(el("div","alert soft",t("sOverBalance",x.name,per-lf,mm((per-lf)*EXTRA))));});
-    b.appendChild(gAlert);gReady();
+    b.appendChild(gAlert);b.appendChild(nAlert);gReady();
     go2.addEventListener("click",function(){
-      if(gMiss())return;
-      var rec={id:uid(),hh:who,in:a,out:o,kind:bkind,beds:useB.slice(),
-        ppl:bkind==="share"&&who!=="gx"?pplOf(rec0):[],
+      if(gMiss()||nMiss())return;
+      var wh=bkind==="whole";
+      /* casa fechada fica em nome do amigo (gx); quem responde por ele vai em ppl */
+      var rec={id:uid(),hh:wh?"gx":who,in:a,out:o,kind:bkind,beds:useB.slice(),
+        ppl:wh?[who]:bkind==="share"&&who!=="gx"?pplOf(rec0):[],
         at:new Date().toISOString(),
         note:(document.getElementById("shNote")||{}).value||""};
       if(bkind==="share"&&who!=="gx"){rec.seat={};var gg={};useB.forEach(function(x){rec.seat[x]=(seat[x]||[]).slice();
         if(!rec.seat[x].length)gg[x]=(gBed[x]||"").trim();});
         if(Object.keys(gg).length)rec.seat._g=gg;}
-      if(bkind==="whole")rec.amount=cash;
-      if(who==="gx"){rec.guestName=(gName||"").trim();if(bkind!=="whole")rec.amount=+gAmt||0;}
+      if(wh||who==="gx"){rec.guestName=(gName||"").trim();rec.amount=cashNow();}
       st.bookings.push(rec);
-      logit("book",{hh:who,nm:bName(rec),a:a,o:o,kind:bkind,beds:useB.slice(),ppl:rec.ppl.slice(),seat:rec.seat||null,pc:shareOf(rec,who),
-        cr:bkind==="share"&&who!=="gx"?c:0,amt:bkind==="whole"?cash:(+rec.amount||0)});
+      logit("book",{hh:rec.hh,nm:bName(rec)+hostTxt(rec),a:a,o:o,kind:bkind,beds:useB.slice(),ppl:rec.ppl.slice(),seat:rec.seat||null,
+        pc:wh?0:shareOf(rec,who),cr:bkind==="share"&&who!=="gx"?c:0,amt:+rec.amount||0});
       sv();
       if(db&&cw)db.doc("bookings/"+rec.id).set(rec).catch(werr);
       gName="";gAmt="";sheet(false);render();});}
@@ -3219,7 +3248,7 @@ function resView(){
     var m=el("div","mid");
     m.appendChild(el("b",null,bName(b)+(isG(b)?t("guestTag"):"")));
     m.appendChild(el("small",null,sd(b.in)+" – "+sd(b.out)+" · "+
-      (b.kind==="free"?t2("rFree"):b.kind==="whole"?t2("rWhole"):(b.beds||[]).map(bedN).join(", ")+peopleTxt(b))));
+      (b.kind==="free"?t2("rFree"):b.kind==="whole"?t2("rWhole")+hostTxt(b):(b.beds||[]).map(bedN).join(", ")+peopleTxt(b))));
     it.appendChild(m);
     var rt=el("div","rt");
     rt.appendChild(el("div",null,b.kind==="free"?(freePending(b)?t2("rFreeWait"):t2("rFreeTag"))
@@ -3245,8 +3274,8 @@ function logit(ty,o){
   if(db&&cw)db.doc("log/"+e.id).set(e).catch(werr);
   sv();return e;}
 function logCancel(b){
-  logit("cancel",{hh:b.hh,nm:bName(b),a:b.in,o:b.out,kind:b.kind,late:lateCancel(b),
-    beds:(b.beds||[]).slice(),ppl:pplOf(b),pc:shareOf(b,b.hh),
+  logit("cancel",{hh:b.hh,nm:bName(b)+hostTxt(b),a:b.in,o:b.out,kind:b.kind,late:lateCancel(b),
+    beds:(b.beds||[]).slice(),ppl:b.kind==="whole"?(b.ppl||[]).slice():pplOf(b),pc:shareOf(b,b.hh),
     seat:b.kind==="share"&&!isG(b)&&!oldPrice(b)?(hasSeat(b)?b.seat:seatOf(b)):null,
     cr:crOf(b),
     amt:b.kind==="whole"?(+b.amount||money(b.in,b.out)):0});}
@@ -3470,7 +3499,19 @@ function billsOf(m){return st.expenses.filter(function(e){return e.kind==="bill"
   .reduce(function(a,e){return a+(+e.amount||0);},0);}
 function billsUsed(m){var b=billsOf(m);return b>0?b:BILLS_EST;}
 /* o aporte do mês: aluguel + contas fixas − todas as cotas, entre quem paga o aporte */
-function apMonth(m){return Math.max(0,RENT_BASE+billsUsed(m)-COTA*activeIn(m).length);}
+function apGross(m){return Math.max(0,RENT_BASE+billsUsed(m)-COTA*activeIn(m).length);}
+function mShift(m,k){var y=+m.slice(0,4),n=+m.slice(5,7)-1+k;y+=Math.floor(n/12);n=((n%12)+12)%12;
+  return y+"-"+String(n+1).padStart(2,"0");}
+/* casa fechada para amigo de fora: o que ele pagou, pelo mês da chegada */
+function wAmt(b){return +b.amount||money(b.in,b.out);}
+function wholeIn(m){return st.bookings.map(nb).filter(function(b){return b.kind==="whole"&&String(b.in).slice(0,7)===m;})
+  .reduce(function(a,b){return a+wAmt(b);},0);}
+/* abate sempre o aporte do mês seguinte; se passar do aporte, a sobra segue para o outro mês */
+function apPlan(){var o={},carry=0;
+  PAYM.forEach(function(m){var pool=carry+wholeIn(mShift(m,-1)),g=apGross(m),d=Math.min(g,pool);
+    carry=pool-d;o[m]={g:g,d:d,pool:pool,carry:carry};});
+  return o;}
+function apMonth(m){var p=apPlan()[m];return p?p.g-p.d:apGross(m);}
 function paidOn(v){return typeof v==="string"&&/^\d{4}-\d{2}-\d{2}/.test(v)?v.slice(0,10):"";}
 function finSegs(){
   [].forEach.call(document.querySelectorAll("#finSegs button"),function(b){
@@ -3481,7 +3522,8 @@ function conta(){
   finSegs();
   mnavUI();
   var cm2=finM,n=activeIn(cm2).length,past=cm2<curMonth();
-  var lg0=billsOf(cm2),apShow=past?apMonth(cm2):Math.max(0,RENT_BASE+lg0-n*COTA);
+  var pl0=apPlan()[cm2]||{g:0,d:0,pool:0,carry:0},wPool=pl0.pool;
+  var lg0=billsOf(cm2),apShow=past?apMonth(cm2):Math.max(0,RENT_BASE+lg0-n*COTA-wPool);
 
   /* cotas */
   var cb=document.getElementById("capB");cb.textContent="";
@@ -3509,12 +3551,15 @@ function conta(){
   /* a conta do aporte, ao vivo */
   var ac=document.getElementById("apCalc");ac.textContent="";
   var logged=lg0,ap=apMonth(cm2);
-  var apNow=Math.max(0,RENT_BASE+logged-n*COTA),apEnd=Math.max(0,RENT_BASE+Math.max(logged,BILLS_EST)-n*COTA);
+  var apNow0=Math.max(0,RENT_BASE+logged-n*COTA),apNow=Math.max(0,apNow0-wPool);
+  var apEnd=Math.max(0,RENT_BASE+Math.max(logged,BILLS_EST)-n*COTA-wPool);
+  var wDed=past?pl0.d:Math.min(wPool,apNow0),prevL=mLabel(mShift(cm2,-1));
   function arow2(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));ac.appendChild(r);}
   ac.appendChild(el("div","kv",past?t("fApClosed"):t("fApSoFar")));
   arow2(t("fRent"),"+ "+mm(RENT_BASE));
   arow2(t("fBillsSoFar"),"+ "+mm(past?billsUsed(cm2):logged));
   arow2(t("fCotasN",n,m0(COTA)),"− "+mm(n*COTA));
+  if(wPool)arow2(t("fWholeDed",prevL),"− "+mm(wDed));
   arow2(past?t("fApTotal"):t("fApProv"),mm(past?ap:apNow),"tot");
   arow2(t("fApEach",APO_N),mm((past?ap:apNow)/APO_N),"big");
   if(!past){arow2(t("fApEnd",mm(BILLS_EST)),mm(apEnd));arow2(t("fApEach",APO_N),mm(apEnd/APO_N));}
@@ -3538,7 +3583,9 @@ function conta(){
   rrow(logged>0?t("fBillsLogged"):t("fBillsEst"),mm(billsUsed(cm2)));
   rrow(t("fCostMonth"),mm(RENT_BASE+billsUsed(cm2)),"tot");
   rrow(t("fCotasN",n,m0(COTA)),"− "+mm(n*COTA));
+  if(pl0.pool)rrow(t("fWholeDed",prevL),"− "+mm(pl0.d));
   rrow(t("fApFlex"),mm(ap),"tot");
+  if(pl0.carry)rrow(t("fWholeCarry"),mm(pl0.carry));
   rrow(t("fApEach",APO_N),mm(ap/APO_N),"big");
 
   /* cotas do mês: a grade */
@@ -3580,7 +3627,8 @@ function conta(){
   var billsLog=PAYM.reduce(function(a,m){return a+billsOf(m);},0),costY=rentY+billsY,cotasY=PAYM.reduce(function(a,m){return a+activeIn(m).length*COTA;},0);
   var apY=PAYM.reduce(function(a,m){return a+apMonth(m);},0);
   var apPaid=PAYM.reduce(function(a,m){return a+((st.paid[m]||{}).__ap?apMonth(m):0);},0);
-  var earn=wIn+bIn+gin,extra=st.expenses.filter(function(e){return !e.kind||e.kind==="expense";}).reduce(function(a,e){return a+(+e.amount||0);},0);
+  var wDedY=PAYM.reduce(function(a,m){return a+(apPlan()[m]||{}).d;},0);
+  var earn=bIn+gin,extra=st.expenses.filter(function(e){return !e.kind||e.kind==="expense";}).reduce(function(a,e){return a+(+e.amount||0);},0);
   var yb=document.getElementById("yearBox");yb.textContent="";
   function row(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));yb.appendChild(r);}
   row(t("fyRent",PAYM.length,mm(RENT_BASE)),mm(rentY));
@@ -3588,6 +3636,7 @@ function conta(){
   row(t("fyBillsLogged"),mm(billsLog));
   row(t("fyCost"),mm(costY),"tot");
   row(t("fyCotas",ACTIVE.length,m0(COTA)),"− "+mm(cotasY));
+  if(wIn)row(t("fyWhole"),"− "+mm(wDedY));
   row(t("fyAporte"),mm(apY),"tot");
   row(t("fyAporteEach",APO_N),mm(apY/APO_N),"big");
   row(t("fyApPaid"),mm(apPaid));
@@ -3603,10 +3652,11 @@ function conta(){
     var it=el("div","item"),m=el("div","mid");
     m.appendChild(el("b",null,g.guestName||t("guest")));
     m.appendChild(el("small",null,sd(g.in)+t2("nTo")+sd(g.out)+" · "+t2("aNights",nts(g.in,g.out).length)+
-      " · "+(g.kind==="whole"?t2("rWhole"):(g.beds||[]).map(bedN).join(", "))));
+      " · "+(g.kind==="whole"?t2("rWhole")+hostTxt(g):(g.beds||[]).map(bedN).join(", "))));
     it.appendChild(m);it.appendChild(el("div","rt",mm(+g.amount||0)));
     var d=bt("ghost","✕");
     d.addEventListener("click",function(){
+      if(g.kind==="whole")logCancel(g);
       st.bookings=st.bookings.filter(function(y){return y.id!==g.id;});
       if(db&&cw)db.doc("bookings/"+g.id).delete().catch(werr);sv();render();});
     it.appendChild(d);gl.appendChild(it);});
@@ -3725,6 +3775,7 @@ function ledgerUI(){
   st.households.forEach(function(h){PAYM.forEach(function(m){var v=st.paid[h.id]&&st.paid[h.id][m];
     if(v)rows.push({d:paidOn(v)||m+"-01",nd:!paidOn(v),cota:{h:h,m:m}});});});
   PAYM.forEach(function(m){var v=(st.paid[m]||{}).__ap;if(v)rows.push({d:paidOn(v)||m+"-01",nd:!paidOn(v),ap:m});});
+  st.bookings.map(nb).forEach(function(b){if(b.kind==="whole")rows.push({d:String(b.in),wh:b});});
   rows.sort(function(a,b){return b.d.localeCompare(a.d);});
   if(!rows.length){lg.appendChild(el("p","empty",t("nNoExp")));return;}
   rows.forEach(function(r){var it=el("div","item"),m=el("div","mid"),amt=0,del=null;
@@ -3732,6 +3783,10 @@ function ledgerUI(){
       m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+t("fToBank")));amt=r.cota.h.fixed;}
     else if(r.ap){m.appendChild(el("b",null,t("fApPaid",mLabel(r.ap))));
       m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+apPayers().map(function(h){return h.name;}).join(", ")));amt=apMonth(r.ap);}
+    else if(r.wh){var hw=hostOf(r.wh);
+      m.appendChild(el("b",null,t("fWholeLine",r.wh.guestName||t("guest"),hw?hw.name:"")));
+      m.appendChild(el("small",null,t("fWholeSub",sd(r.wh.in),sd(r.wh.out),mLabel(mShift(String(r.wh.in).slice(0,7),1)))));
+      amt=wAmt(r.wh);}
     else{var e=r.e,by=LEG[e.by]||e.by||BANK_ID;amt=+e.amount||0;
       if(e.kind==="pay"){m.appendChild(el("b",null,t("fPaid",pName(by),pName(LEG[e.to]||e.to||BANK_ID))));
         m.appendChild(el("small",null,sd(e.date)+" · "+t("fPayment")));}

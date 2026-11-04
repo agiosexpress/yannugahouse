@@ -93,9 +93,15 @@ everyone else's approval: the request holds the dates, shows on the home screen 
 Approve / Decline, and approvals live in `app_state.consent` under `fr_<booking id>`.
 Cancelling a ficha under 24h uses it up.
 
-**The whole house is never paid in credits** — it is a daily rate, in `DAYR`:
-$200 Monday–Thursday, $350 weekends, $400 in summer. Same for a member and an outsider.
-That money goes to the aporte.
+**Closing the house for an outside friend** (booking sheet → **Close the house**): pick the
+dates, pick who in the group answers for the friend, type the friend's name and the amount
+collected. The house is sealed on those nights (nobody books a bed), no credits are spent,
+and the booking is stored as `kind:"whole"`, `hh:"gx"`, `guestName`, `amount`, with the member
+who answers for them in `ppl[0]`. The amount **always comes off the next month's aporte**
+(the month after check-in): `apPlan()` works it out month by month, and anything above that
+month's aporte carries over to the month after. It shows in the aporte sum (Cotas, Expenses),
+in Activity, in the guest list, in the year balance and in the open history. The 21-day
+window applies as for any booking.
 
 **Extra credits** are $20 each (`EXTRA`), no limit, any time. Also to the aporte.
 
@@ -124,7 +130,8 @@ everyone's credits and the open history, filterable by person) · **Finance** ·
    extra expenses between people or with the house account.
 3. **Activity** — every transaction in one list: cotas paid, the aporte, bills, extras, settlements.
 4. **Cotas** — the cota table, and the aporte worked out live:
-   `apMonth(m) = RENT_BASE + bills logged that month (or the budget) − COTA × filled cotas`,
+   `apMonth(m) = RENT_BASE + bills logged that month (or the budget) − COTA × filled cotas
+   − what outside friends paid to close the house the month before`,
    split between the four tenants. It closes at the end of each month.
 5. **Year balance** — rent, bills (budget and logged), what the house costs, the cotas, the
    aporte in total and per person, what came back from daily rates and extra credits.
