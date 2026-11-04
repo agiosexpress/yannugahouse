@@ -148,6 +148,13 @@ sign-out.
 
 - **21-day booking window** (`AHEAD`). Major holidays are exempt — those are agreed as a group.
 - **Two consecutive weekends in the same double room, maximum** (`MAXWK`, `DOUBLES`).
+- **Only Bedrooms 1 and 2 in the house, normal price** (`duoNight()`). On a night where the only
+  beds taken are Bedrooms 1 and 2 (no bunk, sofa, single, sealed house or outside guest), those
+  beds cost weight 1 instead of 2. Bookings are charged in full; the discount applies only once
+  the night has passed (from the next day, Melbourne time), and `rate()`/`shareOf()`/`crOf()`
+  then return the lower price, so the difference is back in everyone's balance with nothing
+  written to the database. The booking sheet tells the person how much can come back, and the
+  bookings lists show "N cr back". Late cancellations keep the full price.
 - One bed, one booking, one night: `taken()` and `clash()` enforce it.
 - Cancelling refunds the credits immediately and writes the cancellation to the open history —
   unless it is less than 24 hours before arrival (2pm on the first day, `CI_HOUR`, Melbourne time).
@@ -190,6 +197,11 @@ The page is one block of bilingual HTML inside `index.html` (`<div class="terms 
 the standalone copy published as an artifact is the same block with its own frame. When a
 number changes, change it in both. `TERMS_V` at the top of the terms code is the version (a UTC date and time) —
 bump it and everyone is asked to agree again.
+
+A new rule that does not need a new signature uses `NEWS_V` instead: mark its `<li>` with
+`class="newrule"` and a `<span class="newtag">` (in both languages) and change `NEWS_V`.
+Everyone who already agreed sees the page once after login, read-only, scrolled to the new
+rule and highlighted (`yannuga.news` in the browser remembers it).
 
 ## Language
 

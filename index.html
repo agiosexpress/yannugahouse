@@ -305,6 +305,7 @@ button{font-family:inherit}
 .item .mid{flex:1;min-width:0}
 .item .mid b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
 .item .mid small{display:block;font-size:12.5px;color:var(--ink2)}
+.item .mid small.duo{color:var(--good);font-weight:600}
 .item .rt{font-family:var(--mono);font-size:12.5px;color:var(--ink2);flex:none;text-align:right;max-width:45%;overflow-wrap:anywhere}
 
 .pill{display:inline-block;font-size:10.5px;font-weight:800;padding:3px 9px;border-radius:99px;
@@ -770,6 +771,10 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
 .inst .iy{background:var(--brand);color:#fff}
 .inst .in{background:var(--bg2);color:var(--ink2)}
 .terms[hidden]{display:none}
+.terms .newtag{display:none}
+.terms.fresh .newrule{background:var(--good-s);border-radius:10px;padding:8px 10px;margin:6px -10px;list-style-position:inside}
+.terms.fresh .newtag{display:inline-block;margin-right:6px;padding:1px 7px;border-radius:99px;background:var(--good);color:#fff;
+  font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;vertical-align:1px}
 .sky{position:relative;height:230px;overflow:hidden;margin-top:-1px}
 .mosaic{position:absolute;inset:6px 10px 0;display:grid;gap:4px;
   grid-template-columns:1.5fr 1.1fr .9fr;grid-template-rows:1fr 1fr}
@@ -875,6 +880,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <b>Um fim de semana é sexta + sábado</b>, as duas noites na faixa média: <b>4 créditos por pessoa</b>
       no beliche, no sofá-cama ou no solteiro, e <b>8 no Quarto 1 ou 2</b>. Duas pessoas no Quarto 1 gastam 8 cada.
       Quem vai sozinho numa cama de casal gasta os mesmos 8 — <b>ninguém paga o dobro por estar só</b>.
+      Se só os quartos 1 e 2 estiverem ocupados na noite, eles valem o preço normal e a diferença volta no dia seguinte.
       Reservar <b>uma cama a mais</b> para um amigo é pagar essa cama também. No verão, o dobro de tudo.
     </div>
   </section>
@@ -900,6 +906,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       <b>A weekend is Friday + Saturday</b>, both nights in the mid band: <b>4 credits per person</b>
       in the bunk, the sofa bed or the single, and <b>8 in Bedroom 1 or 2</b>. Two people in Bedroom 1 spend 8 each.
       Someone on their own in a double spends the same 8 — <b>nobody pays double for coming alone</b>.
+      If only Bedrooms 1 and 2 are taken that night, they cost the normal price and the difference comes back the next day.
       Booking <b>an extra bed</b> for a friend means paying for that bed too. In summer, double all of it.
     </div>
   </section>
@@ -1112,6 +1119,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li>São dois, para o grupo todo. É o que mais se disputa.</li>
           <li><b>No máximo 2 fins de semana seguidos</b> no mesmo quarto (1 ou 2), por pessoa. No terceiro, é a vez de outra pessoa.</li>
+          <li class="newrule"><span class="newtag">Nova</span><b>Casa só com os quartos 1 e 2, preço normal.</b> Se numa noite só os quartos 1 e 2 estiverem ocupados — até dois casais, ou duas pessoas — e ninguém mais dormir na casa (beliche, sofá-cama e solteiro vazios), os quartos 1 e 2 passam a valer o mesmo do sofá-cama e do beliche. Não faz sentido pagar o dobro com a casa vazia. Na reserva se paga o preço cheio; no dia seguinte o app confere que ninguém mais dormiu e devolve a diferença. Cancelamento com menos de 24 horas não entra.</li>
           <li>O app mostra um <b>placar</b>: quantas noites cada um passou na casa no ano. Não é regra, é transparência — e resolve a conversa antes dela virar discussão.</li>
         </ul></div>
       <div class="ex"><h3>Tudo à vista</h3>
@@ -1170,6 +1178,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li>There are two, for the whole group. They are what everyone wants.</li>
           <li><b>Two consecutive weekends at most</b> in the same bedroom (1 or 2), per person. On the third, it is someone else's turn.</li>
+          <li class="newrule"><span class="newtag">New</span><b>House with only Bedrooms 1 and 2, normal price.</b> If on a night only Bedrooms 1 and 2 are taken — up to two couples, or two people — and nobody else sleeps in the house (bunks, sofa bed and single empty), Bedrooms 1 and 2 cost the same as the sofa bed and the bunks. Paying double in an empty house makes no sense. The booking is charged at the full price; the next day the app checks that nobody else slept there and gives the difference back. A cancellation with under 24 hours to go does not count.</li>
           <li>The app shows a <b>scoreboard</b>: how many nights each person spent at the house this year. Not a rule, transparency — and it settles the conversation before it becomes an argument.</li>
         </ul></div>
       <div class="ex"><h3>Everything in the open</h3>
@@ -1780,6 +1789,8 @@ pt:{
  guestOf:function(g,n){return g+" (convidado de "+n+")";},
  bRate:function(c){return c+" cr/pessoa";},
  sBedBreak:function(n,p,r){return n+(n===1?" noite":" noites")+" · "+p+(p===1?" pessoa":" pessoas")+" × "+r+" cr";},
+ sDuoNote:function(c){return "Casa só com os quartos 1 e 2: se numa dessas noites ninguém mais dormir na casa (beliche, sofá-cama e solteiro vazios), os quartos 1 e 2 passam a valer o preço normal. O app confere no dia seguinte e devolve a diferença — até "+c+(c===1?" crédito":" créditos")+" nesta reserva.";},
+ rDuoBack:function(c){return c+" cr de volta · só os quartos 1 e 2";},
  sBedGuest:function(n,r,nm){return n+(n===1?" noite":" noites")+" · convidado de "+nm+" · "+r+" cr";},
  lgDeny:function(nm,a,o){return nm+" recusou a ficha de "+a+" a "+o;},
  nVacant:"vaga",
@@ -2083,6 +2094,8 @@ en:{
  guestOf:function(g,n){return g+" ("+n+"'s guest)";},
  bRate:function(c){return c+" cr/person";},
  sBedBreak:function(n,p,r){return n+(n===1?" night":" nights")+" · "+p+(p===1?" person":" people")+" × "+r+" cr";},
+ sDuoNote:function(c){return "House with only Bedrooms 1 and 2: if nobody else sleeps in the house on one of these nights (bunks, sofa bed and single empty), Bedrooms 1 and 2 go down to the normal price. The app checks the next day and gives the difference back — up to "+c+(c===1?" credit":" credits")+" on this booking.";},
+ rDuoBack:function(c){return c+" cr back · only Bedrooms 1 and 2";},
  sBedGuest:function(n,r,nm){return n+(n===1?" night":" nights")+" · "+nm+"'s guest · "+r+" cr";},
  lgDeny:function(nm,a,o){return nm+" declined the ficha from "+a+" to "+o;},
  nVacant:"open",
@@ -2390,7 +2403,24 @@ function nb(b){var o=Object.assign({},b);
 function on(s){return st.bookings.map(nb).filter(function(b){return nts(b.in,b.out).indexOf(s)>=0;});}
 /* o preço é por pessoa: 1 / 2 / 4 créditos a noite, vezes o peso da cama (quartos 1 e 2 valem o dobro) */
 function pp(a,b){var t=0;nts(a,b).forEach(function(s){t+=W[tier(s)];});return t;}
-function rate(a,b,x){var d=bed(x);return pp(a,b)*((d&&d.w)||1);}
+/* casa só com os quartos 1 e 2: numa noite que já passou (o app confirma no dia seguinte, hora de
+   Melbourne) em que nenhuma outra cama foi ocupada, os quartos 1 e 2 valem o preço normal (peso 1)
+   e a diferença volta para quem pagou. full: sem o desconto (cancelamento tardio, ninguém dormiu) */
+var DUO=null;   /* memo de duoNight, vale só até o fim da tarefa atual */
+function duoNight(s){
+  if(!DUO){DUO={_d:melNow().slice(0,10)};Promise.resolve().then(function(){DUO=null;});}
+  if(!(s in DUO))DUO[s]=duoCheck(s,DUO._d);return DUO[s];}
+function duoCheck(s,td){if(s>=td)return false;
+  var bs=on(s),any=false;
+  for(var i=0;i<bs.length;i++){if(sealed(bs[i]))return false;
+    var x=bs[i].beds||[];for(var j=0;j<x.length;j++){if(DOUBLES.indexOf(x[j])<0)return false;any=true;}}
+  return any;}
+function rate(a,b,x,full){var d=bed(x),w=(d&&d.w)||1;
+  if(full||w===1||DOUBLES.indexOf(x)<0)return pp(a,b)*w;
+  var t=0;nts(a,b).forEach(function(s){t+=W[tier(s)]*(duoNight(s)?1:w);});return t;}
+/* quantos créditos voltaram por causa da regra acima */
+function duoBack(b,id){if(b.kind!=="share"||isG(b)||oldPrice(b))return 0;
+  return id==null?crOf(b,true)-crOf(b):shareOf(b,id,true)-shareOf(b,id);}
 function sealed(b){return b.kind==="whole"||b.kind==="free";}
 function hasSeat(b){return !!b.seat&&typeof b.seat==="object"&&!Array.isArray(b.seat);}
 function pplOf(b){if(isG(b)||b.kind!=="share")return [];
@@ -2411,16 +2441,16 @@ function guestsOf(b){if(!hasSeat(b))return [];var g=b.seat._g||{},s=seatOf(b);
 function oldPrice(b){return !hasSeat(b)&&b.in<PRICE_FROM;}
 /* o que cada um paga: a própria cama, por pessoa. Cama sem ninguém marcado é de quem reservou
    (o convidado do cotista): uma pessoa sozinha numa cama de casal paga uma vez só */
-function shareOf(b,id){if(b.kind!=="share"||isG(b))return 0;
+function shareOf(b,id,full){if(b.kind!=="share"||isG(b))return 0;
   if(oldPrice(b))return pplOf(b).indexOf(id)>=0?pp(b.in,b.out):0;
   var s=seatOf(b),t=0;
   (b.beds||[]).forEach(function(x){var p=s[x]||[];
-    if(p.indexOf(id)>=0||(!p.length&&b.hh===id))t+=rate(b.in,b.out,x);});
+    if(p.indexOf(id)>=0||(!p.length&&b.hh===id))t+=rate(b.in,b.out,x,full);});
   return t;}
-function crOf(b){if(b.kind!=="share"||isG(b))return 0;
+function crOf(b,full){if(b.kind!=="share"||isG(b))return 0;
   if(oldPrice(b))return pp(b.in,b.out)*pplOf(b).length;
   var s=seatOf(b),t=0;
-  (b.beds||[]).forEach(function(x){t+=rate(b.in,b.out,x)*Math.max(1,(s[x]||[]).length);});
+  (b.beds||[]).forEach(function(x){t+=rate(b.in,b.out,x,full)*Math.max(1,(s[x]||[]).length);});
   return t;}
 function inB(b,id){return b.hh===id||pplOf(b).indexOf(id)>=0;}
 /* quem está numa reserva: as pessoas da cama, ou quem fechou a casa */
@@ -2492,7 +2522,7 @@ function nightsOf(id){var n=0;st.bookings.map(nb).forEach(function(b){
   if(!isG(b)&&whoOf(b).indexOf(id)>=0)n+=nts(b.in,b.out).length;});return n;}
 function used(id){var t=0;st.bookings.map(nb).forEach(function(b){t+=shareOf(b,id);});
   (st.log||[]).forEach(function(e){if(e.ty!=="cancel"||!e.late)return;
-    if(hasSeat(e)){t+=shareOf({kind:e.kind,hh:LEG[e.hh]||e.hh,in:e.a,out:e.o,beds:e.beds,seat:e.seat},id);return;}
+    if(hasSeat(e)){t+=shareOf({kind:e.kind,hh:LEG[e.hh]||e.hh,in:e.a,out:e.o,beds:e.beds,seat:e.seat},id,true);return;}
     var ps=(e.ppl&&e.ppl.length)?e.ppl.map(function(x){return LEG[x]||x;}):null;
     if(ps){if(ps.indexOf(id)>=0)t+=(+e.pc||0);}
     else if((LEG[e.hh]||e.hh)===id)t+=(+e.cr||0);});
@@ -3158,6 +3188,11 @@ function shBody(){
       sb.appendChild(el("span",null,t("sBalance",x.name)));
       sb.appendChild(el("b",null,lf+" → "+(lf-shareOf(rec0,id))));cl.appendChild(sb);});}
   b.appendChild(cl);
+  /* a regra dos quartos 1 e 2 sozinhos: o máximo que pode voltar, se ninguém mais dormir */
+  if(bkind==="share"&&who!=="gx"){var duo=0;
+    useB.forEach(function(x){var d=bed(x);if(DOUBLES.indexOf(x)<0||!d||d.w<=1)return;
+      duo+=(rate(a,o,x,true)-pp(a,o))*Math.max(1,(seat[x]||[]).length);});
+    if(duo>0)b.appendChild(el("div","wnote",t("sDuoNote",duo)));}
 
   var cls2=clash(a,o,bkind,useB,who);
   if(!cls2&&bkind==="share"&&!useB.length)cls2=t("sPickBed");
@@ -3249,6 +3284,7 @@ function resView(){
     m.appendChild(el("b",null,bName(b)+(isG(b)?t("guestTag"):"")));
     m.appendChild(el("small",null,sd(b.in)+" – "+sd(b.out)+" · "+
       (b.kind==="free"?t2("rFree"):b.kind==="whole"?t2("rWhole")+hostTxt(b):(b.beds||[]).map(bedN).join(", ")+peopleTxt(b))));
+    var bk2=duoBack(b);if(bk2>0)m.appendChild(el("small","duo",t2("rDuoBack",bk2)));
     it.appendChild(m);
     var rt=el("div","rt");
     rt.appendChild(el("div",null,b.kind==="free"?(freePending(b)?t2("rFreeWait"):t2("rFreeTag"))
@@ -3412,10 +3448,22 @@ function termsShow(review){
   dn.hidden=!saved;
   if(saved){var dd=new Date(saved.at),ds=isNaN(dd)?"—":dd.toLocaleDateString(LANG==="pt"?"pt-BR":"en-AU",{day:"numeric",month:"long",year:"numeric"});
     dn.textContent=(LANG==="pt"?"Você concordou com estes termos em ":"You agreed to these terms on ")+ds+".";}
+  el.classList.remove("fresh");
   el.hidden=false;el.scrollTop=0;document.body.style.overflow="hidden";}
-function termsHide(){var el=document.getElementById("terms");if(el)el.hidden=true;document.body.style.overflow="";instMaybe();}
+function termsHide(){var el=document.getElementById("terms");if(el){el.hidden=true;el.classList.remove("fresh");}
+  document.body.style.overflow="";instMaybe();}
+/* regra nova sem precisar assinar de novo: quem já concordou vê a página uma vez, só para ler,
+   aberta na regra nova (li.newrule). Mude NEWS_V quando entrar outra regra assim */
+var NEWS_V="2026-11-04-duo";
+function newsSeen(){try{localStorage.setItem("yannuga.news",NEWS_V);}catch(e){}}
+function newsMaybe(){var s=null;try{s=localStorage.getItem("yannuga.news");}catch(e){return;}
+  if(s===NEWS_V)return;newsSeen();
+  termsShow(true);var el=document.getElementById("terms");el.classList.add("fresh");
+  setTimeout(function(){var li=[].filter.call(el.querySelectorAll(".newrule"),function(x){return x.offsetParent!==null;})[0];
+    if(li&&li.scrollIntoView)li.scrollIntoView({block:"center",behavior:"smooth"});},80);}
 function termsAccept(){
   var rec={v:TERMS_V,at:new Date().toISOString()};
+  newsSeen();
   try{localStorage.setItem("yannuga.terms",JSON.stringify(rec));}catch(e){}
   termsRecord(rec);termsHide();}
 function termsInit(){
@@ -3432,8 +3480,8 @@ function termsAfterLogin(){
   var at=PROFILE&&PROFILE.terms_at,onFile=!!at&&String(at).replace(" ","T").slice(0,19)>=TERMS_V,loc=termsSaved();
   if(onFile){
     if(!loc)try{localStorage.setItem("yannuga.terms",JSON.stringify({v:TERMS_V,at:at}));}catch(e){}
-    termsHide();}
-  else if(loc)termsRecord(loc);
+    termsHide();newsMaybe();}
+  else if(loc){termsRecord(loc);newsMaybe();}
   else termsShow(false);}
 
 /* ---------- install banner: once, on the first access ---------- */
@@ -3851,6 +3899,7 @@ function acct(){
   mine.forEach(function(b){var it=el("div","item"),m=el("div","mid");
     m.appendChild(el("b",null,sd(b.in)+" – "+sd(b.out)));
     m.appendChild(el("small",null,(b.kind==="free"?t("rFree"):b.kind==="whole"?t("rWhole"):(b.beds||[]).map(bedN).join(", ")+peopleTxt(b))));
+    var bk3=duoBack(b,me);if(bk3>0)m.appendChild(el("small","duo",t("rDuoBack",bk3)));
     it.appendChild(m);it.appendChild(el("div","rt",b.kind==="free"?t("rFreeTag"):b.kind==="whole"?mm(+b.amount||money(b.in,b.out)):t("rCr",shareOf(b,me))));
     it.style.cursor="pointer";it.addEventListener("click",function(){go("cal");
       var d=pd(b.in);cy=d.getUTCFullYear();cm=d.getUTCMonth();sel.a=b.in;sel.b=b.out;cal();});
