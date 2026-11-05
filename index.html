@@ -301,6 +301,11 @@ button{font-family:inherit}
 .list{padding:4px 16px}
 .item{display:flex;gap:12px;align-items:center;padding:11px 0;border-bottom:1px solid var(--line2)}
 .item:last-child{border-bottom:0}
+.item.tap .mid{cursor:pointer}
+.item .mid small.more{color:var(--blue);font-weight:600;margin-top:2px}
+.lsplit{margin:-4px 0 10px;padding:8px 12px;border-radius:12px;background:var(--bg2)}
+.lsplit .nm{display:flex;align-items:center;gap:8px}
+.lsplit .nm i{width:9px;height:9px;border-radius:50%;flex:none}
 .item .th{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:none}
 .item .mid{flex:1;min-width:0}
 .item .mid b{display:block;font-size:14.5px;font-weight:700;letter-spacing:-.01em}
@@ -1119,7 +1124,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li>São dois, para o grupo todo. É o que mais se disputa.</li>
           <li><b>No máximo 2 fins de semana seguidos</b> no mesmo quarto (1 ou 2), por pessoa. No terceiro, é a vez de outra pessoa.</li>
-          <li class="newrule"><span class="newtag">Nova</span><b>Casa só com os quartos 1 e 2, preço normal.</b> Se numa noite só os quartos 1 e 2 estiverem ocupados — até dois casais, ou duas pessoas — e ninguém mais dormir na casa (beliche, sofá-cama e solteiro vazios), os quartos 1 e 2 passam a valer o mesmo do sofá-cama e do beliche. Não faz sentido pagar o dobro com a casa vazia. Na reserva se paga o preço cheio; no dia seguinte o app confere que ninguém mais dormiu e devolve a diferença. Cancelamento com menos de 24 horas não entra.</li>
+          <li><b>Casa só com os quartos 1 e 2, preço normal.</b> Se numa noite só os quartos 1 e 2 estiverem ocupados — até dois casais, ou duas pessoas — e ninguém mais dormir na casa (beliche, sofá-cama e solteiro vazios), os quartos 1 e 2 passam a valer o mesmo do sofá-cama e do beliche. Não faz sentido pagar o dobro com a casa vazia. Na reserva se paga o preço cheio; no dia seguinte o app confere que ninguém mais dormiu e devolve a diferença. Cancelamento com menos de 24 horas não entra.</li>
           <li>O app mostra um <b>placar</b>: quantas noites cada um passou na casa no ano. Não é regra, é transparência — e resolve a conversa antes dela virar discussão.</li>
         </ul></div>
       <div class="ex"><h3>Tudo à vista</h3>
@@ -1144,6 +1149,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li>Crédito não usado <b>não vira dinheiro</b> e não acumula para o ano seguinte.</li>
           <li>Crédito avulso e aluguel da casa fechada vão para quem paga o aporte.</li>
           <li><b>Gasto extra da casa é dividido igualmente por cota, na hora</b> — jardineiro, conserto, dano, faxina, enxoval, o que for. Cada pessoa tem uma cota, então cada pessoa paga uma parte igual. Não existe caixa.</li>
+          <li class="newrule"><span class="newtag">Nova</span><b>As contas fixas também são divididas entre todos os cotistas</b> — luz, água, gás e internet. Elas não entram mais no aporte: quem paga a conta lança no app, a casa fica devendo a essa pessoa, e cada cotista paga a sua parte. O aporte passa a ser só o aluguel menos as cotas, menos o que entrar de extra no mês anterior (casa fechada, créditos avulsos, diárias).</li>
         </ul></div>
       <div class="ex"><h3>Dentro da casa</h3>
         <ul>
@@ -1178,7 +1184,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <ul>
           <li>There are two, for the whole group. They are what everyone wants.</li>
           <li><b>Two consecutive weekends at most</b> in the same bedroom (1 or 2), per person. On the third, it is someone else's turn.</li>
-          <li class="newrule"><span class="newtag">New</span><b>House with only Bedrooms 1 and 2, normal price.</b> If on a night only Bedrooms 1 and 2 are taken — up to two couples, or two people — and nobody else sleeps in the house (bunks, sofa bed and single empty), Bedrooms 1 and 2 cost the same as the sofa bed and the bunks. Paying double in an empty house makes no sense. The booking is charged at the full price; the next day the app checks that nobody else slept there and gives the difference back. A cancellation with under 24 hours to go does not count.</li>
+          <li><b>House with only Bedrooms 1 and 2, normal price.</b> If on a night only Bedrooms 1 and 2 are taken — up to two couples, or two people — and nobody else sleeps in the house (bunks, sofa bed and single empty), Bedrooms 1 and 2 cost the same as the sofa bed and the bunks. Paying double in an empty house makes no sense. The booking is charged at the full price; the next day the app checks that nobody else slept there and gives the difference back. A cancellation with under 24 hours to go does not count.</li>
           <li>The app shows a <b>scoreboard</b>: how many nights each person spent at the house this year. Not a rule, transparency — and it settles the conversation before it becomes an argument.</li>
         </ul></div>
       <div class="ex"><h3>Everything in the open</h3>
@@ -1203,6 +1209,7 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
           <li>Unused credits <b>do not turn into money</b> and do not carry over to the next year.</li>
           <li>Extra credits and sealed-house rent go to whoever pays the aporte.</li>
           <li><b>Any extra house cost is split equally by cota, as it happens</b> — gardener, repairs, damage, cleaning, linen, whatever it is. Everyone holds one cota, so everyone pays an equal share. There is no fund.</li>
+          <li class="newrule"><span class="newtag">New</span><b>Fixed bills are split between all cota holders too</b> — power, water, gas and internet. They no longer go into the aporte: whoever pays the bill logs it in the app, the house owes them, and each cota holder pays their share. The aporte is now just the rent minus the cotas, minus the extra money from the month before (closed house, extra credits, guest nights).</li>
         </ul></div>
       <div class="ex"><h3>Inside the house</h3>
         <ul>
@@ -1432,8 +1439,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
       </div>
 
       <div class="sec"><h2 data-l="en">Fixed bills this month</h2><h2 data-l="pt">Contas fixas do mês</h2></div>
-      <p class="subt" data-l="en">Budgeted at $154 a month. Anything above goes into that month's aporte.</p>
-      <p class="subt" data-l="pt">Previsão de $154 por mês. O que passar disso entra no aporte do mês.</p>
+      <p class="subt" data-l="en">Whoever pays a bill logs it here. It stays out of the aporte: the house owes them, split between all cota holders.</p>
+      <p class="subt" data-l="pt">Quem paga a conta lança aqui. Ela fica fora do aporte: a casa deve a quem pagou, dividido entre todos os cotistas.</p>
       <div class="mnav" data-mnav></div>
       <div class="fcard" id="billBox"></div>
 
@@ -1506,8 +1513,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
         <tbody id="capB"></tbody><tfoot id="capF"></tfoot>
       </table></div>
       <div class="sec"><h2 data-l="en">What the aporte is</h2><h2 data-l="pt">O que é o aporte</h2></div>
-      <p class="subt" data-l="en">The cotas do not cover the whole house yet. The aporte is the gap: rent plus fixed bills, minus all the cotas, split between the four tenants on the lease. It closes at the end of each month, once that month's bills are in.</p>
-      <p class="subt" data-l="pt">As cotas ainda não cobrem a casa inteira. O aporte é a diferença: aluguel mais contas fixas, menos todas as cotas, dividido entre os quatro do contrato. Fecha no fim de cada mês, quando as contas do mês estiverem lançadas.</p>
+      <p class="subt" data-l="en">The cotas do not cover the whole house yet. The aporte is the gap: rent minus all the cotas and minus the extra money from the month before, split between the four tenants on the lease. Fixed bills stay out of it: they are split between all cota holders. It closes at the end of each month.</p>
+      <p class="subt" data-l="pt">As cotas ainda não cobrem a casa inteira. O aporte é a diferença: aluguel menos todas as cotas e menos as entradas extras do mês anterior, dividido entre os quatro do contrato. As contas fixas ficam fora: são divididas entre todos os cotistas. Fecha no fim de cada mês.</p>
       <div class="fcard calc2" id="apCalc"></div>
     </div>
 
@@ -1542,8 +1549,8 @@ html[data-lang="pt"] [data-l="en"],html[data-lang="en"] [data-l="pt"]{display:no
     <div class="fcard" id="acctBal"></div>
 
     <div class="sec"><h2 data-l="en">Extra credits</h2><h2 data-l="pt">Créditos avulsos</h2></div>
-    <p class="subt" data-l="en">$20 each, any time, no limit. The money goes to the aporte.</p>
-    <p class="subt" data-l="pt">$20 cada, a qualquer hora, sem limite. O dinheiro vai para o aporte.</p>
+    <p class="subt" data-l="en">$20 each, any time, no limit. The money comes off next month's aporte.</p>
+    <p class="subt" data-l="pt">$20 cada, a qualquer hora, sem limite. O dinheiro abate o aporte do mês seguinte.</p>
     <div class="pad" id="buyBox" style="margin-bottom:8px"></div>
 
     <div class="sec"><h2 data-l="en">Sign-in</h2><h2 data-l="pt">Login</h2></div>
@@ -1640,8 +1647,8 @@ var DEF=[
 var GUEST={id:"gx",name:"",units:0,fixed:0,color:"var(--ink3)"};
 /* códigos antigos, de quando a cota era por casal: caem na primeira pessoa do casal */
 var LEG={pj:"pe",nc:"ni",dj:"du",bc:"br",cn:"ni",a:"br",b:"du",rm:"du"};
-var RENT_BASE=2346,BILLS_EST=154;   /* aluguel fixo + previsão das contas fixas por mês */
-var COTA=190,PER=100,RENT=RENT_BASE+BILLS_EST,RUN=0,FEE=0;
+var RENT_BASE=2346;   /* aluguel fixo. As contas fixas ficam fora do aporte: quem paga lança, e divide entre todos os cotistas */
+var COTA=190,PER=100,RENT=RENT_BASE,RUN=0,FEE=0;
 var CI_HOUR=14;                     /* check-in às 14h: cancelar com menos de 24h perde os créditos */
 var EXTRA=20;                       /* crédito avulso, cada */
 var DAYR={baixa:200,media:350,alta:400};  /* diária da casa inteira, nunca em créditos */
@@ -1702,7 +1709,7 @@ pt:{
  fCotasN:function(n,c){return n+" cotas × "+c;}, fApTotal:"Aporte do mês",
  fApEach:function(n){return "Para cada um dos "+n;}, fApWho:function(w){return "Pagam o aporte: "+w+".";},
  fBillsOver:function(m){return "Passou "+m+" da previsão — a diferença entra no aporte deste mês.";},
- fBillsOf:function(e,l){return "Previsão de "+e+" · ainda cabem "+l+".";},
+ fBillsSplit:function(n,v){return "Fora do aporte · dividido entre os "+n+" cotistas: "+v+" cada.";},
  fRentMonth:"Por mês, fixo", fRentFrom:"Sai da", fRentYear:"No contrato (12 meses)",
  fAddBill:"Lançar conta fixa", fBill:"conta fixa",
  fCotaPaid:function(n,m){return n+" pagou a cota de "+m;}, fToBank:"na conta da casa",
@@ -1710,7 +1717,7 @@ pt:{
  fBadAmt:"Valor inválido. Digite só o número, por exemplo 33,50.", fNeedDesc:"Escreva o que foi pago.",
  fSamePerson:"Quem paga e quem recebe precisam ser diferentes.",
  fyRent:function(n,m){return "Aluguel · "+n+" meses × "+m;}, fyBills:function(m){return "Contas fixas · previsão de "+m+"/mês, ou o lançado";},
- fyBillsLogged:"Contas fixas lançadas até agora", fyCost:"Custo da casa no ano",
+ fyBillsLogged:"Contas fixas lançadas (fora do aporte, divididas entre todos)", fyCost:"Custo da casa no ano",
  fyCotas:function(n,c){return "Cotas · "+n+" pessoas × "+c+" × 12";}, fyAporte:"Aporte no ano",
  fyAporteEach:function(n){return "Aporte por pessoa · ÷ "+n;}, fyApPaid:"Aporte já pago",
  fyEarn:"Créditos avulsos e convidados (voltam para o aporte)", fyApNet:"Aporte líquido, depois do que voltou",
@@ -1719,14 +1726,17 @@ pt:{
  fYouPay:function(b){return b==="Conta da casa"?"Deposite na conta da casa":"Pague a "+b;},
  fPaysYou:function(a){return a+" te paga";}, fTheyMark:"quando pagar, marca no app dela ou dele",
  fRentLine:"Aluguel (fixo)", fCostMonth:"Custo fixo do mês", fApFlex:"Aporte do mês (a parte que varia)",
- fFixedNote:"Conta fixa: entra no custo do mês e não é dividida.",
- fApSoFar:"Até agora, com o que já foi lançado", fApClosed:"Mês fechado",
+ fFixedNote:function(n,v){return "Conta fixa: fica fora do aporte. A casa deve a quem pagou, dividido entre os "+n+" cotistas · "+v+" cada.";},
+ fShowSplit:"Ver com quem foi dividido ▾", fHideSplit:"Fechar ▴",
+ fSplitHead:function(by,n){return "Pago por "+by+" · dividido entre "+n+(n===1?" pessoa":" pessoas");},
+ fApSplitHead:function(n){return "Aporte dividido entre os "+n;},
+ fApSoFar:"Até agora, com o que já foi lançado", fApOf:function(m){return "Aporte de "+m;}, fApClosed:"Mês fechado",
  fBillsSoFar:"Contas fixas lançadas", fApProv:"Aporte provisório",
  fApEnd:function(e){return "Previsão de fechamento (contas de pelo menos "+e+")";},
  fPlanWait:function(n,t2){return "Prévia: o acerto abre quando as "+t2+" cotas estiverem preenchidas (hoje "+n+" de "+t2+"). Até lá, nada precisa ser pago.";},
  fPlanOpen:"A casa está cheia: dá para acertar.",
  fPlanFewer:function(a,b){return "Resumido em "+a+(a===1?" transferência":" transferências")+", em vez de "+b+".";},
- fFrom:function(m){return "entra em "+m;}, fApProvOf:function(m){return "Aporte provisório de "+m+", com as contas lançadas até agora.";},
+ fFrom:function(m){return "entra em "+m;}, fApProvOf:function(m){return "Aporte de "+m+". Pode baixar com o que entrar de extra no mês anterior.";},
  fAllCotas:"Todos os cotistas",
  fPerAll:function(n,v){return "Todos os cotistas, inclusive quem entrar depois · hoje "+n+" · "+v+" cada";},
  phFront:"Frente e entrada", phLiving:"Sala", phLiving2:"Sala e jardim", phLiving3:"Sala", phKitchen2:"Canto da cozinha", phTv:"Canto da TV", phKitchen:"Cozinha",
@@ -1823,10 +1833,17 @@ pt:{
  sToAporteOf:function(m){return "Abate o aporte de "+m;},
  friendOf:function(n){return "amigo de "+n;},
  fWholeDed:function(m){return "Casa fechada em "+m+" (abate)";},
- fWholeCarry:"Sobra da casa fechada, para o mês seguinte",
+ fWholeCarry:"Sobra das entradas, para o mês seguinte",
+ fDedBuys:function(m){return "Créditos vendidos em "+m+" (abate)";},
+ fDedGuests:function(m){return "Diárias de convidados em "+m+" (abate)";},
+ fDedLate:function(m){return "Cotas de "+m+" pagas depois (abate)";},
+ fDedCarry:"Sobra de entradas anteriores (abate)",
+ fApAllNote:function(w,m,n){return "Em "+m+", "+w+" pagaram a casa inteira. As cotas dos outros, pagas durante o mês, abatem o aporte de "+n+".";},
+ fBuyLine:function(nm,n){return nm+" comprou "+n+" créditos";},
  fWholeLine:function(g,h){return "Casa fechada · "+g+(h?" · amigo de "+h:"");},
  fWholeSub:function(a,b,m){return a+" a "+b+" · abate o aporte de "+m;},
- fyWhole:"Casa fechada para amigos (já abatida do aporte)",
+ fyWhole:"Entradas extras: casa fechada, créditos vendidos, diárias (já abatidas do aporte)",
+ fyLeft:"Sobra no fim do contrato, para devolver a quem pagou o aporte",
  scLine:function(u,c,n){return u+" de "+c+" créditos · "+n+" noite"+(n===1?"":"s")+" no ano";},
  scHouse:"Aporte a devolver",
  scHouseSub:function(m){return "já voltou "+m;},
@@ -2007,7 +2024,7 @@ en:{
  fCotasN:function(n,c){return n+" cotas × "+c;}, fApTotal:"Aporte this month",
  fApEach:function(n){return "For each of the "+n;}, fApWho:function(w){return "Paying the aporte: "+w+".";},
  fBillsOver:function(m){return m+" over budget — the difference goes into this month's aporte.";},
- fBillsOf:function(e,l){return "Budget of "+e+" · "+l+" still fits.";},
+ fBillsSplit:function(n,v){return "Outside the aporte · split between the "+n+" cota holders: "+v+" each.";},
  fRentMonth:"Per month, fixed", fRentFrom:"Paid from the", fRentYear:"Over the lease (12 months)",
  fAddBill:"Add fixed bill", fBill:"fixed bill",
  fCotaPaid:function(n,m){return n+" paid the cota for "+m;}, fToBank:"into the house account",
@@ -2015,7 +2032,7 @@ en:{
  fBadAmt:"That amount does not look right. Type just the number, for example 33.50.", fNeedDesc:"Write what was paid for.",
  fSamePerson:"The payer and the receiver have to be different.",
  fyRent:function(n,m){return "Rent · "+n+" months × "+m;}, fyBills:function(m){return "Fixed bills · "+m+"/month budget, or what was logged";},
- fyBillsLogged:"Fixed bills logged so far", fyCost:"What the house costs this year",
+ fyBillsLogged:"Fixed bills logged (outside the aporte, split between everyone)", fyCost:"What the house costs this year",
  fyCotas:function(n,c){return "Cotas · "+n+" people × "+c+" × 12";}, fyAporte:"Aporte this year",
  fyAporteEach:function(n){return "Aporte per person · ÷ "+n;}, fyApPaid:"Aporte paid so far",
  fyEarn:"Extra credits and guests (back to the aporte)", fyApNet:"Net aporte, after what came back",
@@ -2024,14 +2041,17 @@ en:{
  fYouPay:function(b){return b==="House account"?"Pay into the house account":"Pay "+b;},
  fPaysYou:function(a){return a+" pays you";}, fTheyMark:"they mark it in the app when they pay",
  fRentLine:"Rent (fixed)", fCostMonth:"Fixed cost this month", fApFlex:"Aporte this month (the part that moves)",
- fFixedNote:"Fixed bill: it goes into the month's cost and is not split.",
- fApSoFar:"So far, with what has been logged", fApClosed:"Month closed",
+ fFixedNote:function(n,v){return "Fixed bill: it stays out of the aporte. The house owes whoever paid, split between the "+n+" cota holders · "+v+" each.";},
+ fShowSplit:"See who it was split with ▾", fHideSplit:"Close ▴",
+ fSplitHead:function(by,n){return "Paid by "+by+" · split between "+n+(n===1?" person":" people");},
+ fApSplitHead:function(n){return "Aporte split between the "+n;},
+ fApSoFar:"So far, with what has been logged", fApOf:function(m){return "Aporte for "+m;}, fApClosed:"Month closed",
  fBillsSoFar:"Fixed bills logged", fApProv:"Provisional aporte",
  fApEnd:function(e){return "Expected at month end (bills of at least "+e+")";},
  fPlanWait:function(n,t2){return "Preview: settling opens once all "+t2+" cotas are filled (now "+n+" of "+t2+"). Nothing needs paying until then.";},
  fPlanOpen:"The house is full: you can settle up.",
  fPlanFewer:function(a,b){return "Boiled down to "+a+(a===1?" transfer":" transfers")+" instead of "+b+".";},
- fFrom:function(m){return "joins "+m;}, fApProvOf:function(m){return "Provisional aporte for "+m+", with the bills logged so far.";},
+ fFrom:function(m){return "joins "+m;}, fApProvOf:function(m){return "Aporte for "+m+". It can drop with extra money from the month before.";},
  fAllCotas:"All cota holders",
  fPerAll:function(n,v){return "All cota holders, including whoever joins later · now "+n+" · "+v+" each";},
  phFront:"Front and entrance", phLiving:"Living room", phLiving2:"Living room and garden", phLiving3:"Living room", phKitchen2:"Kitchen corner", phTv:"TV corner", phKitchen:"Kitchen",
@@ -2128,10 +2148,17 @@ en:{
  sToAporteOf:function(m){return "Comes off the aporte of "+m;},
  friendOf:function(n){return "friend of "+n;},
  fWholeDed:function(m){return "House closed in "+m+" (comes off)";},
- fWholeCarry:"Left over from the closed house, for the next month",
+ fWholeCarry:"Left over from the extra money, for the next month",
+ fDedBuys:function(m){return "Credits sold in "+m+" (comes off)";},
+ fDedGuests:function(m){return "Guest nights in "+m+" (comes off)";},
+ fDedLate:function(m){return "Cotas for "+m+" paid later (comes off)";},
+ fDedCarry:"Left over from earlier extra money (comes off)",
+ fApAllNote:function(w,m,n){return "In "+m+", "+w+" paid for the whole house. The others' cotas, paid during the month, come off the aporte of "+n+".";},
+ fBuyLine:function(nm,n){return nm+" bought "+n+" credits";},
  fWholeLine:function(g,h){return "House closed · "+g+(h?" · friend of "+h:"");},
  fWholeSub:function(a,b,m){return a+" to "+b+" · comes off the aporte of "+m;},
- fyWhole:"House closed for friends (already off the aporte)",
+ fyWhole:"Extra money: closed house, credits sold, guest nights (already off the aporte)",
+ fyLeft:"Left over at the end of the lease, to go back to whoever paid the aporte",
  scLine:function(u,c,n){return u+" of "+c+" credits · "+n+" night"+(n===1?"":"s")+" this year";},
  scHouse:"Aporte still owed",
  scHouseSub:function(m){return m+" back so far";},
@@ -3394,8 +3421,8 @@ function t7(){
       ?"Com "+n+" de "+DEF.length+" cotas preenchidas, hoje."
       :"With "+n+" of "+DEF.length+" cotas filled, today.";
     document.getElementById("t7cap"+sfx).textContent=pt
-      ?"A casa custa "+fmt(RENT,true)+" por mês: aluguel de "+fmt(RENT_BASE,true)+" mais "+fmt(BILLS_EST,true)+" de contas fixas previstas. Se as contas passarem disso, a diferença entra no aporte do mês. Gasto extra é rateado à parte."
-      :"The house costs "+fmt(RENT,false)+" a month: "+fmt(RENT_BASE,false)+" rent plus "+fmt(BILLS_EST,false)+" of budgeted bills. If the bills come in higher, the difference goes into that month's aporte. Extra expenses are split separately.";
+      ?"O aluguel é "+fmt(RENT_BASE,true)+" por mês. As contas fixas (luz, água, gás, internet) e os gastos extras ficam fora: quem paga lança no app e o valor é dividido entre todos os cotistas."
+      :"The rent is "+fmt(RENT_BASE,false)+" a month. Fixed bills (power, water, gas, internet) and extra expenses stay out of it: whoever pays logs them in the app and the amount is split between all cota holders.";
     var w=document.getElementById("t7warn"+sfx);w.textContent="";
     var b1=el("b",null,pt?"O aporte. ":"The aporte. ");w.appendChild(b1);
     w.appendChild(document.createTextNode(pt
@@ -3454,7 +3481,7 @@ function termsHide(){var el=document.getElementById("terms");if(el){el.hidden=tr
   document.body.style.overflow="";instMaybe();}
 /* regra nova sem precisar assinar de novo: quem já concordou vê a página uma vez, só para ler,
    aberta na regra nova (li.newrule). Mude NEWS_V quando entrar outra regra assim */
-var NEWS_V="2026-11-04-duo";
+var NEWS_V="2026-11-05-bills";
 function newsSeen(){try{localStorage.setItem("yannuga.news",NEWS_V);}catch(e){}}
 function newsMaybe(){var s=null;try{s=localStorage.getItem("yannuga.news");}catch(e){return;}
   if(s===NEWS_V)return;newsSeen();
@@ -3545,19 +3572,37 @@ function curMonth(){var m=today().slice(0,7);return PAYM.indexOf(m)>=0?m:(m<PAYM
 function mLabel(m){return MN[+m.split("-")[1]-1]+" "+m.split("-")[0];}
 function billsOf(m){return st.expenses.filter(function(e){return e.kind==="bill"&&String(e.date).slice(0,7)===m;})
   .reduce(function(a,e){return a+(+e.amount||0);},0);}
-function billsUsed(m){var b=billsOf(m);return b>0?b:BILLS_EST;}
-/* o aporte do mês: aluguel + contas fixas − todas as cotas, entre quem paga o aporte */
-function apGross(m){return Math.max(0,RENT_BASE+billsUsed(m)-COTA*activeIn(m).length);}
+/* o aporte do mês: aluguel − todas as cotas, entre quem paga o aporte (contas fixas ficam fora) */
+function apGross(m){return Math.max(0,RENT_BASE-COTA*cotasIn(m).length);}
+/* meses em que quem paga o aporte bancou a casa inteira (outubro de 2026: os cotistas entraram depois).
+   Nesses meses só as cotas deles entram na conta; as dos outros, pagas durante o mês, abatem o aporte seguinte */
+var AP_ALL=["2026-10"];
+function cotasIn(m){var a=activeIn(m);return AP_ALL.indexOf(m)>=0?a.filter(function(h){return h.apo;}):a;}
+function lateIn(m){if(AP_ALL.indexOf(m)<0)return 0;
+  return activeIn(m).filter(function(h){return !h.apo&&st.paid[h.id]&&st.paid[h.id][m];})
+    .reduce(function(a,h){return a+(+h.fixed||0);},0);}
 function mShift(m,k){var y=+m.slice(0,4),n=+m.slice(5,7)-1+k;y+=Math.floor(n/12);n=((n%12)+12)%12;
   return y+"-"+String(n+1).padStart(2,"0");}
 /* casa fechada para amigo de fora: o que ele pagou, pelo mês da chegada */
 function wAmt(b){return +b.amount||money(b.in,b.out);}
 function wholeIn(m){return st.bookings.map(nb).filter(function(b){return b.kind==="whole"&&String(b.in).slice(0,7)===m;})
   .reduce(function(a,b){return a+wAmt(b);},0);}
+/* o mês (hora de Melbourne) de um carimbo de data */
+function melMonth(ts){try{return new Intl.DateTimeFormat("sv-SE",{timeZone:"Australia/Melbourne",year:"numeric",month:"2-digit"})
+  .format(new Date(ts)).slice(0,7);}catch(e){return String(ts||"").slice(0,7);}}
+function buysIn(m){return (st.buys||[]).filter(function(b){return b.at&&melMonth(b.at)===m;})
+  .reduce(function(a,b){return a+(+b.amount||((+b.n||0)*EXTRA));},0);}
+function guestsIn(m){return st.bookings.map(nb).filter(function(b){return isG(b)&&b.kind!=="whole"&&String(b.in).slice(0,7)===m;})
+  .reduce(function(a,b){return a+(+b.amount||0);},0);}
+/* tudo o que entrou de extra num mês: casa fechada, créditos vendidos, diárias, cotas pagas depois */
+function extraIn(m){return {whole:wholeIn(m),buys:buysIn(m),guests:guestsIn(m),late:lateIn(m)};}
+function extraSum(x){return x.whole+x.buys+x.guests+x.late;}
 /* abate sempre o aporte do mês seguinte; se passar do aporte, a sobra segue para o outro mês */
 function apPlan(){var o={},carry=0;
-  PAYM.forEach(function(m){var pool=carry+wholeIn(mShift(m,-1)),g=apGross(m),d=Math.min(g,pool);
-    carry=pool-d;o[m]={g:g,d:d,pool:pool,carry:carry};});
+  PAYM.forEach(function(m){var x=extraIn(mShift(m,-1)),c0=carry,pool=carry+extraSum(x),g=apGross(m),d=Math.min(g,pool);
+    carry=pool-d;o[m]={g:g,d:d,pool:pool,carry:carry,c0:c0,x:x};});
+  /* o que entrar no último mês fica para o fim do contrato */
+  var last=PAYM[PAYM.length-1];o.__left=carry+extraSum(extraIn(last));
   return o;}
 function apMonth(m){var p=apPlan()[m];return p?p.g-p.d:apGross(m);}
 function paidOn(v){return typeof v==="string"&&/^\d{4}-\d{2}-\d{2}/.test(v)?v.slice(0,10):"";}
@@ -3571,7 +3616,15 @@ function conta(){
   mnavUI();
   var cm2=finM,n=activeIn(cm2).length,past=cm2<curMonth();
   var pl0=apPlan()[cm2]||{g:0,d:0,pool:0,carry:0},wPool=pl0.pool;
-  var lg0=billsOf(cm2),apShow=past?apMonth(cm2):Math.max(0,RENT_BASE+lg0-n*COTA-wPool);
+  var nc=cotasIn(cm2).length,lg0=billsOf(cm2),apShow=apMonth(cm2);
+  /* o que abate o aporte deste mês, item por item */
+  function dedRows(add){var x=pl0.x||{},pm=mLabel(mShift(cm2,-1));
+    if(pl0.c0)add(t("fDedCarry"),"− "+mm(pl0.c0));
+    if(x.whole)add(t("fWholeDed",pm),"− "+mm(x.whole));
+    if(x.buys)add(t("fDedBuys",pm),"− "+mm(x.buys));
+    if(x.guests)add(t("fDedGuests",pm),"− "+mm(x.guests));
+    if(x.late)add(t("fDedLate",pm),"− "+mm(x.late));}
+  var allNote=AP_ALL.indexOf(cm2)>=0?t("fApAllNote",apPayers().map(function(h){return h.name;}).join(", "),mLabel(cm2),mLabel(mShift(cm2,1))):"";
 
   /* cotas */
   var cb=document.getElementById("capB");cb.textContent="";
@@ -3599,42 +3652,39 @@ function conta(){
   /* a conta do aporte, ao vivo */
   var ac=document.getElementById("apCalc");ac.textContent="";
   var logged=lg0,ap=apMonth(cm2);
-  var apNow0=Math.max(0,RENT_BASE+logged-n*COTA),apNow=Math.max(0,apNow0-wPool);
-  var apEnd=Math.max(0,RENT_BASE+Math.max(logged,BILLS_EST)-n*COTA-wPool);
-  var wDed=past?pl0.d:Math.min(wPool,apNow0),prevL=mLabel(mShift(cm2,-1));
+  var wLeft=pl0.carry;
   function arow2(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));ac.appendChild(r);}
-  ac.appendChild(el("div","kv",past?t("fApClosed"):t("fApSoFar")));
+  ac.appendChild(el("div","kv",past?t("fApClosed"):t("fApOf",mLabel(cm2))));
   arow2(t("fRent"),"+ "+mm(RENT_BASE));
-  arow2(t("fBillsSoFar"),"+ "+mm(past?billsUsed(cm2):logged));
-  arow2(t("fCotasN",n,m0(COTA)),"− "+mm(n*COTA));
-  if(wPool)arow2(t("fWholeDed",prevL),"− "+mm(wDed));
-  arow2(past?t("fApTotal"):t("fApProv"),mm(past?ap:apNow),"tot");
-  arow2(t("fApEach",APO_N),mm((past?ap:apNow)/APO_N),"big");
-  if(!past){arow2(t("fApEnd",mm(BILLS_EST)),mm(apEnd));arow2(t("fApEach",APO_N),mm(apEnd/APO_N));}
+  arow2(t("fCotasN",nc,m0(COTA)),"− "+mm(nc*COTA));
+  dedRows(arow2);
+  if(wLeft)arow2(t("fWholeCarry"),mm(wLeft));
+  arow2(t("fApTotal"),mm(ap),"tot");
+  arow2(t("fApEach",APO_N),mm(ap/APO_N),"big");
   ac.appendChild(el("div","kv",t("fApWho",apPayers().map(function(h){return h.name;}).join(", "))));
+  if(allNote)ac.appendChild(el("div","kv",allNote));
 
   /* contas fixas do mês */
   var bb=document.getElementById("billBox");bb.textContent="";
   var r1=el("div","kv big");r1.appendChild(el("span",null,mLabel(cm2)));
-  r1.appendChild(el("b",logged>BILLS_EST?"neg":null,mm(logged)));bb.appendChild(r1);
-  var mt=el("div","meter"),mi=el("i");mi.style.width=Math.min(100,logged/BILLS_EST*100)+"%";
-  if(logged>BILLS_EST)mi.className="over";mt.appendChild(mi);bb.appendChild(mt);
-  bb.appendChild(el("div","kv",logged>BILLS_EST?t("fBillsOver",mm(logged-BILLS_EST)):t("fBillsOf",mm(BILLS_EST),mm(Math.max(0,BILLS_EST-logged)))));
+  r1.appendChild(el("b",null,mm(logged)));bb.appendChild(r1);
+  var nAll=st.households.length;
+  bb.appendChild(el("div","kv",t("fBillsSplit",nAll,mm(logged/nAll))));
   st.expenses.filter(function(e){return e.kind==="bill"&&String(e.date).slice(0,7)===cm2;}).forEach(function(e){
-    var r=el("div","kv");r.appendChild(el("span",null,(e.desc||"—")+" · "+sd(e.date)));r.appendChild(el("b",null,mm(+e.amount||0)));bb.appendChild(r);});
+    var r=el("div","kv");r.appendChild(el("span",null,(e.desc||"—")+" · "+sd(e.date)+" · "+t("fPaidBy",pName(LEG[e.by]||e.by||BANK_ID))));
+    r.appendChild(el("b",null,mm(+e.amount||0)));bb.appendChild(r);});
 
   /* aluguel */
   var rb=document.getElementById("rentBox");rb.textContent="";
   function rrow(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));rb.appendChild(r);}
   rb.appendChild(el("div","kv",mLabel(cm2)));
   rrow(t("fRentLine"),mm(RENT_BASE));
-  rrow(logged>0?t("fBillsLogged"):t("fBillsEst"),mm(billsUsed(cm2)));
-  rrow(t("fCostMonth"),mm(RENT_BASE+billsUsed(cm2)),"tot");
-  rrow(t("fCotasN",n,m0(COTA)),"− "+mm(n*COTA));
-  if(pl0.pool)rrow(t("fWholeDed",prevL),"− "+mm(pl0.d));
+  rrow(t("fCotasN",nc,m0(COTA)),"− "+mm(nc*COTA));
+  dedRows(rrow);
   rrow(t("fApFlex"),mm(ap),"tot");
   if(pl0.carry)rrow(t("fWholeCarry"),mm(pl0.carry));
   rrow(t("fApEach",APO_N),mm(ap/APO_N),"big");
+  if(allNote)rb.appendChild(el("div","kv",allNote));
 
   /* cotas do mês: a grade */
   var ph=document.getElementById("payH");ph.textContent="";
@@ -3671,25 +3721,25 @@ function conta(){
   var wIn=0;st.bookings.map(nb).forEach(function(b){if(b.kind==="whole")wIn+=(+b.amount||money(b.in,b.out));});
   var bIn=(st.buys||[]).reduce(function(a,x){return a+(+x.amount||0);},0);
   var gin=st.bookings.map(nb).filter(function(b){return isG(b)&&b.kind!=="whole";}).reduce(function(a,g){return a+(+g.amount||0);},0);
-  var rentY=RENT_BASE*PAYM.length,billsY=PAYM.reduce(function(a,m){return a+billsUsed(m);},0);
-  var billsLog=PAYM.reduce(function(a,m){return a+billsOf(m);},0),costY=rentY+billsY,cotasY=PAYM.reduce(function(a,m){return a+activeIn(m).length*COTA;},0);
+  var rentY=RENT_BASE*PAYM.length;
+  var billsLog=PAYM.reduce(function(a,m){return a+billsOf(m);},0),costY=rentY,cotasY=PAYM.reduce(function(a,m){return a+activeIn(m).length*COTA;},0);
   var apY=PAYM.reduce(function(a,m){return a+apMonth(m);},0);
   var apPaid=PAYM.reduce(function(a,m){return a+((st.paid[m]||{}).__ap?apMonth(m):0);},0);
-  var wDedY=PAYM.reduce(function(a,m){return a+(apPlan()[m]||{}).d;},0);
+  /* as cotas pagas depois já estão nas cotas do ano: aqui só o resto do que abateu */
+  var plY=apPlan(),lateY=PAYM.reduce(function(a,m){return a+lateIn(m);},0);
+  var wDedY=PAYM.reduce(function(a,m){return a+(plY[m]||{}).d;},0)-lateY;
   var earn=bIn+gin,extra=st.expenses.filter(function(e){return !e.kind||e.kind==="expense";}).reduce(function(a,e){return a+(+e.amount||0);},0);
   var yb=document.getElementById("yearBox");yb.textContent="";
   function row(k,v,cls){var r=el("div","kv"+(cls?" "+cls:""));r.appendChild(el("span",null,k));r.appendChild(el("b",null,v));yb.appendChild(r);}
   row(t("fyRent",PAYM.length,mm(RENT_BASE)),mm(rentY));
-  row(t("fyBills",mm(BILLS_EST)),mm(billsY));
-  row(t("fyBillsLogged"),mm(billsLog));
   row(t("fyCost"),mm(costY),"tot");
   row(t("fyCotas",ACTIVE.length,m0(COTA)),"− "+mm(cotasY));
-  if(wIn)row(t("fyWhole"),"− "+mm(wDedY));
+  if(wDedY>0)row(t("fyWhole"),"− "+mm(wDedY));
   row(t("fyAporte"),mm(apY),"tot");
   row(t("fyAporteEach",APO_N),mm(apY/APO_N),"big");
   row(t("fyApPaid"),mm(apPaid));
-  row(t("fyEarn"),earn?"+ "+mm(earn):"—");
-  row(t("fyApNet"),mm(Math.max(0,apY-earn)),"tot");
+  if(plY.__left>0)row(t("fyLeft"),mm(plY.__left));
+  row(t("fyBillsLogged"),billsLog?mm(billsLog):"—");
   row(t("fyExtra"),extra?mm(extra):"—");
 
   /* convidados */
@@ -3729,11 +3779,10 @@ function pColor(id){return id===BANK_ID?"var(--ink)":((hh(LEG[id]||id)||{}).colo
 function splitOf(e){var s2=(e.split||[]).map(function(x){return LEG[x]||x;}).filter(function(x){return !!hh(x);});
   /* vazio = todos os cotistas, inclusive quem entrar depois */
   return s2.length?s2:st.households.map(function(h){return h.id;});}
-/* positivo: tem a receber · negativo: deve. Conta fixa paga do bolso: a conta da casa devolve */
+/* positivo: tem a receber · negativo: deve. Conta fixa: como gasto extra, dividida entre todos os cotistas */
 function balances(){var b={};b[BANK_ID]=0;st.households.forEach(function(h){b[h.id]=0;});
   st.expenses.forEach(function(e){var a=+e.amount||0,by=LEG[e.by]||e.by||BANK_ID;if(!(by in b))b[by]=0;
     if(e.kind==="pay"){var to=LEG[e.to]||e.to||BANK_ID;if(!(to in b))b[to]=0;b[by]+=a;b[to]-=a;}
-    else if(e.kind==="bill"){if(by!==BANK_ID){b[by]+=a;b[BANK_ID]-=a;}}
     else{var sp=splitOf(e);b[by]+=a;sp.forEach(function(x){b[x]-=a/sp.length;});}});
   Object.keys(b).forEach(function(k){b[k]=Math.round(b[k]*100)/100;});return b;}
 /* quem deve a quem, direto: cada um paga a quem de fato pagou o gasto, e só se compensa
@@ -3743,7 +3792,6 @@ function directDebts(){var d={};
   function add(a,b,v){if(a===b||!v)return;d[a]=d[a]||{};d[a][b]=(d[a][b]||0)+v;}
   st.expenses.forEach(function(e){var a=+e.amount||0,by=LEG[e.by]||e.by||BANK_ID;
     if(e.kind==="pay")add(LEG[e.to]||e.to||BANK_ID,by,a);
-    else if(e.kind==="bill"){if(by!==BANK_ID)add(BANK_ID,by,a);}
     else{var sp=splitOf(e);sp.forEach(function(x){add(x,by,a/sp.length);});}});
   var n=0,seen={};
   Object.keys(d).forEach(function(a){Object.keys(d[a]).forEach(function(b){
@@ -3824,11 +3872,17 @@ function ledgerUI(){
     if(v)rows.push({d:paidOn(v)||m+"-01",nd:!paidOn(v),cota:{h:h,m:m}});});});
   PAYM.forEach(function(m){var v=(st.paid[m]||{}).__ap;if(v)rows.push({d:paidOn(v)||m+"-01",nd:!paidOn(v),ap:m});});
   st.bookings.map(nb).forEach(function(b){if(b.kind==="whole")rows.push({d:String(b.in),wh:b});});
+  (st.buys||[]).forEach(function(b){if(b.at)rows.push({d:String(b.at).slice(0,10),buy:b});});
   rows.sort(function(a,b){return b.d.localeCompare(a.d);});
   if(!rows.length){lg.appendChild(el("p","empty",t("nNoExp")));return;}
   rows.forEach(function(r){var it=el("div","item"),m=el("div","mid"),amt=0,del=null;
     if(r.cota){m.appendChild(el("b",null,t("fCotaPaid",r.cota.h.name,mLabel(r.cota.m))));
-      m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+t("fToBank")));amt=r.cota.h.fixed;}
+      var late=AP_ALL.indexOf(r.cota.m)>=0&&!r.cota.h.apo;
+      m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+(late?t("sToAporteOf",mLabel(mShift(r.cota.m,1))):t("fToBank"))));amt=r.cota.h.fixed;}
+    else if(r.buy){var hb=hh(LEG[r.buy.hh]||r.buy.hh);
+      m.appendChild(el("b",null,t("fBuyLine",hb?hb.name:"?",+r.buy.n||0)));
+      m.appendChild(el("small",null,sd(r.d)+" · "+t("sToAporteOf",mLabel(mShift(melMonth(r.buy.at),1)))));
+      amt=+r.buy.amount||((+r.buy.n||0)*EXTRA);}
     else if(r.ap){m.appendChild(el("b",null,t("fApPaid",mLabel(r.ap))));
       m.appendChild(el("small",null,(r.nd?"":sd(r.d)+" · ")+apPayers().map(function(h){return h.name;}).join(", ")));amt=apMonth(r.ap);}
     else if(r.wh){var hw=hostOf(r.wh);
@@ -3848,7 +3902,25 @@ function ledgerUI(){
         if(armedE!==e.id){armedE=e.id;ledgerUI();setTimeout(function(){if(armedE===e.id){armedE=null;ledgerUI();}},4000);return;}
         armedE=null;st.expenses=st.expenses.filter(function(y){return y.id!==e.id;});
         if(db&&cw)db.doc("expenses/"+e.id).delete().catch(werr);sv();render();});}
-    it.appendChild(m);it.appendChild(el("div","rt",mm(amt)));if(del)it.appendChild(del);lg.appendChild(it);});}
+    it.appendChild(m);it.appendChild(el("div","rt",mm(amt)));if(del)it.appendChild(del);lg.appendChild(it);
+    /* tocar abre com quem a conta foi dividida, e quanto ficou para cada um */
+    var key=null,parts=null,head="";
+    if(r.e&&r.e.kind!=="pay"){var sp2=splitOf(r.e);key=r.e.id;
+      parts=sp2.map(function(x){return{id:x,v:amt/sp2.length};});
+      head=t("fSplitHead",pName(LEG[r.e.by]||r.e.by||BANK_ID),sp2.length);}
+    else if(r.ap){var ps2=apPayers();key="ap_"+r.ap;
+      parts=ps2.map(function(h){return{id:h.id,v:amt/ps2.length};});head=t("fApSplitHead",ps2.length);}
+    if(!key)return;
+    var open=openL===key;it.classList.add("tap");it.setAttribute("aria-expanded",open?"true":"false");
+    m.appendChild(el("small","more",open?t("fHideSplit"):t("fShowSplit")));
+    m.addEventListener("click",function(){openL=openL===key?null:key;ledgerUI();});
+    if(!open)return;
+    var box=el("div","lsplit");box.appendChild(el("div","kv",head));
+    parts.forEach(function(x){var rw=el("div","kv"),nm=el("span","nm"),ic=el("i");ic.style.background=pColor(x.id);
+      nm.appendChild(ic);nm.appendChild(document.createTextNode(pName(x.id)));rw.appendChild(nm);
+      rw.appendChild(el("b",null,mm(x.v)));box.appendChild(rw);});
+    lg.appendChild(box);});}
+var openL=null;
 
 /* ---------- finance: the house bank account ---------- */
 var BANKF=[["name","fbName"],["holder","fbHolder"],["bsb","fbBsb"],["acct","fbAcct"],["payid","fbPayid"],["ref","fbRef"]];
@@ -3999,11 +4071,11 @@ document.getElementById("finSegs").addEventListener("click",function(e){
 document.getElementById("eBy").addEventListener("change",function(e){fBy=e.target.value;});
 var fFixed=false;
 function perUI(){var a=parseAmt(document.getElementById("eAmt").value),n2=fAll||!fSplit?st.households.length:fSplit.length;
-  document.getElementById("ePer").textContent=fFixed?t("fFixedNote"):
+  document.getElementById("ePer").textContent=fFixed?t("fFixedNote",st.households.length,a>0?mm(a/st.households.length):"—"):
     (fAll?t("fPerAll",n2,a>0?mm(a/n2):"—"):t("fPer",n2,a>0?mm(a/n2):"—"));}
 document.getElementById("eAmt").addEventListener("input",perUI);
 document.getElementById("eFixed").addEventListener("click",function(){
-  fFixed=!fFixed;fBy=fFixed?BANK_ID:(hh(me)?me:BANK_ID);splitUI();});
+  fFixed=!fFixed;fBy=hh(me)?me:BANK_ID;splitUI();});
 function badAmt(id){document.getElementById(id).textContent=t("fBadAmt");return false;}
 document.getElementById("eAdd").addEventListener("click",function(){
   var d=document.getElementById("eDesc"),a=parseAmt(document.getElementById("eAmt").value),dt=document.getElementById("eDate");

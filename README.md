@@ -71,10 +71,12 @@ Send that link to everyone. On a phone, **Share → Add to Home Screen** install
 credits, payments, the ficha and expenses are all individual. Up to 12
 cotas (`DEF`); the ones still open carry `vaga:true` and stay out of every sum.
 
-**The aporte** is the gap between the filled cotas and the $2,500 the house costs (rent and
-bills, flat — `RENT`), split between the people marked `apo:true` (Pedro, Júlia, Niklas,
-Carol): `APO_TOTAL = RENT − COTA × filled cotas`. With 8 cotas that is $980/month, $245 each;
-every cota filled lowers it by $47.50 each. It has its own row in the payments grid, and every
+**The aporte** is the gap between the filled cotas and the $2,346 rent (`RENT` = `RENT_BASE`),
+split between the people marked `apo:true` (Pedro, Júlia, Niklas, Carol):
+`APO_TOTAL = RENT − COTA × filled cotas`. With 9 cotas that is $636/month, $159 each;
+every cota filled lowers it by $47.50 each. **Fixed bills stay out of the aporte**: whoever pays
+one (Niklas, as a rule) logs it as a fixed bill, the house owes them, and it is split between all
+cota holders like an extra expense. It has its own row in the payments grid, and every
 dollar the house earns goes back to the payers. There is no house fund: expenses are split
 between everyone by cota as they happen.
 
@@ -105,6 +107,18 @@ window applies as for any booking.
 
 **Extra credits** are $20 each (`EXTRA`), no limit, any time. Also to the aporte.
 
+**Everything extra comes off the next month's aporte.** `apPlan()` adds up what came in during a
+month (`extraIn()`): closed-house amounts (by check-in), extra credits sold (by purchase date,
+Melbourne time), daily-rate guests, and cotas paid late. All of it comes off the aporte of the
+month after; anything above that month's aporte carries over, and whatever is left at the end of
+the lease shows in the year balance, to go back to the aporte payers.
+
+**October 2026** (`AP_ALL`): Pedro, Júlia, Niklas and Carol paid for the whole house, because the
+other cotas came in later. In a month listed in `AP_ALL` only the aporte payers' cotas count
+(`cotasIn()`), and the other cotas ticked as paid that month come off the next month's aporte
+(`lateIn()`). October was exactly the $2,346 rent ($1,173 from Pedro and Júlia, $1,173 from Niklas and Carol), so its aporte
+is $2,346 − 4 × $190 = $1,586. It was a one-off; the list stays as it is.
+
 ## The album
 
 Home has the house photos (tap to see them full size, swipe or use the arrows) and an
@@ -121,24 +135,25 @@ everyone's credits and the open history, filterable by person) · **Finance** ·
 
 **Finance** has five panes:
 
-1. **Expenses** — fixed bills (power, water, gas, internet; budgeted at `BILLS_EST` = $154 a month,
-   anything above goes into that month's aporte), the fixed rent (`RENT_BASE` = $2,346), extra
+1. **Expenses** — fixed bills (power, water, gas, internet; outside the aporte, split between
+   all cota holders), the fixed rent (`RENT_BASE` = $2,346), extra
    expenses split between the people picked (**All cota holders** stores no list, so it
    also covers whoever joins later), and everyone's balance.
 2. **Payments** — the house bank details (in `app_state` under `bank`, signed-in members only,
    admins edit), the monthly cota grid (a tick stores the date it was marked) and settling
    extra expenses between people or with the house account.
 3. **Activity** — every transaction in one list: cotas paid, the aporte, bills, extras, settlements.
+   Tapping a bill, an extra expense or an aporte opens who it was split with and each share.
 4. **Cotas** — the cota table, and the aporte worked out live:
-   `apMonth(m) = RENT_BASE + bills logged that month (or the budget) − COTA × filled cotas
-   − what outside friends paid to close the house the month before`,
+   `apMonth(m) = RENT_BASE − COTA × filled cotas
+   − everything extra that came in the month before`,
    split between the four tenants. It closes at the end of each month.
-5. **Year balance** — rent, bills (budget and logged), what the house costs, the cotas, the
-   aporte in total and per person, what came back from daily rates and extra credits.
+5. **Year balance** — rent, the cotas, the extra money that came off the aporte, the aporte in
+   total and per person, and, outside the aporte, the fixed bills and extra expenses.
 
 Expenses, bills and settlements share the `expenses` table (`kind`: `expense`, `bill`, `pay`).
-A bill paid out of someone's pocket puts the house account in their debt; one paid by the
-house account changes no balance. Amounts accept a comma or a dot.
+A fixed bill is split like an extra expense for all cota holders: whoever paid it (a person or
+the house account) is owed by everyone, each their share. Amounts accept a comma or a dot.
 
 **Account** is just the person signed in: credits left, their ficha, their bookings, their
 balance in the house expenses, extra credits, their sign-in details, a password change and
