@@ -304,6 +304,7 @@ button{font-family:inherit}
 .item.tap .mid{cursor:pointer}
 .item .mid small.more{color:var(--blue);font-weight:600;margin-top:2px}
 .lsplit{margin:-4px 0 10px;padding:8px 12px;border-radius:12px;background:var(--bg2)}
+.lsplit .lhead{margin-top:6px;padding-top:8px;border-top:1px solid var(--line2);font-weight:700;color:var(--ink)}
 .lsplit .nm{display:flex;align-items:center;gap:8px}
 .lsplit .nm i{width:9px;height:9px;border-radius:50%;flex:none}
 .item .th{width:56px;height:56px;border-radius:12px;object-fit:cover;flex:none}
@@ -1727,7 +1728,12 @@ pt:{
  fPaysYou:function(a){return a+" te paga";}, fTheyMark:"quando pagar, marca no app dela ou dele",
  fRentLine:"Aluguel (fixo)", fCostMonth:"Custo fixo do mês", fApFlex:"Aporte do mês (a parte que varia)",
  fFixedNote:function(n,v){return "Conta fixa: fica fora do aporte. A casa deve a quem pagou, dividido entre os "+n+" cotistas · "+v+" cada.";},
- fShowSplit:"Ver com quem foi dividido ▾", fHideSplit:"Fechar ▴",
+ fShowSplit:"Ver detalhes ▾", dWhat:"O que foi", dWho:"Quem pagou", dTo:"Para", dAmt:"Valor", dDate:"Data",
+ dNoDate:"sem data", dCotaOf:function(m){return "Cota de "+m;}, dWhole:"Casa fechada para amigo de fora", dLoggedBy:"Lançado por", dFriend:"Amigo", dHost:"Quem responde", dNights:"Noites",
+ dCredits:function(n){return n+" créditos avulsos × $"+EXTRA;}, dExtraOff:function(m){return "Entradas extras de "+m;},
+ dRentOf:function(m){return "Vai para o aluguel de "+m+". Não é dividido.";},
+ dApOff:function(m,n){return "Abate o aporte de "+m+", dividido entre os "+n+":";},
+ dPayNo:"Acerto entre duas partes: não é dividido.", fHideSplit:"Fechar ▴",
  fSplitHead:function(by,n){return "Pago por "+by+" · dividido entre "+n+(n===1?" pessoa":" pessoas");},
  fApSplitHead:function(n){return "Aporte dividido entre os "+n;},
  fApSoFar:"Até agora, com o que já foi lançado", fApOf:function(m){return "Aporte de "+m;}, fApClosed:"Mês fechado",
@@ -2042,7 +2048,12 @@ en:{
  fPaysYou:function(a){return a+" pays you";}, fTheyMark:"they mark it in the app when they pay",
  fRentLine:"Rent (fixed)", fCostMonth:"Fixed cost this month", fApFlex:"Aporte this month (the part that moves)",
  fFixedNote:function(n,v){return "Fixed bill: it stays out of the aporte. The house owes whoever paid, split between the "+n+" cota holders · "+v+" each.";},
- fShowSplit:"See who it was split with ▾", fHideSplit:"Close ▴",
+ fShowSplit:"See details ▾", dWhat:"What", dWho:"Paid by", dTo:"To", dAmt:"Amount", dDate:"Date",
+ dNoDate:"no date", dCotaOf:function(m){return "Cota for "+m;}, dWhole:"House closed for an outside friend", dLoggedBy:"Logged by", dFriend:"Friend", dHost:"Answering for them", dNights:"Nights",
+ dCredits:function(n){return n+" extra credits × $"+EXTRA;}, dExtraOff:function(m){return "Extra money from "+m;},
+ dRentOf:function(m){return "Goes to the rent for "+m+". Not split.";},
+ dApOff:function(m,n){return "Comes off the aporte of "+m+", split between the "+n+":";},
+ dPayNo:"A settlement between two parties: not split.", fHideSplit:"Close ▴",
  fSplitHead:function(by,n){return "Paid by "+by+" · split between "+n+(n===1?" person":" people");},
  fApSplitHead:function(n){return "Aporte split between the "+n;},
  fApSoFar:"So far, with what has been logged", fApOf:function(m){return "Aporte for "+m;}, fApClosed:"Month closed",
@@ -2399,6 +2410,7 @@ var TT={alta:0,media:0,baixa:0};
 function nts(a,b){var o=[],d=pd(a),e=pd(b);while(d<e){var s=iso(d);if(bw(s,IN,OUT))o.push(s);d=ad(d,1);}return o;}
 function today(){var d=new Date(),p=function(n){return String(n).padStart(2,"0");};
   return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate());}
+function fd(s){var p=String(s).slice(0,10).split("-");return p.length===3?p[2]+"/"+p[1]+"/"+p[0]:s;}
 function sd(s){var p=String(s).split("-");return p.length===3?p[2]+"/"+p[1]:s;}
 function ld(s){var d=pd(s);return DW[(d.getUTCDay()+6)%7]+", "+d.getUTCDate()+" "+MS[d.getUTCMonth()];}
 function uid(){return Date.now().toString(36)+Math.random().toString(36).slice(2,7);}
@@ -3903,19 +3915,41 @@ function ledgerUI(){
         armedE=null;st.expenses=st.expenses.filter(function(y){return y.id!==e.id;});
         if(db&&cw)db.doc("expenses/"+e.id).delete().catch(werr);sv();render();});}
     it.appendChild(m);it.appendChild(el("div","rt",mm(amt)));if(del)it.appendChild(del);lg.appendChild(it);
-    /* tocar abre com quem a conta foi dividida, e quanto ficou para cada um */
-    var key=null,parts=null,head="";
-    if(r.e&&r.e.kind!=="pay"){var sp2=splitOf(r.e);key=r.e.id;
-      parts=sp2.map(function(x){return{id:x,v:amt/sp2.length};});
-      head=t("fSplitHead",pName(LEG[r.e.by]||r.e.by||BANK_ID),sp2.length);}
-    else if(r.ap){var ps2=apPayers();key="ap_"+r.ap;
-      parts=ps2.map(function(h){return{id:h.id,v:amt/ps2.length};});head=t("fApSplitHead",ps2.length);}
-    if(!key)return;
+    /* tocar abre o detalhe: o que foi pago, por quem, quando, e com quem foi dividido */
+    var key,info=[],parts=[],head="",nxt;
+    function ap4(v,mo){var ps=apPayers();head=t("dApOff",mLabel(mo),ps.length);
+      parts=ps.map(function(h){return{id:h.id,v:v/ps.length};});}
+    function when(){return r.nd?t("dNoDate"):fd(r.d);}
+    if(r.cota){var hc=r.cota.h;key="c_"+hc.id+"_"+r.cota.m;
+      info=[[t("dWhat"),t("dCotaOf",mLabel(r.cota.m))],[t("dWho"),hc.name],[t("dTo"),t("fBank")],[t("dAmt"),mm(amt)],[t("dDate"),when()]];
+      if(AP_ALL.indexOf(r.cota.m)>=0&&!hc.apo)ap4(amt,mShift(r.cota.m,1));else head=t("dRentOf",mLabel(r.cota.m));}
+    else if(r.buy){var hb2=hh(LEG[r.buy.hh]||r.buy.hh);key="b_"+r.buy.id;nxt=mShift(melMonth(r.buy.at),1);
+      info=[[t("dWhat"),t("dCredits",+r.buy.n||0)],[t("dWho"),hb2?hb2.name:"?"],[t("dTo"),t("fBank")],[t("dAmt"),mm(amt)],[t("dDate"),fd(r.d)]];
+      ap4(amt,nxt);}
+    else if(r.ap){var pa=apPlan()[r.ap]||{d:0};key="ap_"+r.ap;
+      info=[[t("dWhat"),t("fApPaid",mLabel(r.ap))],[t("dDate"),when()],
+        [t("fRent"),"+ "+mm(RENT_BASE)],[t("fCotasN",cotasIn(r.ap).length,m0(COTA)),"− "+mm(cotasIn(r.ap).length*COTA)]];
+      if(pa.d)info.push([t("dExtraOff",mLabel(mShift(r.ap,-1))),"− "+mm(pa.d)]);
+      info.push([t("fApTotal"),mm(amt)]);
+      var ps3=apPayers();head=t("fApSplitHead",ps3.length);parts=ps3.map(function(h){return{id:h.id,v:amt/ps3.length};});}
+    else if(r.wh){var hw2=hostOf(r.wh);key="w_"+r.wh.id;nxt=mShift(String(r.wh.in).slice(0,7),1);
+      info=[[t("dWhat"),t("dWhole")],[t("dFriend"),r.wh.guestName||t("guest")],[t("dHost"),hw2?hw2.name:"—"],
+        [t("dNights"),fd(r.wh.in)+" → "+fd(r.wh.out)+" · "+nts(r.wh.in,r.wh.out).length],[t("dAmt"),mm(amt)]];
+      ap4(amt,nxt);}
+    else{var e2=r.e,by2=LEG[e2.by]||e2.by||BANK_ID;key="e_"+e2.id;
+      if(e2.kind==="pay"){info=[[t("dWhat"),t("fPayment")],[t("dWho"),pName(by2)],[t("dTo"),pName(LEG[e2.to]||e2.to||BANK_ID)],[t("dAmt"),mm(amt)],[t("dDate"),fd(e2.date)]];
+        head=t("dPayNo");}
+      else{var sp3=splitOf(e2);
+        info=[[t("dWhat"),(e2.desc||"—")+(e2.kind==="bill"?" · "+t("fBill"):"")],[t("dWho"),pName(by2)],[t("dAmt"),mm(amt)],[t("dDate"),fd(e2.date)]];
+        if(e2.mk&&hh(LEG[e2.mk]||e2.mk))info.push([t("dLoggedBy"),pName(LEG[e2.mk]||e2.mk)]);
+        head=t("fSplitHead",pName(by2),sp3.length);parts=sp3.map(function(x){return{id:x,v:amt/sp3.length};});}}
     var open=openL===key;it.classList.add("tap");it.setAttribute("aria-expanded",open?"true":"false");
     m.appendChild(el("small","more",open?t("fHideSplit"):t("fShowSplit")));
     m.addEventListener("click",function(){openL=openL===key?null:key;ledgerUI();});
     if(!open)return;
-    var box=el("div","lsplit");box.appendChild(el("div","kv",head));
+    var box=el("div","lsplit");
+    info.forEach(function(x){var rw=el("div","kv");rw.appendChild(el("span",null,x[0]));rw.appendChild(el("b",null,x[1]));box.appendChild(rw);});
+    if(head)box.appendChild(el("div","kv lhead",head));
     parts.forEach(function(x){var rw=el("div","kv"),nm=el("span","nm"),ic=el("i");ic.style.background=pColor(x.id);
       nm.appendChild(ic);nm.appendChild(document.createTextNode(pName(x.id)));rw.appendChild(nm);
       rw.appendChild(el("b",null,mm(x.v)));box.appendChild(rw);});

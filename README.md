@@ -143,7 +143,9 @@ everyone's credits and the open history, filterable by person) · **Finance** ·
    admins edit), the monthly cota grid (a tick stores the date it was marked) and settling
    extra expenses between people or with the house account.
 3. **Activity** — every transaction in one list: cotas paid, the aporte, bills, extras, settlements.
-   Tapping a bill, an extra expense or an aporte opens who it was split with and each share.
+   Tapping any line opens its detail: what it was, who paid, to whom, how much and when, and
+   who it was split with and each share (a cota goes to that month's rent; extra money comes off
+   the next aporte, split between the four; a settlement is not split).
 4. **Cotas** — the cota table, and the aporte worked out live:
    `apMonth(m) = RENT_BASE − COTA × filled cotas
    − everything extra that came in the month before`,
